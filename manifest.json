@@ -1,0 +1,21 @@
+{
+  "manifest_version": 2,
+ 
+  "name": "sID",
+  "description": "Chromium Extension for sID",
+  "version": "1.0",
+  "permissions": [ "tabs", "http://*/*", "https://*/*", "unlimitedStorage", "https://www.facebook.com/*" ],
+  
+  "optional_permissions": [ "webRequest" ],
+     
+  "browser_action": {
+   "default_icon": "icon.png",
+   "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.facebook.com/*"],
+      "js": ["inject.js"]
+    }
+  ]
+}
