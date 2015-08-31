@@ -1,8 +1,3 @@
-
-if(getCookie("sidSession")=="true"){
-	window.open('main.html','_self');
-}
-
 document.addEventListener('DOMContentLoaded', function() {
 
 	try{
