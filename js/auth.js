@@ -10,7 +10,12 @@ document.addEventListener('DOMContentLoaded', function() {
 			password: pwd.value
 		},
 		function(data, status){
-			console.log(data);
+			console.log(data,status);
+			if(status=="success"){
+				window.open('main.html','_self');
+			}else{
+			
+			}
 		});
 	});
 }, false);
