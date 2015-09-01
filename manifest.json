@@ -17,5 +17,9 @@
       "matches": ["https://www.facebook.com/*"],
       "js": ["js/loginCheck.js"]
     }
-  ]
+  ],
+  "background": {
+    "scripts": ["js/main.js"],
+    "persistent": false
+  }
 }

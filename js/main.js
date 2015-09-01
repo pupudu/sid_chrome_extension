@@ -1,10 +1,11 @@
 chrome.tabs.onUpdated.addListener(function(id,obj,tab){
-	if(tab.status == "complete" && tab.url.search("https://www.facebook.com")!=0){
+	if(tab.status == "complete" && tab.url.search("https://www.facebook.com")==0){
 		chrome.tabs.getSelected(null, function(tab) {
 			chrome.tabs.executeScript(tab.id,{
 				file:'js/fbInject.js'
 			},function(){
 			/*Do Nothing*/
+			//alert("dodan");
 			});
 		});
 	}
