@@ -15,7 +15,7 @@
   "content_scripts": [
     {
       "matches": ["https://www.facebook.com/*"],
-      "js": ["js/fb.js"]
+      "js": ["js/loginCheck.js"]
     }
   ]
 }

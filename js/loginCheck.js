@@ -9,12 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 });
 
-/**Check if current page is a profile*/
-function isProfile(){
-	return (document.getElementById('fb-timeline-cover-name').innerText.length > 0);
-}
-
-
 /**Method to get a cookie*/
 function getCookie(cname) {
     var name = cname + "=";

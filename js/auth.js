@@ -85,7 +85,6 @@ function setCookie(cname, cvalue, exdays) {
 
 /** Inject cookie to main browser*/
 function injectCookie(cname, cvalue, exdays){
-
 	var d = new Date();
     d.setTime(d.getTime() + (exdays*24*60*60*1000));
     var expires = "expires="+d.toUTCString();
