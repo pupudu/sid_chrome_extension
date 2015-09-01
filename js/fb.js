@@ -1,20 +1,19 @@
-chrome.tabs.onUpdated.addListener(function(id,obj,tab){
-	if(tab.status == "complete"){
-		console.log(tab);
+console.log("Content Script loaded");
+document.addEventListener('DOMContentLoaded', function() {
+	console.log("content loaded triggered");
+	if(getCookie("sidSession")=="true"){	/*TODO Manipulate Cookies with a better approach*/
+		//(document.getElementById('fb-timeline-cover-name').innerText.length > 0)
+		if(isProfile()){
+			alert("Profile");
+		}	
 	}
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-	try{
-		var btnLogout = document.getElementById('btnLogout');		//Log out button in login page
-		
-		btnLogout.addEventListener('click', function() {
-			/*TODO Add code to logout from server*/
-			setCookie("sidSession","false",3);
-			window.open('popup.html','_self');
-		});
-	}catch(e){/*Do Nothing*/}
-}, false);
+/**Check if current page is a profile*/
+function isProfile(){
+	return (document.getElementById('fb-timeline-cover-name').innerText.length > 0);
+}
+
 
 /**Method to get a cookie*/
 function getCookie(cname) {

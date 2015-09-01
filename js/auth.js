@@ -1,5 +1,5 @@
 
-if(getCookie("sidSession")=="true"){
+if(getCookie("sidSession")=="true"){	/*TODO Manipulate Cookies with a better approach*/
 	window.open('main.html','_self');
 }
 
@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					if(data.success){
 						console.log("Authentication success");
 						setCookie("sidSession","true",3);	//expires after 3 days if not logged out
+						injectCookie("sidSession","true",3); 	//inject to save cookie inside the main browser
 						window.open('main.html','_self');
 					}else{
 						displayError("Invalid Username or Password");
@@ -80,4 +81,21 @@ function setCookie(cname, cvalue, exdays) {
     d.setTime(d.getTime() + (exdays*24*60*60*1000));
     var expires = "expires="+d.toUTCString();
     document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+
+/** Inject cookie to main browser*/
+function injectCookie(cname, cvalue, exdays){
+
+	var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+d.toUTCString();
+    var strInject = 'document.cookie =' +"'" + cname + "=" + cvalue + "; " + expires +';'+"'";
+	console.log(strInject);
+	chrome.tabs.getSelected(null, function(tab) {
+		chrome.tabs.executeScript(tab.id,{
+			code:strInject
+		},function(){
+		/*Do Nothing*/
+		});
+	});
 }
