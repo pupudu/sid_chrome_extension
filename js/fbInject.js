@@ -1,1 +1,1 @@
-console.log("inject success1");
+isProfile = (document.getElementById('fb-timeline-cover-name').innerText.length > 0);console.log(isProfile);
