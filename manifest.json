@@ -12,12 +12,6 @@
    "default_icon": "resources/icons/ext.png",
    "default_popup": "popup.html"
   },
-  "content_scripts": [
-    {
-      "matches": ["https://www.facebook.com/*"],
-      "js": ["js/loginCheck.js"]
-    }
-  ],
   "background": {
     "scripts": ["js/main.js"],
     "persistent": false
