@@ -17,12 +17,10 @@ chrome.webNavigation.onCompleted.addListener(function(obj){
 });
 
 /** Used by content scripts to access local storage*/
+/* This method is not yet called from anywhere. If needed, the message sender code should be written */
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    if (request.method == "verIco")
-		//var profilePic = document.getElementsByClassName("profilePicThumb")[0];
-		//var icon = document.createElement("DIV");
-		//icon.innerHTML = "<img src='resources/icons/Verified.png' width='50' height='50' style='position:absolute;left:0px;top:0px;z-index:+1;'>"
-		sendResponse({ico: "dd"});
+    if (request.method == "getStat")
+		sendResponse({Status: "stat"});
     else
 		sendResponse({}); // snub them.
 });
