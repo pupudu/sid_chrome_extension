@@ -17,6 +17,7 @@
     "persistent": false
   },
   "web_accessible_resources": [
-    "resources/icon/Verified.png"
+    "resources/icons/claimT.png" , "resources/icons/claimR.png" , "resources/icons/claimC.png" , 
+	"resources/icons/profT.png" , "resources/icons/profR.png" , "resources/icons/profC.png" 
   ]
 }
