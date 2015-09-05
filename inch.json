@@ -1,11 +1,7 @@
 {
   "files": {
     "included": [
-      "js/**/*.js"
+      "js/auth.js", "js/background.js", "cookie.js", "fbInject.js"
     ]
-  },
-  "excluded": [
-      "js/jquery-1.11.3.min.js",
-      "js/bootstrap.min.js"
-    ]
+  }
 }
