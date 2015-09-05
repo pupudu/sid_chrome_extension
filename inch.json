@@ -1,0 +1,7 @@
+{
+  "files": {
+    "included": [
+      "js/auth.js", "js/background.js", "cookie.js", "fbInject.js", "inject.js", "loginCheck.js", "main.js", "popup.js"
+    ]
+  }
+}
