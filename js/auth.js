@@ -37,13 +37,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			});
 		});
 		
-		function displayError(message){
-			$("#usr").css("border-color","red");
-			$("#pwd").css("border-color","red");
-			document.getElementById("loginError").innerText = message;
-			$("#failureMsg").fadeIn(1000);
-		}
-		
 	}catch(e){/*Do nothing*/}
 	
 	try{
@@ -62,3 +55,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	}catch(e){/*Do nothing*/}
 	
 }, false);
+
+function displayError(message){
+	$("#usr").css("border-color","red");
+	$("#pwd").css("border-color","red");
+	document.getElementById("loginError").innerText = message;
+	$("#failureMsg").fadeIn(1000);
+}

@@ -19,8 +19,9 @@ chrome.webNavigation.onCompleted.addListener(function(obj){
 /** Used by content scripts to access local storage*/
 /* This method is not yet called from anywhere. If needed, the message sender code should be written */
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    if (request.method == "getStat")
+    if (request.method == "getStat"){
 		sendResponse({Status: "stat"});
-    else
+    }else{
 		sendResponse({}); // snub them.
+	}
 });
