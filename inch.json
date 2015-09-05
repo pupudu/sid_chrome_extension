@@ -1,7 +1,11 @@
 {
   "files": {
     "included": [
-      "js/auth.js"
+      "js/**/*.js"
     ]
-  }
+  },
+  "excluded": [
+      "js/jquery-1.11.3.min.js",
+      "js/bootstrap.min.js"
+    ]
 }
