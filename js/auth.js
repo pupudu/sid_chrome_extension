@@ -1,5 +1,5 @@
 
-if(getCookie("sidSession")=="true"){	/*TODO Manipulate Cookies with a better approach*/
+if(getCookie("sidSession")==="true"){	/*TODO Manipulate Cookies with a better approach*/
 	window.open('main.html','_self');
 }
 
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		var pwd = document.getElementById('pwd');	//input text field in login page
 		
 		btnSignin.addEventListener('click', function() {
-			if(usr.value=="" || pwd.value ==""){
+			if(usr.value==="" || pwd.value ===""){
 				displayError("Please fill your details");
 				return;
 			}
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			},
 			function(data, status){
 				console.log(data,status);
-				if(status=="success"){
+				if(status==="success"){
 					if(data.success){
 						console.log("Authentication success");
 						setCookie("sidSession","true",3);	//expires after 3 days if not logged out
