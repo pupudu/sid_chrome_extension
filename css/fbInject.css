@@ -1,0 +1,9 @@
+img.profIcon {
+	position:absolute;
+	left:120px;
+	top:-38px;
+	z-index:1;
+	display:none;
+	height: 60px;
+    width: 60px;
+}
