@@ -17,7 +17,13 @@
     "persistent": false
   },
   "web_accessible_resources": [
-    "resources/icons/claimT.png" , "resources/icons/claimR.png" , "resources/icons/claimC.png" , 
-	"resources/icons/profT.png" , "resources/icons/profR.png" , "resources/icons/profC.png" 
+    "resources/icons/claimT.png" , "resources/icons/claimR.png" , "resources/icons/claimC.png",
+	"resources/icons/profT.png" , "resources/icons/profR.png" , "resources/icons/profC.png"  , "resources/icons/profLoading.png"
+  ],
+  "content_scripts":[
+	  {
+		"matches": ["http://*/*","https://*/*"],
+		"js": ["js/jquery-1.11.3.min.js"]
+	  }
   ]
 }
