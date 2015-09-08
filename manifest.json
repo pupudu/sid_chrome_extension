@@ -18,7 +18,7 @@
   },
   "web_accessible_resources": [
     "resources/icons/claimT.png" , "resources/icons/claimR.png" , "resources/icons/claimC.png",
-	"resources/icons/profT.png" , "resources/icons/profR.png" , "resources/icons/profC.png"  , "resources/icons/profLoading.png"
+	"resources/icons/profT.png" , "resources/icons/profR.png" , "resources/icons/profC.png"  , "resources/icons/ringT.png"
   ],
   "content_scripts":[
 	  {

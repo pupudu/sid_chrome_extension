@@ -16,3 +16,12 @@ img.claimIcon{
 	left:285px;
 	top:5px;
 }
+
+img.ring{
+	position:absolute;
+	z-index:1;
+	height: 20px;
+    width: 20px;
+	left:8px;
+	top:5px;
+}
