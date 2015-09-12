@@ -122,6 +122,7 @@ function getCookie(cname) {
     return "";
 }
 
+/*TODO Move post request to solve loading time issues*/
 function drawPieChart(){
 	var verified =50;
 	var rejected =50;
@@ -159,11 +160,15 @@ function drawPieChart(){
 		];
 		
 		var ctx = document.getElementById("myChart").getContext("2d");
-		window.myPie = new Chart(ctx).Pie(pieData,{
-			animation: true,
-			animationEasing: "easeInOutQuart"
-			//add more chart configs here as needed
-		});
+		try{
+			window.myPie = new Chart(ctx).Pie(pieData,{
+				animation: true,
+				animationEasing: "easeInOutQuart"
+				//add more chart configs here as needed
+			});
+		}catch(err){
+			console.log(err);
+		}
 		
 	});
 	
