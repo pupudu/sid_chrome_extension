@@ -42,9 +42,11 @@ function manipulate(){
 		// $($.parseHTML(data)).appendTo('body');
 		//console.log(data);
 		node.innerHTML = data;
+		visualize();
 	});
 	
 	document.getElementsByClassName('_6_7 clearfix')[0].appendChild(node);
+	
 	
 }
 
@@ -118,6 +120,42 @@ function getCookie(cname) {
         if (c.indexOf(name) === 0) return c.substring(name.length,c.length);
     }
     return "";
+}
+
+function dod(){
+	var pieData = [
+		{
+			value: 30,
+			color:"#F7464A",
+			highlight: "#FF5A5E",
+			label: "Rejected"
+		},
+		{
+			value: 120,
+			color: "#46BFBD",
+			highlight: "#5AD3D1",
+			label: "Verified"
+		},
+		{
+			value: 55,
+			color: "#FDB45C",
+			highlight: "#FFC870",
+			label: "Uncertain"
+		}
+	];
+	console.log("script1 loaded");
+	
+	var ctx = document.getElementById("myChart").getContext("2d");
+	window.myPie = new Chart(ctx).Pie(pieData,{
+		animation: false
+	});
+	
+}
+function visualize(){
+	var sidDropdown = document.getElementById('sidDropdown');
+	sidDropdown.addEventListener('mouseover', function() {
+		dod();
+	});
 }
 
 
