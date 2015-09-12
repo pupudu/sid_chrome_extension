@@ -123,32 +123,48 @@ function getCookie(cname) {
 }
 
 function drawPieChart(){
-	var pieData = [
-		{
-			value: 30,
-			color:"#F7464A",
-			highlight: "#FF5A5E",
-			label: "Rejected"
-		},
-		{
-			value: 120,
-			color: "#46BF7D",
-			highlight: "#5AD391",
-			label: "Verified"
-		},
-		{
-			value: 55,
-			color: "#FDB45C",
-			highlight: "#FFC870",
-			label: "Uncertain"
-		}
-	];
-	
-	var ctx = document.getElementById("myChart").getContext("2d");
-	window.myPie = new Chart(ctx).Pie(pieData,{
-		animation: true,
-		animationEasing: "easeInOutQuart"
-		//add more chart configs here as needed
+	var verified =50;
+	var rejected =50;
+	var uncertain=50;
+	$.post("https://id.projects.mrt.ac.lk:9000/claimRating",{
+		sender : 12,
+		target : 12,
+		cClass : 12,
+		claimId :12
+	},
+	function(data,status){
+		verified = data.positive;
+		rejected = data.negative;
+		uncertin = data.uncertain;
+		
+		var pieData = [
+			{
+				value: rejected,
+				color:"#F7464A",
+				highlight: "#FF5A5E",
+				label: "Rejected"
+			},
+			{
+				value: verified,
+				color: "#46BF7D",
+				highlight: "#5AD391",
+				label: "Verified"
+			},
+			{
+				value: uncertain,
+				color: "#FDB45C",
+				highlight: "#FFC870",
+				label: "Uncertain"
+			}
+		];
+		
+		var ctx = document.getElementById("myChart").getContext("2d");
+		window.myPie = new Chart(ctx).Pie(pieData,{
+			animation: true,
+			animationEasing: "easeInOutQuart"
+			//add more chart configs here as needed
+		});
+		
 	});
 	
 }
