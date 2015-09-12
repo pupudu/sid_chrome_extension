@@ -147,7 +147,8 @@ function dod(){
 	
 	var ctx = document.getElementById("myChart").getContext("2d");
 	window.myPie = new Chart(ctx).Pie(pieData,{
-		animation: false
+		animation: true,
+		animationEasing: "easeInOutQuart"
 	});
 	
 }
