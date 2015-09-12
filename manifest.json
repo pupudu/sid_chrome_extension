@@ -25,7 +25,7 @@
   "content_scripts":[
 	  {
 		"matches": ["http://*/*","https://*/*"],
-		"js": ["js/jquery-1.11.3.min.js"],
+		"js": ["js/jquery-1.11.3.min.js","js/chart.min.js"],
 		"css": ["css/fbInject.css","css/dropdown.css"]
 	  }
   ]
