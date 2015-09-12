@@ -38,5 +38,6 @@ ul.dropElement{
 	outline-style: solid;
     outline-width: thin;
 	outline-color: #bbbbdd;
-	width: 140px;
+	max-width: 200px;
+	min-width: 130px;
 }
