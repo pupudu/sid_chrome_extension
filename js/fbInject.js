@@ -32,13 +32,17 @@ function manipulate(){
 //	node.innerHTML=('<div class="_6a uiPopover _6-6 _9rx _5v-0" id="u_0_p"><a class="_9ry _p" href="#" aria-haspopup="true" aria-expanded="false" rel="toggle" role="button" id="u_0_q1" aria-owns="u_a_0">sID Analytics<i class="_bxy img sp_qk8sNUxukfD sx_1586e3"></i></a></div>');
 //	node.innerHTML=('<div class="_6a uiPopover dropdown _6-6 _9rx _5v-0" id="u_0_p1"><a class="_9ry _p" id="u_0_q1" aria-owns="u_a_0">sID Analytics</a></div>');
 	
-	node.innerHTML = '<ul class="_6a dropdown _6-6 _9rx _5v-0 "></ul>';
+//	node.innerHTML = '<ul class="_6a dropdown _6-6 _9rx _5v-0 "><li><a href="…">Page 1</a><ul><li><a href="…">Sub-page 1.1</a></li><li><a href="…">Sub-page 1.2</a></li></ul></li></ul>';
 	
-	var li = document.createElement("DIV");  
-	li.innerHTML = '<li class = "dropdown"><a href="…">Page 1</a><ul><li><a href="…">Dodan</a></li><li><a href="…">Sub-page 1.2</a></li></ul></li>';
-	
-	node.appendChild(li);
 	//node.innerHTML = '<div id = "test" class="dropdown"><button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">sid Analytics<span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#">HTML</a></li><li><a href="#">CSS</a></li><li><a href="#">JavaScript</a></li></ul></div>';
+	
+	$.get(chrome.extension.getURL("test.html"), function(data) {
+		//$(data).appendTo('body');
+		// Or if you're using jQuery 1.8+:
+		// $($.parseHTML(data)).appendTo('body');
+		//console.log(data);
+		node.innerHTML = data;
+	});
 	
 	document.getElementsByClassName('_6_7 clearfix')[0].appendChild(node);
 	

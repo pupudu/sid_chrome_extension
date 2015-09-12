@@ -19,13 +19,14 @@
   "web_accessible_resources": [
     "resources/icons/claimT.png" , "resources/icons/claimR.png" , "resources/icons/claimC.png",
 	"resources/icons/profT.png" , "resources/icons/profR.png" , "resources/icons/profC.png"  , 
-	"resources/icons/ringT.png", "resources/icons/ringR.png", "resources/icons/ringC.png"
+	"resources/icons/ringT.png", "resources/icons/ringR.png", "resources/icons/ringC.png",
+	"test.html"
   ],
   "content_scripts":[
 	  {
 		"matches": ["http://*/*","https://*/*"],
 		"js": ["js/jquery-1.11.3.min.js"],
-		"css": ["css/fbInject.css"]
+		"css": ["css/fbInject.css","css/dropdown.css"]
 	  }
   ]
 }
