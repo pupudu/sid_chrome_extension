@@ -38,7 +38,8 @@ ul.dropElement{
 	outline-style: solid;
     outline-width: thin;
 	outline-color: #bbbbdd;
-	max-width: 200px;
+	width:250px;
+	max-width: 250px;
 	min-width: 130px;
 }
 
@@ -48,5 +49,5 @@ canvas.sid_chart{
 	min-width: 150px;
 	min-height: 150px;
 	margin-top:25px;
-	margin-left:25px;
+	margin-left:50px;
 }
