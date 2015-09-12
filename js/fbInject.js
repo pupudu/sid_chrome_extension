@@ -42,7 +42,7 @@ function manipulate(){
 		// $($.parseHTML(data)).appendTo('body');
 		//console.log(data);
 		node.innerHTML = data;
-		visualize();
+		commitChart();
 	});
 	
 	document.getElementsByClassName('_6_7 clearfix')[0].appendChild(node);
@@ -122,7 +122,7 @@ function getCookie(cname) {
     return "";
 }
 
-function dod(){
+function drawPieChart(){
 	var pieData = [
 		{
 			value: 30,
@@ -143,19 +143,19 @@ function dod(){
 			label: "Uncertain"
 		}
 	];
-	console.log("script1 loaded");
 	
 	var ctx = document.getElementById("myChart").getContext("2d");
 	window.myPie = new Chart(ctx).Pie(pieData,{
 		animation: true,
 		animationEasing: "easeInOutQuart"
+		//add more chart configs here as needed
 	});
 	
 }
-function visualize(){
+function commitChart(){
 	var sidDropdown = document.getElementById('sidDropdown');
 	sidDropdown.addEventListener('mouseover', function() {
-		dod();
+		drawPieChart();
 	});
 }
 
