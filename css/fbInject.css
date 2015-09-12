@@ -32,3 +32,11 @@ i.arrow{
 	left:105px;
 	top:20px;
 }
+
+ul.dropElement{
+	background-color: #ffffff;
+	outline-style: solid;
+    outline-width: thin;
+	outline-color: #bbbbdd;
+	width: 140px;
+}
