@@ -20,7 +20,7 @@
     "resources/icons/claimT.png" , "resources/icons/claimR.png" , "resources/icons/claimC.png",
 	"resources/icons/profT.png" , "resources/icons/profR.png" , "resources/icons/profC.png"  , 
 	"resources/icons/ringT.png", "resources/icons/ringR.png", "resources/icons/ringC.png",
-	"test.html"
+	"html/sidAnalytics.html"
   ],
   "content_scripts":[
 	  {
