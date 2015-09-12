@@ -41,3 +41,10 @@ ul.dropElement{
 	max-width: 200px;
 	min-width: 130px;
 }
+
+canvas.sid_chart{
+	width: 150px;
+	height: 150px;
+	left:100px;
+	
+}

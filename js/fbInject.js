@@ -132,8 +132,8 @@ function dod(){
 		},
 		{
 			value: 120,
-			color: "#46BFBD",
-			highlight: "#5AD3D1",
+			color: "#46BF7D",
+			highlight: "#5AD391",
 			label: "Verified"
 		},
 		{
