@@ -11,7 +11,7 @@
 }
 
 #cssmenu > ul {
-  position: relative;
+  position: absolute;
   z-index: 597;
 }
 
@@ -35,7 +35,7 @@
 #cssmenu > ul ul {
   visibility: hidden;
   position: absolute;
-  top: 100%;
+  top: 0;
   left: 0;
   z-index: 598;
   width: 100%;
@@ -56,11 +56,11 @@
   display: inline-block;
   padding: 10px 22px;
 }
-/*show without hover*/
+/*show without hover
 #cssmenu > ul > li.active,
 #cssmenu > ul > li.active:hover {
   background-color: #3fa338;
-}
+}*/
 
 /* Text color of main on non hover*/
 #cssmenu > ul > li > a:link,
@@ -104,15 +104,15 @@ styles of sub menu??
 /*text decoration*/
 #cssmenu > ul a:link,
 #cssmenu > ul a:visited {
-  color: #9a9a9a;
+  color: #9a9a00;
   text-decoration: none;
 }
 
 #cssmenu > ul a:hover {
-  color: #9a9a9a;
+  color: #009a9a;
 }
 #cssmenu > ul a:active {
-  color: #9a9a9a;
+  color: #9a009a;
 }
 
 
