@@ -230,9 +230,7 @@ function commitPopup(itemId){
 	});
 }
 
-function showRatingPopupMenu(itemId){
 
-}
 
 function overrideOverflowProperty(){
 	var containerArray = document.getElementsByClassName('_42ef');
