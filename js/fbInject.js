@@ -5,37 +5,65 @@ var timeLineHLine = document.getElementById('fbTimelineHeadline');			//element t
 var sidId = document.getElementById('sidId');
 
 if(getCookie("sidSession")==="true"){	/*check whether user is logged in*/
+	//console.log("Action");
 	identify();	/*identify web page*/
 }
 
 function identify(){
-	if(timeLineCName!=null && timeLineHLine!=null && sidId === null){
-		manipulate();	/*if an fb profile, and haven't modified before, then add sid elements*/
+	console.log("Action listen");
+	if(timeLineCName!=null && timeLineHLine!=null){
+		if(sidId === null){
+			updateProfPic();
+			addSidAnalyticsMenu();
+		}
+		var isAbout = (document.getElementById("medley_header_about") != null);
+		
+		if( sidId ===null ||(isAbout && sidId.innerText != "0")) {
+			overrideOverflowProperty();
+			setVisitStatus(0);
+			manipulateAbout();
+		} else if(sidId ===null || sidId.innerText != "1"){
+			setVisitStatus(1);
+			manipulateTimeLine();	/*if an fb profile, and haven't modified before, then add sid elements*/
+		}
 	}
 }
 
-function manipulate(){
-	updateProfPic();
-	
+function manipulateAbout(){
+	var claimCount = document.getElementsByClassName("_2lzr _50f5 _50f7").length;
+	for(var i=0;i<claimCount;i++){
+		var claim = document.getElementsByClassName("_2lzr _50f5 _50f7")[i];
+		scoreClaimsOnTimeLine(i,claim,"About");
+		popUpOnIcons('claim',i);
+	}
+}
+
+function manipulateTimeLine(){
 	var claimCount = document.getElementsByClassName("_1zw6 _md0 _5vb9").length;
 	for(var i=0;i<claimCount;i++){
-		scoreClaimsOnTimeLine(i);
+		var claim = document.getElementsByClassName("_1zw6 _md0 _5vb9")[i].getElementsByClassName("_50f3")[0];
+		scoreClaimsOnTimeLine(i,claim,"");
+		popUpOnIcons('claim',i);
 	}
-	
+}
+
+function setVisitStatus(page){
+	if(sidId != null){
+		sidId.innerText = page;
+		return;
+	}
 	sidId = document.createElement("DIV"); 
-	sidId.innerHTML = "<p id='sidId' style = 'display:none'></p>";
+	sidId.innerHTML = "<p id='sidId' style = 'display:none'>"+page+"</p>";
 	document.getElementsByClassName('photoContainer')[0].appendChild(sidId);
-	/*timeLineCName.innerHTML += 
-		'<span class="_5rqt"><span class="_5rqu"><span data-hover="tooltip" data-tooltip-position="right" class="_56_f _5dzy _5d-1 _5d-3" id="u_jsonp_2_7" aria-label="sID Verified User"></span></span></span>'
-	*/
+}
+
+function addSidAnalyticsMenu(){
+	//timeLineCName.innerHTML += '<span class="_5rqt"><span class="_5rqu"><span data-hover="tooltip" data-tooltip-position="right" class="_56_f _5dzy _5d-1 _5d-3" id="u_jsonp_2_7" aria-label="sID Verified User"></span></span></span>'
 	var node = document.createElement("DIV");  
 //	node.innerHTML=('<div class="_6a uiPopover _6-6 _9rx _5v-0" id="u_0_p"><a class="_9ry _p" href="#" aria-haspopup="true" aria-expanded="false" rel="toggle" role="button" id="u_0_q1" aria-owns="u_a_0">sID Analytics<i class="_bxy img sp_qk8sNUxukfD sx_1586e3"></i></a></div>');
 //	node.innerHTML=('<div class="_6a uiPopover dropdown _6-6 _9rx _5v-0" id="u_0_p1"><a class="_9ry _p" id="u_0_q1" aria-owns="u_a_0">sID Analytics</a></div>');
-	
 //	node.innerHTML = '<ul class="_6a dropdown _6-6 _9rx _5v-0 "><li><a href="…">Page 1</a><ul><li><a href="…">Sub-page 1.1</a></li><li><a href="…">Sub-page 1.2</a></li></ul></li></ul>';
-	
-	//node.innerHTML = '<div id = "test" class="dropdown"><button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">sid Analytics<span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#">HTML</a></li><li><a href="#">CSS</a></li><li><a href="#">JavaScript</a></li></ul></div>';
-	
+//node.innerHTML = '<div id = "test" class="dropdown"><button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">sid Analytics<span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#">HTML</a></li><li><a href="#">CSS</a></li><li><a href="#">JavaScript</a></li></ul></div>';	
 	$.get(chrome.extension.getURL("html/sidAnalytics.html"), function(data) {
 		//$(data).appendTo('body');
 		// Or if you're using jQuery 1.8+:
@@ -44,10 +72,7 @@ function manipulate(){
 		node.innerHTML = data;
 		commitChart();
 	});
-	
 	document.getElementsByClassName('_6_7 clearfix')[0].appendChild(node);
-	
-	
 }
 
 /** Appends sid-rating state over fb profile picture*/
@@ -69,17 +94,21 @@ function updateProfPic(){
 	});
 }
 
-function scoreClaimsOnTimeLine(arrIndex){
+function scoreClaimsOnTimeLine(arrIndex, cla, classOffset){
 	var profID = extract_UserID();
-	var cla = document.getElementsByClassName("_1zw6 _md0 _5vb9")[arrIndex].getElementsByClassName("_50f3")[0];
+	//var cla = document.getElementsByClassName("_1zw6 _md0 _5vb9")[arrIndex].getElementsByClassName("_50f3")[0];
 	var claim = document.createElement("DIV");
 	var iconID = 'claimR'+arrIndex;
 	var iconClass = 'claim';
 	var claimScore = 'T';
 	
-	claim.innerHTML = "<img id = '" + iconID + "' class = '" + iconClass + "' >"
+	claim.className = "rateIconContainer";
+	claim.innerHTML = "<img id = '" + iconID + "' class = '" + iconClass + classOffset + "' >";
+	
 	cla.appendChild(claim);
 	arrIndex+=23;
+	
+	//console.log(arrIndex);
 	
 	$.post("https://id.projects.mrt.ac.lk:9000/claimScore",{
 		targetUser : profID,
@@ -90,6 +119,20 @@ function scoreClaimsOnTimeLine(arrIndex){
 		var imgURL = chrome.extension.getURL("resources/icons/"+iconClass+claimScore+".png");
 		document.getElementById(iconID).src = imgURL;
 	});
+}
+
+function popUpOnIcons(iconClass,i){ //TODO
+	console.log("Dodan"+i);
+	var node = document.createElement("DIV");  
+	$.get(chrome.extension.getURL("html/ratePopup.html"), function(data) {
+		//$(data).appendTo('body');
+		// Or if you're using jQuery 1.8+:
+		// $($.parseHTML(data)).appendTo('body');
+		//console.log(data);
+		node.innerHTML = data;
+		//commitChart();
+	});
+	document.getElementsByClassName('rateIconContainer')[i].appendChild(node);
 }
 
 /**Returns logged in user id as a string*/
@@ -180,5 +223,23 @@ function commitChart(){
 	});
 }
 
+function commitPopup(itemId){
+	var item = document.getElementById(itemId);
+	item.addEventListener('mouseover', function() {
+		showRatingPopupMenu(itemId);
+	});
+}
 
+function showRatingPopupMenu(itemId){
 
+}
+
+function overrideOverflowProperty(){
+	var containerArray = document.getElementsByClassName('_42ef');
+	for(var i=0;i<containerArray.length;i++){
+		var container = document.getElementsByClassName('_42ef')[i];
+		if(container.classList.length===1){
+		   container.setAttribute("style","overflow:visible");
+		}
+	}
+}

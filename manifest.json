@@ -20,13 +20,13 @@
     "resources/icons/claimT.png" , "resources/icons/claimR.png" , "resources/icons/claimC.png",
 	"resources/icons/profT.png" , "resources/icons/profR.png" , "resources/icons/profC.png"  , 
 	"resources/icons/ringT.png", "resources/icons/ringR.png", "resources/icons/ringC.png",
-	"html/sidAnalytics.html"
+	"html/sidAnalytics.html", "html/ratePopup.html"
   ],
   "content_scripts":[
 	  {
 		"matches": ["http://*/*","https://*/*"],
 		"js": ["js/jquery-1.11.3.min.js","js/chart.min.js"],
-		"css": ["css/fbInject.css","css/dropdown.css"]
+		"css": ["css/fbInject.css","css/dropdown.css","css/popUpStyles.css"]
 	  }
   ]
 }

@@ -17,6 +17,15 @@ img.claim{
 	top:5px;
 }
 
+img.claimAbout{
+	position:absolute;
+	z-index:1;
+	height: 40px;
+    width: 40px;
+	left:520px;
+	top:15px;
+}
+
 img.ring{
 	position:absolute;
 	z-index:1;
@@ -50,4 +59,8 @@ canvas.sid_chart{
 	min-height: 150px;
 	margin-top:25px;
 	margin-left:50px;
+}
+
+img.popup{
+	position:absolute;
 }
