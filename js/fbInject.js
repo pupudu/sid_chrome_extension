@@ -35,6 +35,7 @@ function identify(){
 				manipulateTimeLine();
 			}*/
 		}
+		addIconsToPopupMenus();
 	}
 }
 
@@ -52,7 +53,8 @@ function manipulateTimeLine(){
 	for(var i=0;i<claimCount;i++){
 		var claim = document.getElementsByClassName("_1zw6 _md0 _5vb9")[i].getElementsByClassName("_50f3")[0];
 		scoreClaimsOnTimeLine(i,claim,"");
-		popUpOnIcons('claim',i);
+		var claimPop = document.getElementsByClassName("_42ef")[i];
+		popUpOnIcons('claimPop',i);
 	}
 }
 
@@ -131,7 +133,7 @@ function scoreClaimsOnTimeLine(arrIndex, cla, classOffset){
 }
 
 function popUpOnIcons(iconClass,i){ //TODO
-	console.log("Dodan"+i);
+	//console.log("Dodan"+i);
 	var node = document.createElement("DIV");  
 	$.get(chrome.extension.getURL("html/ratePopup.html"), function(data) {
 		//$(data).appendTo('body');
@@ -249,4 +251,21 @@ function overrideOverflowProperty(){
 		   container.setAttribute("style","overflow:visible");
 		}
 	}
+}
+
+function addIconsToPopupMenus(){
+	var verified = document.getElementsByClassName("popVerifiedIcon");
+	var neutral = document.getElementsByClassName("popNeutralIcon");
+	var refuted = document.getElementsByClassName("popRefutedIcon");
+	
+	verImgUrl = chrome.extension.getURL("resources/icons/claimT.png");
+	neuImgUrl = chrome.extension.getURL("resources/icons/claimC.png");
+	refImgUrl = chrome.extension.getURL("resources/icons/claimR.png");
+	
+	for(var i=0;i<verified.length;i++){
+		verified[i].src = verImgUrl;
+		neutral[i].src = neuImgUrl;
+		refuted[i].src = refImgUrl;
+	}
+	
 }

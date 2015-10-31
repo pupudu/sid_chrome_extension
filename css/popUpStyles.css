@@ -60,8 +60,8 @@
 #cssmenu > ul > li.active,
 #cssmenu > ul > li.active:hover {
   background-color: #3fa338;
-}*/
-
+}
+*/
 /* Text color of main on non hover*/
 #cssmenu > ul > li > a:link,
 #cssmenu > ul > li > a:active,
@@ -78,7 +78,7 @@
 #cssmenu > ul ul ul {
   top: 0;
 }
-styles of sub menu??
+
 #cssmenu > ul li li {
   background-color: #ffffff;
   border-bottom: 1px solid #ebebeb;
@@ -94,7 +94,7 @@ styles of sub menu??
 
 #cssmenu > ul > li.hover,
 #cssmenu > ul > li:hover {
-  background-color: #3fa338;
+  background-color: #222222;
   -webkit-box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.15);
   -moz-box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.15);
   box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.15);
