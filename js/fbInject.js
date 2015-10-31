@@ -12,19 +12,28 @@ if(getCookie("sidSession")==="true"){	/*check whether user is logged in*/
 function identify(){
 	console.log("Action listen");
 	if(timeLineCName!=null && timeLineHLine!=null){
+	
+		var isAbout = (document.getElementById("medley_header_about") != null);
 		if(sidId === null){
 			updateProfPic();
 			addSidAnalyticsMenu();
-		}
-		var isAbout = (document.getElementById("medley_header_about") != null);
-		
-		if( sidId ===null ||(isAbout && sidId.innerText != "0")) {
 			overrideOverflowProperty();
-			setVisitStatus(0);
-			manipulateAbout();
-		} else if(sidId ===null || sidId.innerText != "1"){
-			setVisitStatus(1);
-			manipulateTimeLine();	/*if an fb profile, and haven't modified before, then add sid elements*/
+			if(isAbout) {
+				setVisitStatus(0);
+				manipulateAbout();
+			} else{
+				setVisitStatus(1);
+				manipulateTimeLine();	/*if an fb profile, and haven't modified before, then add sid elements*/
+			}
+		}else{
+			/*if(isAbout && sidId.innerText != "0") {
+				overrideOverflowProperty();
+				setVisitStatus(0);
+				manipulateAbout();
+			} else if(sidId.innerText != "1"){
+				setVisitStatus(1);
+				manipulateTimeLine();
+			}*/
 		}
 	}
 }
