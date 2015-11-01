@@ -3,9 +3,10 @@ var UpStatBtn = document.getElementsByClassName('uiIconText _51z7')[0];		//eleme
 var membersBtn = document.getElementsByClassName('_2l5d')[1];				//element to identify fb group
 var timeLineHLine = document.getElementById('fbTimelineHeadline');			//element to identify fb page
 var sidId = document.getElementById('sidId');
+console.log("Cookie check");
 
 if(getCookie("sidSession")==="true"){	/*check whether user is logged in*/
-	//console.log("Action");
+	console.log("Action");
 	identify();	/*identify web page*/
 }
 
