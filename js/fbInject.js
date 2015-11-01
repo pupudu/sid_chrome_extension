@@ -44,7 +44,8 @@ function manipulateAbout(){
 	for(var i=0;i<claimCount;i++){
 		var claim = document.getElementsByClassName("_2lzr _50f5 _50f7")[i];
 		scoreClaimsOnTimeLine(i,claim,"About");
-		popUpOnIcons('claim',i);
+		var claimPop = document.getElementsByClassName("_42ef")[i];
+		popUpOnIcons('claimPop',i);
 	}
 }
 

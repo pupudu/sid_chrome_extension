@@ -17,6 +17,11 @@ img.claim{
 	top:5px;
 }
 
+img.popup{
+	height: 30px;
+    width: 30px;
+}
+
 img.claimAbout{
 	position:absolute;
 	z-index:1;
