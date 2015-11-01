@@ -268,5 +268,4 @@ function addIconsToPopupMenus(){
 		neutral[i].src = neuImgUrl;
 		refuted[i].src = refImgUrl;
 	}
-	
 }

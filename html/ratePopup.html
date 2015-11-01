@@ -8,8 +8,10 @@
 	  
       <ul style="left:25px;">
          <li class='has-sub'>
-			<img class = "popup popVerifiedIcon">
+			<img class = "popup popVerifiedIcon" src = "dd">
+			<div onclick = "console.log('dodan')">
 			<a href='#'><span>&nbsp&nbsp&nbsp&nbspI Approve</span></a>
+			</div>
          </li>
          <li class='has-sub'>
 			<img class = "popup popNeutralIcon">
@@ -25,6 +27,13 @@
 </ul>
 
 </div>
+
+<script>
+	//console.log("test");
+	function test1(){
+		return chrome.extension.getURL("resources/icons/claimT.png");
+	}
+</script>
 
 </body>
 <html>
