@@ -18,13 +18,10 @@ function identify(){
 		var isAbout = (document.getElementById("medley_header_about") != null);
 		if(sidId === null){
 			updateProfPic();
-			addSidAnalyticsMenu();
 			overrideOverflowProperty();
 			if(isAbout) {
-				setVisitStatus(0);
 				manipulateAbout();
 			} else{
-				setVisitStatus(1);
 				manipulateTimeLine();	/*if an fb profile, and haven't modified before, then add sid elements*/
 			}
 		}else{
@@ -43,6 +40,9 @@ function identify(){
 
 function manipulateAbout(){
 	var claimCount = document.getElementsByClassName("_2lzr _50f5 _50f7").length;
+	if(claimCount !=0){
+		setVisitStatus(0);
+	}
 	for(var i=0;i<claimCount;i++){
 		var claim = document.getElementsByClassName("_2lzr _50f5 _50f7")[i];
 		scoreClaimsOnTimeLine(i,claim,"About");
@@ -52,6 +52,9 @@ function manipulateAbout(){
 
 function manipulateTimeLine(){
 	var claimCount = document.getElementsByClassName("_1zw6 _md0 _5vb9").length;
+	if(claimCount !=0){
+		setVisitStatus(1);
+	}
 	for(var i=0;i<claimCount;i++){
 		var claim = document.getElementsByClassName("_1zw6 _md0 _5vb9")[i].getElementsByClassName("_50f3")[0];
 		scoreClaimsOnTimeLine(i,claim,"");
@@ -64,6 +67,8 @@ function setVisitStatus(page){
 		sidId.innerText = page;
 		return;
 	}
+	addSidAnalyticsMenu();
+	
 	sidId = document.createElement("DIV"); 
 	sidId.innerHTML = "<p id='sidId' style = 'display:none'>"+page+"</p>";
 	document.getElementsByClassName('photoContainer')[0].appendChild(sidId);
