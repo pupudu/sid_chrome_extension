@@ -152,7 +152,10 @@ function scoreClaimsOnTimeLine(arrIndex, cla, classOffset){
 	function(data,status){
 		claimScore = data.rating;
 		var imgURL = chrome.extension.getURL("resources/icons/"+iconClass+claimScore+".png");
-		document.getElementById(iconID).src = imgURL;
+		var icon = document.getElementById(iconID)
+		if(icon!=null){
+			icon.src = imgURL;
+		}
 	});
 }
 
