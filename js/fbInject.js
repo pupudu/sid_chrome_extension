@@ -110,6 +110,14 @@ function clearSkipIcons(){
 	}
 }
 
+function clearEmptyIcons(){
+	var itemAr = document.getElementsByClassName("_4bl7 _4bl8");
+	for(var i = 0;i<itemAr.length; i++){
+		var parent = itemAr[i].parentNode;
+		parent.getElementsByClassName("rateIconContainer")[0].remove();
+	}
+}
+
 /** Appends sid-rating state over fb profile picture*/
 function updateProfPic(){
 	var profPic = document.getElementsByClassName("photoContainer")[0];
@@ -173,6 +181,7 @@ function popUpOnIcons(iconClass,i,max){ //TODO
 		if(i==max-1){
 			addIconsToPopupMenus();
 			clearSkipIcons();
+			clearEmptyIcons();
 		}
 	});
 	
