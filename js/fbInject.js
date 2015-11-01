@@ -3,11 +3,12 @@ var UpStatBtn = document.getElementsByClassName('uiIconText _51z7')[0];		//eleme
 var membersBtn = document.getElementsByClassName('_2l5d')[1];				//element to identify fb group
 var timeLineHLine = document.getElementById('fbTimelineHeadline');			//element to identify fb page
 var sidId = document.getElementById('sidId');
-console.log("Cookie check");
+console.log("Content Script loaded");
 
 if(getCookie("sidSession")==="true"){	/*check whether user is logged in*/
-	console.log("Action");
 	identify();	/*identify web page*/
+}else{
+	console.log("Cookie mismatch. Need to log in again");
 }
 
 function identify(){
@@ -36,7 +37,7 @@ function identify(){
 				manipulateTimeLine();
 			}*/
 		}
-		addIconsToPopupMenus();
+		//addIconsToPopupMenus();
 	}
 }
 
@@ -45,8 +46,7 @@ function manipulateAbout(){
 	for(var i=0;i<claimCount;i++){
 		var claim = document.getElementsByClassName("_2lzr _50f5 _50f7")[i];
 		scoreClaimsOnTimeLine(i,claim,"About");
-		var claimPop = document.getElementsByClassName("_42ef")[i];
-		popUpOnIcons('claimPop',i);
+		popUpOnIcons('claim',i,claimCount);
 	}
 }
 
@@ -55,8 +55,7 @@ function manipulateTimeLine(){
 	for(var i=0;i<claimCount;i++){
 		var claim = document.getElementsByClassName("_1zw6 _md0 _5vb9")[i].getElementsByClassName("_50f3")[0];
 		scoreClaimsOnTimeLine(i,claim,"");
-		var claimPop = document.getElementsByClassName("_42ef")[i];
-		popUpOnIcons('claimPop',i);
+		popUpOnIcons('claim',i,claimCount);
 	}
 }
 
@@ -134,7 +133,7 @@ function scoreClaimsOnTimeLine(arrIndex, cla, classOffset){
 	});
 }
 
-function popUpOnIcons(iconClass,i){ //TODO
+function popUpOnIcons(iconClass,i,max){ //TODO
 	//console.log("Dodan"+i);
 	var node = document.createElement("DIV");  
 	$.get(chrome.extension.getURL("html/ratePopup.html"), function(data) {
@@ -143,9 +142,13 @@ function popUpOnIcons(iconClass,i){ //TODO
 		// $($.parseHTML(data)).appendTo('body');
 		//console.log(data);
 		node.innerHTML = data;
+		document.getElementsByClassName('rateIconContainer')[i].appendChild(node);
 		//commitChart();
+		if(i==max-1){
+			addIconsToPopupMenus();
+		}
 	});
-	document.getElementsByClassName('rateIconContainer')[i].appendChild(node);
+	
 }
 
 /**Returns logged in user id as a string*/
