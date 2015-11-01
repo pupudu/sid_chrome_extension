@@ -40,7 +40,7 @@ function identify(){
 
 function manipulateAbout(){
 	var claimCount = document.getElementsByClassName("_2lzr _50f5 _50f7").length;
-	if(claimCount !=0){
+	if(claimCount >0){
 		setVisitStatus(0);
 	}
 	for(var i=0;i<claimCount;i++){
@@ -52,7 +52,7 @@ function manipulateAbout(){
 
 function manipulateTimeLine(){
 	var claimCount = document.getElementsByClassName("_1zw6 _md0 _5vb9").length;
-	if(claimCount !=0){
+	if(claimCount >0){
 		setVisitStatus(1);
 	}
 	for(var i=0;i<claimCount;i++){
@@ -67,11 +67,11 @@ function setVisitStatus(page){
 		sidId.innerText = page;
 		return;
 	}
-	addSidAnalyticsMenu();
-	
 	sidId = document.createElement("DIV"); 
 	sidId.innerHTML = "<p id='sidId' style = 'display:none'>"+page+"</p>";
 	document.getElementsByClassName('photoContainer')[0].appendChild(sidId);
+	console.log("visit status"+sidId);
+	addSidAnalyticsMenu();
 }
 
 function addSidAnalyticsMenu(){
@@ -90,6 +90,24 @@ function addSidAnalyticsMenu(){
 		commitChart();
 	});
 	document.getElementsByClassName('_6_7 clearfix')[0].appendChild(node);
+}
+
+function clearSkipIcons(){
+	var skipList = ["sx_548137","sx_a8fd72"];
+	for(var i = 0; i<skipList.length; i++){
+		var itemAr = document.getElementsByClassName(skipList[i]);
+		if(itemAr.length === 0){
+			continue;
+		}
+		for(var j=0;j<itemAr.length;j++){
+			var text = itemAr[j].parentNode.getElementsByClassName("_50f3")[0].innerText;
+			if(text.indexOf("from")!=-1){
+				continue;
+			}
+			//console.log(text.indexOf("from")!=-1);
+			itemAr[j].parentNode.getElementsByClassName("rateIconContainer")[0].remove();
+		}
+	}
 }
 
 /** Appends sid-rating state over fb profile picture*/
@@ -151,6 +169,7 @@ function popUpOnIcons(iconClass,i,max){ //TODO
 		//commitChart();
 		if(i==max-1){
 			addIconsToPopupMenus();
+			clearSkipIcons();
 		}
 	});
 	
