@@ -25,14 +25,7 @@ function identify(){
 				manipulateTimeLine();	/*if an fb profile, and haven't modified before, then add sid elements*/
 			}
 		}else{
-			/*if(isAbout && sidId.innerText != "0") {
-				overrideOverflowProperty();
-				setVisitStatus(0);
-				manipulateAbout();
-			} else if(sidId.innerText != "1"){
-				setVisitStatus(1);
-				manipulateTimeLine();
-			}*/
+		/**TODO Handle event capture issue*/
 		}
 		//addIconsToPopupMenus();
 	}
@@ -176,6 +169,7 @@ function popUpOnIcons(iconClass,i,max){ //TODO
 		// $($.parseHTML(data)).appendTo('body');
 		//console.log(data);
 		node.innerHTML = data;
+		node.classList.add("claim");
 		document.getElementsByClassName('rateIconContainer')[i].appendChild(node);
 		//commitChart();
 		if(i==max-1){
