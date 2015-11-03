@@ -169,7 +169,7 @@ function popUpOnIcons(iconClass,i,max){ //TODO
 		// $($.parseHTML(data)).appendTo('body');
 		//console.log(data);
 		node.innerHTML = data;
-		node.classList.add("claim");
+		node.className="claim";
 		document.getElementsByClassName('rateIconContainer')[i].appendChild(node);
 		//commitChart();
 		if(i==max-1){

@@ -31,7 +31,7 @@
   cursor: default;
 }
 
-/*hidden state*/
+/*hidden state $*/
 #cssmenu > ul ul {
   visibility: hidden;
   position: absolute;
@@ -46,7 +46,7 @@
   float: none;
 }
 
-/*Visible state*/
+/*Visible state not*/
 #cssmenu > ul li:hover > ul {
   visibility: visible;
 }
@@ -60,13 +60,14 @@
 #cssmenu > ul > li.active,
 #cssmenu > ul > li.active:hover {
   background-color: #3fa338;
-}
-*/
+}*/
+
 /* Text color of main on non hover*/
 #cssmenu > ul > li > a:link,
 #cssmenu > ul > li > a:active,
 #cssmenu > ul > li > a:visited {
   color: #ffffff;
+  
 }
 
 
@@ -109,9 +110,12 @@
 }
 
 #cssmenu > ul a:hover {
-  color: #009a9a;
+				background-color: #ffffff;/*on hover*/
+				opacity: 0.4;
+  color: #ffffff;
 }
 #cssmenu > ul a:active {
+					background-color: #995511;/*Click and hold*/
   color: #9a009a;
 }
 
