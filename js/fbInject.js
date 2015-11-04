@@ -292,14 +292,17 @@ function addIconsToPopupMenus(){
 	var verified = document.getElementsByClassName("popVerifiedIcon");
 	var neutral = document.getElementsByClassName("popNeutralIcon");
 	var refuted = document.getElementsByClassName("popRefutedIcon");
+	var popupBase = document.getElementsByClassName("popupbase");
 	
 	verImgUrl = chrome.extension.getURL("resources/icons/claimT.png");
 	neuImgUrl = chrome.extension.getURL("resources/icons/claimC.png");
 	refImgUrl = chrome.extension.getURL("resources/icons/claimR.png");
+	baseImgUrl = chrome.extension.getURL("resources/icons/popupBase.png");
 	
 	for(var i=0;i<verified.length;i++){
 		verified[i].src = verImgUrl;
 		neutral[i].src = neuImgUrl;
 		refuted[i].src = refImgUrl;
+		popupBase[i].src = baseImgUrl;
 	}
 }
