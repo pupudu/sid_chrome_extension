@@ -52,7 +52,7 @@
 }
 
 /*borders*/
-#cssmenu > ul li a {
+#cssmenu > ul li img {
   display: inline-block;
   padding: 10px 22px;
 }
@@ -63,15 +63,15 @@
 }*/
 
 /* Text color of main on non hover*/
-#cssmenu > ul > li > a:link,
-#cssmenu > ul > li > a:active,
-#cssmenu > ul > li > a:visited {
+#cssmenu > ul > li > img:link,
+#cssmenu > ul > li > img:active,
+#cssmenu > ul > li > img:visited {
   color: #ffffff;
   
 }
 
 
-#cssmenu > ul > li > a:hover {
+#cssmenu > ul > li > img:hover {
   color: #ffffff;
 }
 
@@ -103,21 +103,13 @@
 
 
 /*text decoration*/
-#cssmenu > ul a:link,
-#cssmenu > ul a:visited {
+#cssmenu > ul img:link,
+#cssmenu > ul img:visited {
   color: #9a9a00;
   text-decoration: none;
 }
 
-#cssmenu > ul a:hover {
-				background-color: #ffffff;/*on hover*/
-				opacity: 0.4;
-  color: #ffffff;
-}
-#cssmenu > ul a:active {
-					background-color: #995511;/*Click and hold*/
-  color: #9a009a;
-}
+
 
 
 /* Size of sub menus*/
