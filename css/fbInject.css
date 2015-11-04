@@ -17,6 +17,14 @@ img.claim{
 	top:5px;
 }
 
+img.claim2{
+	position:absolute;
+	z-index:1;
+	height: 20px;
+    width: 20px;
+	top:5px;
+}
+
 div.claim{
 	position:absolute;
 	z-index:1;
