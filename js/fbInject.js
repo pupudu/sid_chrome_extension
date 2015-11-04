@@ -86,18 +86,29 @@ function addSidAnalyticsMenu(){
 }
 
 function clearSkipIcons(){
-	clearSkipIconsUsingIcon();
+	//clearSkipIconsUsingIcon();
 	clearSkipIconsUsingStrings();
 	clearEmptyIcons();
 }
 
 function clearSkipIconsUsingStrings(){
 	var itemAr = document.getElementsByClassName("_2m_3 _3-91 _8o _8s lfloat _ohe img sp_shwI5B09H5u");
-	var stringAr = ["Your friend since","Followed by","friends"];
+	var skipStringAr = ["Your friend since","Followed by","friends"];
+	var nonSkipStringAr = ["Works","Lives in","at","From","Born on","Studies","Studied", "In a relationship"];
 	for(var i=0;i<itemAr.length;i++){
 		var text = itemAr[i].parentNode.getElementsByClassName("_50f3")[0].innerHTML.toString();
-		for(var j=0;j<stringAr.length;j++){
-			if(text.indexOf(stringAr[j])>=0){
+		for(var j=0;j<skipStringAr.length;j++){
+			if(text.indexOf(skipStringAr[j])>=0){
+				var skipItem = false;
+				for(var k=0;k<nonSkipStringAr.length;k++){
+					if(text.indexOf(nonSkipStringAr[j])>=0){
+						skipItem = true;
+						break;
+					}
+				}
+				if(skipItem){
+					continue;
+				}
 				var parent = itemAr[i].parentNode;
 				parent.getElementsByClassName("rateIconContainer")[0].remove();
 			}
