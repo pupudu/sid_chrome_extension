@@ -86,7 +86,27 @@ function addSidAnalyticsMenu(){
 }
 
 function clearSkipIcons(){
-	var skipList = ["sx_548137","sx_a8fd72"];
+	clearSkipIconsUsingIcon();
+	clearSkipIconsUsingStrings();
+	clearEmptyIcons();
+}
+
+function clearSkipIconsUsingStrings(){
+	var itemAr = document.getElementsByClassName("_2m_3 _3-91 _8o _8s lfloat _ohe img sp_shwI5B09H5u");
+	var stringAr = ["Your friend since","Followed by","friends"];
+	for(var i=0;i<itemAr.length;i++){
+		var text = itemAr[i].parentNode.getElementsByClassName("_50f3")[0].innerHTML.toString();
+		for(var j=0;j<stringAr.length;j++){
+			if(text.indexOf(stringAr[j])>=0){
+				var parent = itemAr[i].parentNode;
+				parent.getElementsByClassName("rateIconContainer")[0].remove();
+			}
+		}
+	}
+}
+
+function clearSkipIconsUsingIcon(){
+	var skipList = ["sx_548137","sx_a8fd72","sx_2b5d8b","sx_5d6323","sx_6ec049","sx_f0a7ca"];
 	for(var i = 0; i<skipList.length; i++){
 		var itemAr = document.getElementsByClassName(skipList[i]);
 		if(itemAr.length === 0){
@@ -175,7 +195,6 @@ function popUpOnIcons(iconClass,i,max){ //TODO
 		if(i==max-1){
 			addIconsToPopupMenus();
 			clearSkipIcons();
-			clearEmptyIcons();
 		}
 	});
 	

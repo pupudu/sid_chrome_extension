@@ -22,6 +22,7 @@ img.popupbase{
 	z-index:1;
 	height: 30px;
     width: 30px;
+	cursor:pointer
 }
 
 div.claim{
