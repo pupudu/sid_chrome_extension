@@ -13,7 +13,7 @@ if(getCookie("sidSession")==="true"){	/*check whether user is logged in*/
 
 /**identify web page and take required actions*/
 function identify(){
-	//console.log("Identifying Web Page");
+	console.log("Identifying Web Page");
 	if(timeLineCName!=null && timeLineHLine!=null){
 		var isAbout = (document.getElementById("medley_header_about") != null);
 		if(sidId === null){
@@ -26,6 +26,7 @@ function identify(){
 				manipulateTimeLine();	/*if an fb profile timeline, and haven't modified before, then add sid elements*/
 			}
 		}else{
+			console.log("page already modified");
 		/**TODO Handle event capture issue*/
 		}
 		//addIconsToPopupMenus();
@@ -33,23 +34,25 @@ function identify(){
 }
 
 function manipulateAbout(){
+	console.log("updating about work page");
 	var claimAr = document.getElementsByClassName("_2lzr _50f5 _50f7");
 	var claimCount = claimAr.length; /*Number of claims on about page*/
 	if(claimCount >0){
-		setVisitStatus(0);	/*Mark web page as visited*/
+		setVisitStatus(0);	/*Mark about work page as visited*/
 	}
 	for(var i=0;i<claimCount;i++){
 		var claim = claimAr[i];
-		scoreClaimsOnTimeLine(i,claim,"About");
+		scoreClaimsOnTimeLine(i,claim,"About"); /*TODO fix issue in icon positions of about page*/
 		popUpOnIcons('claim',i,claimCount);
 	}
 }
 
 function manipulateTimeLine(){
+	console.log("updating fb time line");
 	var claimAr = document.getElementsByClassName("_1zw6 _md0 _5vb9");
 	var claimCount = claimAr.length; /*Number of claims on timeline*/
 	if(claimCount >0){
-		setVisitStatus(1);
+		setVisitStatus(1);	/*Mark timeline as visited*/
 	}
 	for(var i=0;i<claimCount;i++){
 		var claim = claimAr[i].getElementsByClassName("_50f3")[0];
@@ -59,6 +62,7 @@ function manipulateTimeLine(){
 }
 
 function setVisitStatus(page){
+	console.log("setting visit status: " + page);
 	if(sidId != null){
 		sidId.innerText = page;
 		return;
@@ -71,6 +75,7 @@ function setVisitStatus(page){
 }
 
 function addSidAnalyticsMenu(){
+	console.log("added sid analytics pop up memu");
 	//timeLineCName.innerHTML += '<span class="_5rqt"><span class="_5rqu"><span data-hover="tooltip" data-tooltip-position="right" class="_56_f _5dzy _5d-1 _5d-3" id="u_jsonp_2_7" aria-label="sID Verified User"></span></span></span>'
 	var node = document.createElement("DIV");  
 //	node.innerHTML=('<div class="_6a uiPopover _6-6 _9rx _5v-0" id="u_0_p"><a class="_9ry _p" href="#" aria-haspopup="true" aria-expanded="false" rel="toggle" role="button" id="u_0_q1" aria-owns="u_a_0">sID Analytics<i class="_bxy img sp_qk8sNUxukfD sx_1586e3"></i></a></div>');
@@ -95,6 +100,7 @@ function clearSkipIcons(){
 }
 
 function clearSkipIconsUsingStrings(){
+	console.log("clearing icons using string comparison");
 	var itemAr = document.getElementsByClassName("_2m_3 _3-91 _8o _8s lfloat _ohe img sp_shwI5B09H5u");
 	var skipStringAr = ["Your friend since","Followed by","friends","Friends on"];
 	var nonSkipStringAr = ["Works","Lives in","From","Born on","Studies","Studied", "In a relationship"];
@@ -105,10 +111,11 @@ function clearSkipIconsUsingStrings(){
 		}
 		for(var j=0;j<skipStringAr.length;j++){
 			if(text.indexOf(skipStringAr[j])>=0){
+				console.log("Will clear "+ itemAr[i]+ " due to "+ skipStringAr[j]);
 				var skipClear = false;
 				for(var k=0;k<nonSkipStringAr.length;k++){
 					if(text.indexOf(nonSkipStringAr[k])>=0){
-						//console.log(nonSkipStringAr[k]);
+						console.log("will not clear" + itemAr[i]+ " due to "+ nonSkipStringAr[k]);
 						skipClear = true;
 						break;
 					}
@@ -127,6 +134,7 @@ function clearSkipIconsUsingStrings(){
 }
 
 function clearSkipIconsUsingIcon(){
+	console.log("clearing icons using list icon class");
 	var skipList = ["sx_548137","sx_a8fd72","sx_2b5d8b","sx_5d6323","sx_6ec049","sx_f0a7ca"];
 	for(var i = 0; i<skipList.length; i++){
 		var itemAr = document.getElementsByClassName(skipList[i]);
@@ -145,8 +153,10 @@ function clearSkipIconsUsingIcon(){
 }
 
 function clearEmptyIcons(){
+	console.log("clearing icons of incomplete data list items");
 	var itemAr = document.getElementsByClassName("_4bl7 _4bl8");
 	for(var i = 0;i<itemAr.length; i++){
+		
 		var parent = itemAr[i].parentNode;
 		parent.getElementsByClassName("rateIconContainer")[0].remove();
 	}
@@ -154,6 +164,7 @@ function clearEmptyIcons(){
 
 /** Appends sid-rating state over fb profile picture*/
 function updateProfPic(){
+	console.log("updating profile pic");
 	var profPic = document.getElementsByClassName("photoContainer")[0];
 	var icon = document.createElement("DIV");
 	var imgURL;var profID = extract_UserID();
@@ -172,6 +183,7 @@ function updateProfPic(){
 }
 
 function scoreClaimsOnTimeLine(arrIndex, cla, classOffset){
+	console.log("scoring claims on time line");
 	var profID = extract_UserID();
 	//var cla = document.getElementsByClassName("_1zw6 _md0 _5vb9")[arrIndex].getElementsByClassName("_50f3")[0];
 	var claim = document.createElement("DIV");
@@ -253,6 +265,7 @@ function getCookie(cname) {
 
 /*TODO Move post request to solve loading time issues*/
 function drawPieChart(){
+	console.log("drawing chart");
 	var verified =50;
 	var rejected =50;
 	var uncertain=50;
@@ -329,6 +342,7 @@ function overrideOverflowProperty(){
 }
 
 function addIconsToPopupMenus(){
+	console.log("injecting icons to pop up menus");
 	var verified = document.getElementsByClassName("popVerifiedIcon");
 	var neutral = document.getElementsByClassName("popNeutralIcon");
 	var refuted = document.getElementsByClassName("popRefutedIcon");
