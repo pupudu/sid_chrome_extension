@@ -93,20 +93,24 @@ function clearSkipIcons(){
 
 function clearSkipIconsUsingStrings(){
 	var itemAr = document.getElementsByClassName("_2m_3 _3-91 _8o _8s lfloat _ohe img sp_shwI5B09H5u");
-	var skipStringAr = ["Your friend since","Followed by","friends"];
-	var nonSkipStringAr = ["Works","Lives in","at","From","Born on","Studies","Studied", "In a relationship"];
+	var skipStringAr = ["Your friend since","Followed by","friends","Friends on"];
+	var nonSkipStringAr = ["Works","Lives in","From","Born on","Studies","Studied", "In a relationship"];
 	for(var i=0;i<itemAr.length;i++){
-		var text = itemAr[i].parentNode.getElementsByClassName("_50f3")[0].innerHTML.toString();
+		var text = itemAr[i].parentNode.getElementsByClassName("_50f3")[0].innerText;
+		if(text.length == 2){
+			text = itemAr[i].parentNode.getElementsByClassName("_50f3")[0].innerHTML.toString();
+		}
 		for(var j=0;j<skipStringAr.length;j++){
 			if(text.indexOf(skipStringAr[j])>=0){
-				var skipItem = false;
+				var skipClear = false;
 				for(var k=0;k<nonSkipStringAr.length;k++){
-					if(text.indexOf(nonSkipStringAr[j])>=0){
-						skipItem = true;
+					if(text.indexOf(nonSkipStringAr[k])>=0){
+						console.log(nonSkipStringAr[k]);
+						skipClear = true;
 						break;
 					}
 				}
-				if(skipItem){
+				if(skipClear){
 					continue;
 				}
 				var parent = itemAr[i].parentNode;
