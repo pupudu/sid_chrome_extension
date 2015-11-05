@@ -18,7 +18,7 @@ function identify(){
 		var isAbout = (document.getElementById("medley_header_about") != null);
 		if(sidId === null){
 			updateProfPic();
-			overrideOverflowProperty();
+			//overrideOverflowProperty(); /*TODO Confirm the non-requirement of this*/
 			if(isAbout) {
 				manipulateAbout();		/*if an fb about work page, and haven't modified before, then add sid elements*/
 										/**TODO add similar functionality to places lived, Basic info, family, and life events*/
@@ -62,15 +62,14 @@ function manipulateTimeLine(){
 }
 
 function setVisitStatus(page){
-	console.log("setting visit status: " + page);
 	if(sidId != null){
 		sidId.innerText = page;
 		return;
 	}
+	console.log("setting visit status: " + page);
 	sidId = document.createElement("DIV"); 
 	sidId.innerHTML = "<p id='sidId' style = 'display:none'>"+page+"</p>";
 	document.getElementsByClassName('photoContainer')[0].appendChild(sidId);
-	console.log("visit status"+sidId);
 	addSidAnalyticsMenu();
 }
 
@@ -332,7 +331,7 @@ function commitPopup(itemId){
 }
 
 
-
+/** Allow overflowing divs over the base div of claims*/
 function overrideOverflowProperty(){
 	var containerArray = document.getElementsByClassName('_42ef');
 	for(var i=0;i<containerArray.length;i++){
