@@ -156,7 +156,9 @@ function clearEmptyIcons(){
 	console.log("clearing icons of incomplete data list items");
 	var itemAr = document.getElementsByClassName("_4bl7 _4bl8");
 	for(var i = 0;i<itemAr.length; i++){
-		
+		if(itemAr[i].firstChild.nodeName != "BUTTON"){
+			continue;
+		}
 		var parent = itemAr[i].parentNode;
 		parent.getElementsByClassName("rateIconContainer")[0].remove();
 	}
