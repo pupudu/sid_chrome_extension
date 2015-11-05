@@ -105,7 +105,7 @@ function clearSkipIconsUsingStrings(){
 				var skipClear = false;
 				for(var k=0;k<nonSkipStringAr.length;k++){
 					if(text.indexOf(nonSkipStringAr[k])>=0){
-						console.log(nonSkipStringAr[k]);
+						//console.log(nonSkipStringAr[k]);
 						skipClear = true;
 						break;
 					}
@@ -114,7 +114,10 @@ function clearSkipIconsUsingStrings(){
 					continue;
 				}
 				var parent = itemAr[i].parentNode;
-				parent.getElementsByClassName("rateIconContainer")[0].remove();
+				var icon = parent.getElementsByClassName("rateIconContainer")[0];
+				if(icon != undefined){
+					icon.remove();
+				}
 			}
 		}
 	}
