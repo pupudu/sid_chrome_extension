@@ -6,23 +6,24 @@ var sidId = document.getElementById('sidId');
 console.log("Content Script loaded");
 
 if(getCookie("sidSession")==="true"){	/*check whether user is logged in*/
-	identify();	/*identify web page*/
+	identify();	
 }else{
 	console.log("Cookie mismatch. Need to log in again");
 }
 
+/**identify web page and take required actions*/
 function identify(){
-	console.log("Action listen");
+	//console.log("Identifying Web Page");
 	if(timeLineCName!=null && timeLineHLine!=null){
-	
 		var isAbout = (document.getElementById("medley_header_about") != null);
 		if(sidId === null){
 			updateProfPic();
 			overrideOverflowProperty();
 			if(isAbout) {
-				manipulateAbout();
+				manipulateAbout();		/*if an fb about work page, and haven't modified before, then add sid elements*/
+										/**TODO add similar functionality to places lived, Basic info, family, and life events*/
 			} else{
-				manipulateTimeLine();	/*if an fb profile, and haven't modified before, then add sid elements*/
+				manipulateTimeLine();	/*if an fb profile timeline, and haven't modified before, then add sid elements*/
 			}
 		}else{
 		/**TODO Handle event capture issue*/
@@ -32,24 +33,26 @@ function identify(){
 }
 
 function manipulateAbout(){
-	var claimCount = document.getElementsByClassName("_2lzr _50f5 _50f7").length;
+	var claimAr = document.getElementsByClassName("_2lzr _50f5 _50f7");
+	var claimCount = claimAr.length; /*Number of claims on about page*/
 	if(claimCount >0){
-		setVisitStatus(0);
+		setVisitStatus(0);	/*Mark web page as visited*/
 	}
 	for(var i=0;i<claimCount;i++){
-		var claim = document.getElementsByClassName("_2lzr _50f5 _50f7")[i];
+		var claim = claimAr[i];
 		scoreClaimsOnTimeLine(i,claim,"About");
 		popUpOnIcons('claim',i,claimCount);
 	}
 }
 
 function manipulateTimeLine(){
-	var claimCount = document.getElementsByClassName("_1zw6 _md0 _5vb9").length;
+	var claimAr = document.getElementsByClassName("_1zw6 _md0 _5vb9");
+	var claimCount = claimAr.length; /*Number of claims on timeline*/
 	if(claimCount >0){
 		setVisitStatus(1);
 	}
 	for(var i=0;i<claimCount;i++){
-		var claim = document.getElementsByClassName("_1zw6 _md0 _5vb9")[i].getElementsByClassName("_50f3")[0];
+		var claim = claimAr[i].getElementsByClassName("_50f3")[0];
 		scoreClaimsOnTimeLine(i,claim,"");
 		popUpOnIcons('claim',i,claimCount);
 	}
