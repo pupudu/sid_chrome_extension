@@ -15,15 +15,17 @@ if(getCookie("sidSession")==="true"){	/*check whether user is logged in*/
 function identify(isManual){
 	console.log(".. Identifying Web Page");
 	if(timeLineCName!=null && timeLineHLine!=null){
-		var isAbout = (document.getElementById("medley_header_about") != null);
+		//var isAbout = (document.getElementById("medley_header_about") != null);	 //Did not work when came back to timeline from about
+		var selectedTab = document.getElementsByClassName("_6-6 _6-7")[0].innerText;
+		console.log(".. .. selected tab is: " + selectedTab);
 		if(sidId === null || isManual){
 			updateProfPic();
-			addEventToAbout();
+			addEventToMainMenus();
 			//overrideOverflowProperty(); /*TODO Confirm the non-requirement of this*/
-			if(isAbout) {
+			if(selectedTab == "About") {
 				manipulateAbout();		/*if an fb about work page, and haven't modified before, then add sid elements*/
 										/**TODO add similar functionality to places lived, Basic info, family, and life events*/
-			} else{
+			}else if (selectedTab == "Timeline"){
 				manipulateTimeLine();	/*if an fb profile timeline, and haven't modified before, then add sid elements*/
 			}
 		}else{
@@ -36,6 +38,12 @@ function identify(isManual){
 
 /** Appends sid-rating state over fb profile picture*/
 function updateProfPic(){
+	if(document.getElementById("verif")!=null){
+		if(document.getElementById("verif").src.length>10){
+			console.log(".. .. Profile pic already updated");
+			return;
+		}
+	}
 	console.log(".. .. updating profile pic");
 	var profPic = document.getElementsByClassName("photoContainer")[0];
 	var icon = document.createElement("DIV");
@@ -92,7 +100,9 @@ function setVisitStatus(page){
 	sidId = document.createElement("DIV"); 
 	sidId.innerHTML = "<p id='sidId' style = 'display:none'>"+page+"</p>";
 	document.getElementsByClassName('photoContainer')[0].appendChild(sidId);
-	addSidAnalyticsMenu();
+	if(document.getElementById("sidDropdown") == null){
+		addSidAnalyticsMenu();
+	}
 }
 
 function addSidAnalyticsMenu(){
@@ -375,7 +385,9 @@ function addEventToMainMenus(){
 	for(var i=0;i<menuItemAr.length;i++){
 		menuItemAr[i].addEventListener('click', function(){
 			//alert("Dodan");
-			document.getElementById('sidId').remove();
+			if(document.getElementById('sidId') != null){
+				document.getElementById('sidId').remove();
+			}
 			identify(true);
 		});
 	}
@@ -393,7 +405,7 @@ function addEventToAbout(){
 		menuItemAr[i].addEventListener('click', function(){
 			//alert("Dodan");
 			document.getElementById('sidId').remove();
-			identify(true);
+			//identify(true);
 		});
 	}
 }

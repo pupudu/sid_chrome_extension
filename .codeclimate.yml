@@ -46,3 +46,6 @@ ratings:
 # - public/**/*
 #- spec/**/*
 #- vendor/**/*
+
+exclude_paths:
+- "js/Chart.min.js"
