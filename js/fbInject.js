@@ -14,18 +14,18 @@ if(getCookie("sidSession")==="true"){	/*check whether user is logged in*/
 /**identify web page and take required actions*/
 function identify(isManual){
 	console.log(".. Identifying Web Page");
-	if(timeLineCName!=null && timeLineHLine!=null){
-		//var isAbout = (document.getElementById("medley_header_about") != null);	 //Did not work when came back to timeline from about
+	if(timeLineCName!===null && timeLineHLine!===null){
+		//var isAbout = (document.getElementById("medley_header_about") !=== null);	 //Did not work when came back to timeline from about
 		var selectedTab = document.getElementsByClassName("_6-6 _6-7")[0].innerText;
 		console.log(".. .. selected tab is: " + selectedTab);
 		if(sidId === null || isManual){
 			updateProfPic();
 			addEventToMainMenus();
 			//overrideOverflowProperty(); /*TODO Confirm the non-requirement of this*/
-			if(selectedTab == "About") {
+			if(selectedTab === "About") {
 				manipulateAbout();		/*if an fb about work page, and haven't modified before, then add sid elements*/
 										/**TODO add similar functionality to places lived, Basic info, family, and life events*/
-			}else if (selectedTab == "Timeline"){
+			}else if (selectedTab === "Timeline"){
 				manipulateTimeLine();	/*if an fb profile timeline, and haven't modified before, then add sid elements*/
 			}
 		}else{
@@ -38,7 +38,7 @@ function identify(isManual){
 
 /** Appends sid-rating state over fb profile picture*/
 function updateProfPic(){
-	if(document.getElementById("verif")!=null){
+	if(document.getElementById("verif")!==null){
 		if(document.getElementById("verif").src.length>10){
 			console.log(".. .. Profile pic already updated");
 			return;
@@ -48,7 +48,7 @@ function updateProfPic(){
 	var profPic = document.getElementsByClassName("photoContainer")[0];
 	var icon = document.createElement("DIV");
 	var imgURL;var profID = extract_UserID();
-	icon.innerHTML = "<img id ='verif' class = 'profIcon'>"
+	icon.innerHTML = "<img id ='verif' class = 'profIcon'>";
 	profPic.appendChild(icon);
 	
 	$.post("https://id.projects.mrt.ac.lk:9000/profRating",
@@ -92,7 +92,7 @@ function manipulateTimeLine(){
 }
 
 function setVisitStatus(page){
-	if(sidId != null){
+	if(sidId !== null){
 		sidId.innerText = page;
 		return;
 	}
@@ -100,7 +100,7 @@ function setVisitStatus(page){
 	sidId = document.createElement("DIV"); 
 	sidId.innerHTML = "<p id='sidId' style = 'display:none'>"+page+"</p>";
 	document.getElementsByClassName('photoContainer')[0].appendChild(sidId);
-	if(document.getElementById("sidDropdown") == null){
+	if(document.getElementById("sidDropdown") === null){
 		addSidAnalyticsMenu();
 	}
 }
@@ -149,8 +149,8 @@ function scoreClaimsOnTimeLine(arrIndex, cla, classOffset){
 	function(data,status){
 		claimScore = data.rating;
 		var imgURL = chrome.extension.getURL("resources/icons/"+iconClass+claimScore+".png");
-		var icon = document.getElementById(iconID)
-		if(icon!=null){
+		var icon = document.getElementById(iconID);
+		if(icon!==null){
 			icon.src = imgURL;
 		}
 	});
@@ -168,7 +168,7 @@ function popUpOnIcons(iconClass,i,max){ //TODO
 		node.className="claim";
 		document.getElementsByClassName('rateIconContainer')[i].appendChild(node);
 		//commitChart();
-		if(i==max-1){
+		if(i===max-1){
 			addIconsToPopupMenus();
 			clearSkipIcons();
 		}
@@ -183,10 +183,10 @@ function addIconsToPopupMenus(){
 	var refuted = document.getElementsByClassName("popRefutedIcon");
 	var popupBase = document.getElementsByClassName("popupbase");
 	
-	verImgUrl = chrome.extension.getURL("resources/icons/claimT.png");
-	neuImgUrl = chrome.extension.getURL("resources/icons/claimC.png");
-	refImgUrl = chrome.extension.getURL("resources/icons/claimR.png");
-	baseImgUrl = chrome.extension.getURL("resources/icons/popupBase.png");
+	var verImgUrl = chrome.extension.getURL("resources/icons/claimT.png");
+	var neuImgUrl = chrome.extension.getURL("resources/icons/claimC.png");
+	var refImgUrl = chrome.extension.getURL("resources/icons/claimR.png");
+	var baseImgUrl = chrome.extension.getURL("resources/icons/popupBase.png");
 	
 	for(var i=0;i<verified.length;i++){
 		verified[i].src = verImgUrl;
@@ -209,7 +209,7 @@ function clearSkipIconsUsingStrings(){
 	var nonSkipStringAr = ["Works","Lives in","From","Born on","Studies","Studied", "In a relationship"];
 	for(var i=0;i<itemAr.length;i++){
 		var text = itemAr[i].parentNode.getElementsByClassName("_50f3")[0].innerText;
-		if(text.length == 2){
+		if(text.length === 2){
 			text = itemAr[i].parentNode.getElementsByClassName("_50f3")[0].innerHTML.toString();
 		}
 		for(var j=0;j<skipStringAr.length;j++){
@@ -291,7 +291,7 @@ function getCookie(cname) {
     var ca = document.cookie.split(';');
     for(var i=0; i<ca.length; i++) {
         var c = ca[i];
-        while (c.charAt(0)===' ') c = c.substring(1);
+        while {(c.charAt(0)===' ') c = c.substring(1);}
         if (c.indexOf(name) === 0) return c.substring(name.length,c.length);
     }
     return "";
@@ -319,7 +319,7 @@ function drawPieChart(){
 	function(data,status){
 		verified = data.positive;
 		rejected = data.negative;
-		uncertin = data.uncertain;
+		uncertain = data.uncertain;
 		
 		var pieData = [
 			{
@@ -358,7 +358,7 @@ function drawPieChart(){
 function commitPopup(itemId){ /* Method not in use at the moment*/
 	var item = document.getElementById(itemId);
 	item.addEventListener('mouseover', function() {
-		showRatingPopupMenu(itemId);
+		//showRatingPopupMenu(itemId);
 	});
 }
 
@@ -375,7 +375,7 @@ function overrideOverflowProperty(){
 }
 
 function addEventToMainMenus(){
-	console.log("Adding event listners to menu items")
+	console.log("Adding event listners to menu items");
 	var menuItemAr = document.getElementsByClassName("_6-6");
 	if(menuItemAr.length != 5 || menuItemAr.length != 6){	//check normal conditions. TODO consider other cases
 		console.log("Unexpected value for menuItemAr"+ menuItemAr.length);
@@ -394,7 +394,7 @@ function addEventToMainMenus(){
 }
 
 function addEventToAbout(){
-	console.log("Adding event listners to sub menus of About page")
+	console.log("Adding event listners to sub menus of About page");
 	var menuItemAr = document.getElementsByClassName("_6-6");
 	if(menuItemAr.length != 5 || menuItemAr.length != 6){	//check normal conditions. TODO consider other cases
 		console.log("Unexpected value for menuItemAr"+ menuItemAr.length);
