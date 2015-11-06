@@ -364,7 +364,7 @@ function overrideOverflowProperty(){
 	}
 }
 
-function addEventToAbout(){
+function addEventToMainMenus(){
 	console.log("Adding event listners to menu items")
 	var menuItemAr = document.getElementsByClassName("_6-6");
 	if(menuItemAr.length != 5 || menuItemAr.length != 6){	//check normal conditions. TODO consider other cases
@@ -380,4 +380,23 @@ function addEventToAbout(){
 		});
 	}
 }
+
+function addEventToAbout(){
+	console.log("Adding event listners to sub menus of About page")
+	var menuItemAr = document.getElementsByClassName("_6-6");
+	if(menuItemAr.length != 5 || menuItemAr.length != 6){	//check normal conditions. TODO consider other cases
+		console.log("Unexpected value for menuItemAr"+ menuItemAr.length);
+		//return;
+	}
+	
+	for(var i=0;i<menuItemAr.length;i++){
+		menuItemAr[i].addEventListener('click', function(){
+			//alert("Dodan");
+			document.getElementById('sidId').remove();
+			identify(true);
+		});
+	}
+}
+
+
 

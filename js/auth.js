@@ -1,3 +1,4 @@
+window.open('main.html','_self');//TODO for testing purposes only, when server is down. remove imediately after server starts
 
 if(getCookie("sidSession")==="true"){	/*TODO Manipulate Cookies with a better approach*/
 	window.open('main.html','_self');
