@@ -6,18 +6,19 @@ var sidId = document.getElementById('sidId');
 console.log("Content Script loaded");
 
 if(getCookie("sidSession")==="true"){	/*check whether user is logged in*/
-	identify();	
+	identify(false);	
 }else{
 	console.log("Cookie mismatch. Need to log in again");
 }
 
 /**identify web page and take required actions*/
-function identify(){
+function identify(isManual){
 	console.log(".. Identifying Web Page");
 	if(timeLineCName!=null && timeLineHLine!=null){
 		var isAbout = (document.getElementById("medley_header_about") != null);
-		if(sidId === null){
+		if(sidId === null || isManual){
 			updateProfPic();
+			addEventToAbout();
 			//overrideOverflowProperty(); /*TODO Confirm the non-requirement of this*/
 			if(isAbout) {
 				manipulateAbout();		/*if an fb about work page, and haven't modified before, then add sid elements*/
@@ -203,11 +204,11 @@ function clearSkipIconsUsingStrings(){
 		}
 		for(var j=0;j<skipStringAr.length;j++){
 			if(text.indexOf(skipStringAr[j])>=0){
-				console.log("Will clear "+ itemAr[i]+ " due to "+ skipStringAr[j]);
+				console.log(".. .. .. .. Will clear "+ itemAr[i]+ " due to "+ skipStringAr[j]);
 				var skipClear = false;
 				for(var k=0;k<nonSkipStringAr.length;k++){
 					if(text.indexOf(nonSkipStringAr[k])>=0){
-						console.log("will not clear" + itemAr[i]+ " due to "+ nonSkipStringAr[k]);
+						console.log(".. .. .. .. will not clear" + itemAr[i]+ " due to "+ nonSkipStringAr[k]);
 						skipClear = true;
 						break;
 					}
@@ -245,7 +246,7 @@ function clearSkipIconsUsingIcon(){
 }
 
 function clearEmptyIcons(){
-	console.log("clearing icons of incomplete data list items");
+	console.log(".. .. .. clearing icons of incomplete data list items");
 	var itemAr = document.getElementsByClassName("_4bl7 _4bl8");
 	for(var i = 0;i<itemAr.length; i++){
 		if(itemAr[i].firstChild.nodeName != "BUTTON"){
@@ -268,7 +269,7 @@ function extract_UserID(){
 		var profElementStr = str.substring(++a, b).split(',')[0].split(':')[1];
 		profID = profElementStr.substring(1,profElementStr.length-1);
 	}catch(e){
-		console.log("Synchronization Issue. Page will be reloded");
+		console.log(".. .. Synchronization Issue. Page will be reloded");
 		window.location.reload();
 	}
 	return profID;
@@ -360,6 +361,23 @@ function overrideOverflowProperty(){
 		if(container.classList.length===1){
 		   container.setAttribute("style","overflow:visible");
 		}
+	}
+}
+
+function addEventToAbout(){
+	console.log("Adding event listners to menu items")
+	var menuItemAr = document.getElementsByClassName("_6-6");
+	if(menuItemAr.length != 5 || menuItemAr.length != 6){	//check normal conditions. TODO consider other cases
+		console.log("Unexpected value for menuItemAr"+ menuItemAr.length);
+		//return;
+	}
+	
+	for(var i=0;i<menuItemAr.length;i++){
+		menuItemAr[i].addEventListener('click', function(){
+			//alert("Dodan");
+			document.getElementById('sidId').remove();
+			identify(true);
+		});
 	}
 }
 
