@@ -14,8 +14,8 @@ if(getCookie("sidSession")==="true"){	/*check whether user is logged in*/
 /**identify web page and take required actions*/
 function identify(isManual){
 	console.log(".. Identifying Web Page");
-	if(timeLineCName!===null && timeLineHLine!===null){
-		//var isAbout = (document.getElementById("medley_header_about") !=== null);	 //Did not work when came back to timeline from about
+	if(timeLineCName!==null && timeLineHLine!==null){
+		//var isAbout = (document.getElementById("medley_header_about") !== null);	 //Did not work when came back to timeline from about
 		var selectedTab = document.getElementsByClassName("_6-6 _6-7")[0].innerText;
 		console.log(".. .. selected tab is: " + selectedTab);
 		if(sidId === null || isManual){
