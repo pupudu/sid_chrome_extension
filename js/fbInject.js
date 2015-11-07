@@ -107,17 +107,8 @@ function setVisitStatus(page){
 
 function addSidAnalyticsMenu(){
 	console.log(".. .. .. added sid analytics pop up memu");
-	//timeLineCName.innerHTML += '<span class="_5rqt"><span class="_5rqu"><span data-hover="tooltip" data-tooltip-position="right" class="_56_f _5dzy _5d-1 _5d-3" id="u_jsonp_2_7" aria-label="sID Verified User"></span></span></span>'
 	var node = document.createElement("DIV");  
-//	node.innerHTML=('<div class="_6a uiPopover _6-6 _9rx _5v-0" id="u_0_p"><a class="_9ry _p" href="#" aria-haspopup="true" aria-expanded="false" rel="toggle" role="button" id="u_0_q1" aria-owns="u_a_0">sID Analytics<i class="_bxy img sp_qk8sNUxukfD sx_1586e3"></i></a></div>');
-//	node.innerHTML=('<div class="_6a uiPopover dropdown _6-6 _9rx _5v-0" id="u_0_p1"><a class="_9ry _p" id="u_0_q1" aria-owns="u_a_0">sID Analytics</a></div>');
-//	node.innerHTML = '<ul class="_6a dropdown _6-6 _9rx _5v-0 "><li><a href="…">Page 1</a><ul><li><a href="…">Sub-page 1.1</a></li><li><a href="…">Sub-page 1.2</a></li></ul></li></ul>';
-//node.innerHTML = '<div id = "test" class="dropdown"><button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">sid Analytics<span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#">HTML</a></li><li><a href="#">CSS</a></li><li><a href="#">JavaScript</a></li></ul></div>';	
 	$.get(chrome.extension.getURL("html/sidAnalytics.html"), function(data) {
-		//$(data).appendTo('body');
-		// Or if you're using jQuery 1.8+:
-		// $($.parseHTML(data)).appendTo('body');
-		//console.log(data);
 		node.innerHTML = data;
 		commitChart();
 	});
@@ -128,7 +119,6 @@ function addSidAnalyticsMenu(){
 function scoreClaimsOnTimeLine(arrIndex, cla, classOffset){
 	console.log(".. .. scoring claims on time line");
 	var profID = extract_UserID();
-	//var cla = document.getElementsByClassName("_1zw6 _md0 _5vb9")[arrIndex].getElementsByClassName("_50f3")[0];
 	var claim = document.createElement("DIV");
 	var iconID = 'claimR'+arrIndex;
 	var iconClass = 'claim';
@@ -139,8 +129,6 @@ function scoreClaimsOnTimeLine(arrIndex, cla, classOffset){
 	
 	cla.appendChild(claim);
 	arrIndex+=23;
-	
-	//console.log(arrIndex);
 	
 	$.post("https://id.projects.mrt.ac.lk:9000/claimScore",{
 		targetUser : profID,
@@ -157,17 +145,11 @@ function scoreClaimsOnTimeLine(arrIndex, cla, classOffset){
 }
 
 function popUpOnIcons(iconClass,i,max){ //TODO
-	//console.log("Dodan"+i);
 	var node = document.createElement("DIV");  
 	$.get(chrome.extension.getURL("html/ratePopup.html"), function(data) {
-		//$(data).appendTo('body');
-		// Or if you're using jQuery 1.8+:
-		// $($.parseHTML(data)).appendTo('body');
-		//console.log(data);
 		node.innerHTML = data;
 		node.className="claim";
 		document.getElementsByClassName('rateIconContainer')[i].appendChild(node);
-		//commitChart();
 		if(i===max-1){
 			addIconsToPopupMenus();
 			clearSkipIcons();
@@ -292,7 +274,7 @@ function getCookie(cname) {
     for(var i=0; i<ca.length; i++) {
         var c = ca[i];
         while (c.charAt(0)===' ') {c = c.substring(1);}
-        if (c.indexOf(name) === 0) return c.substring(name.length,c.length);
+        if (c.indexOf(name) === 0) { return c.substring(name.length,c.length)};
     }
     return "";
 }
@@ -403,7 +385,6 @@ function addEventToAbout(){
 	
 	for(var i=0;i<menuItemAr.length;i++){
 		menuItemAr[i].addEventListener('click', function(){
-			//alert("Dodan");
 			document.getElementById('sidId').remove();
 			//identify(true);
 		});
