@@ -1,6 +1,8 @@
+/* globals chrome: false */
+
 var timeLineCName = document.getElementById('fb-timeline-cover-name');		//element to identify fb profile
-var UpStatBtn = document.getElementsByClassName('uiIconText _51z7')[0];		//element to identify fb wall
-var membersBtn = document.getElementsByClassName('_2l5d')[1];				//element to identify fb group
+//var UpStatBtn = document.getElementsByClassName('uiIconText _51z7')[0];		//element to identify fb wall
+//var membersBtn = document.getElementsByClassName('_2l5d')[1];				//element to identify fb group
 var timeLineHLine = document.getElementById('fbTimelineHeadline');			//element to identify fb page
 var sidId = document.getElementById('sidId');
 console.log("Content Script loaded");
@@ -55,7 +57,7 @@ function updateProfPic(){
 	{
 		targetUser: profID	
 	},
-	function(data, status){
+	function(data/*, status*/){
 		imgURL = chrome.extension.getURL("resources/icons/prof" + data.rating + ".png");
 		document.getElementById('verif').src = imgURL;
 		$("#verif").fadeIn(2000);
@@ -134,7 +136,7 @@ function scoreClaimsOnTimeLine(arrIndex, cla, classOffset){
 		targetUser : profID,
 		claimID : arrIndex
 	},
-	function(data,status){
+	function(data /*,status*/){
 		claimScore = data.rating;
 		var imgURL = chrome.extension.getURL("resources/icons/"+iconClass+claimScore+".png");
 		var icon = document.getElementById(iconID);
@@ -274,7 +276,7 @@ function getCookie(cname) {
     for(var i=0; i<ca.length; i++) {
         var c = ca[i];
         while (c.charAt(0)===' ') {c = c.substring(1);}
-        if (c.indexOf(name) === 0) { return c.substring(name.length,c.length)};
+        if (c.indexOf(name) === 0) { return c.substring(name.length,c.length);}
     }
     return "";
 }
@@ -298,7 +300,7 @@ function drawPieChart(){
 		cClass : 12,
 		claimId :12
 	},
-	function(data,status){
+	function(data /*,status*/){
 		verified = data.positive;
 		rejected = data.negative;
 		uncertain = data.uncertain;
