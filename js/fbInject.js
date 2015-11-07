@@ -1,4 +1,4 @@
-/* globals chrome: false */
+/* globals chrome,Chart: false */
 
 var timeLineCName = document.getElementById('fb-timeline-cover-name');		//element to identify fb profile
 //var UpStatBtn = document.getElementsByClassName('uiIconText _51z7')[0];		//element to identify fb wall
@@ -339,6 +339,7 @@ function drawPieChart(){
 	});
 }
 
+/*jshint unused:true */
 function commitPopup(itemId){ /* Method not in use at the moment*/
 	var item = document.getElementById(itemId);
 	item.addEventListener('mouseover', function() {
@@ -377,6 +378,7 @@ function addEventToMainMenus(){
 	}
 }
 
+/*jshint unused:true */
 function addEventToAbout(){
 	console.log("Adding event listners to sub menus of About page");
 	var menuItemAr = document.getElementsByClassName("_6-6");
