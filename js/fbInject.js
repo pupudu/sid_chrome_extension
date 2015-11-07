@@ -228,7 +228,7 @@ function clearSkipIconsUsingStrings(){
 				}
 				var parent = itemAr[i].parentNode;
 				var icon = parent.getElementsByClassName("rateIconContainer")[0];
-				if(icon != undefined){
+				if(icon !== undefined){
 					icon.remove();
 				}
 			}
@@ -246,7 +246,7 @@ function clearSkipIconsUsingIcon(){
 		}
 		for(var j=0;j<itemAr.length;j++){
 			var text = itemAr[j].parentNode.getElementsByClassName("_50f3")[0].innerText;
-			if(text.indexOf("from")!=-1){
+			if(text.indexOf("from")!==-1){
 				continue;
 			}
 			//console.log(text.indexOf("from")!=-1);
@@ -259,7 +259,7 @@ function clearEmptyIcons(){
 	console.log(".. .. .. clearing icons of incomplete data list items");
 	var itemAr = document.getElementsByClassName("_4bl7 _4bl8");
 	for(var i = 0;i<itemAr.length; i++){
-		if(itemAr[i].firstChild.nodeName != "BUTTON"){
+		if(itemAr[i].firstChild.nodeName !== "BUTTON"){
 			continue;
 		}
 		var parent = itemAr[i].parentNode;
@@ -377,7 +377,7 @@ function overrideOverflowProperty(){
 function addEventToMainMenus(){
 	console.log("Adding event listners to menu items");
 	var menuItemAr = document.getElementsByClassName("_6-6");
-	if(menuItemAr.length != 5 || menuItemAr.length != 6){	//check normal conditions. TODO consider other cases
+	if(menuItemAr.length !== 5 || menuItemAr.length !== 6){	//check normal conditions. TODO consider other cases
 		console.log("Unexpected value for menuItemAr"+ menuItemAr.length);
 		//return;
 	}
@@ -385,7 +385,7 @@ function addEventToMainMenus(){
 	for(var i=0;i<menuItemAr.length;i++){
 		menuItemAr[i].addEventListener('click', function(){
 			//alert("Dodan");
-			if(document.getElementById('sidId') != null){
+			if(document.getElementById('sidId') !== null){
 				document.getElementById('sidId').remove();
 			}
 			identify(true);
@@ -396,7 +396,7 @@ function addEventToMainMenus(){
 function addEventToAbout(){
 	console.log("Adding event listners to sub menus of About page");
 	var menuItemAr = document.getElementsByClassName("_6-6");
-	if(menuItemAr.length != 5 || menuItemAr.length != 6){	//check normal conditions. TODO consider other cases
+	if(menuItemAr.length !== 5 || menuItemAr.length !== 6){	//check normal conditions. TODO consider other cases
 		console.log("Unexpected value for menuItemAr"+ menuItemAr.length);
 		//return;
 	}
