@@ -68,8 +68,7 @@ function manipulateAbout(){
 	
 	for(var i=0;i<claimCount;i++){
 		var claim = claimAr[i];
-		scoreClaimsOnTimeLine(i,claim,"About"); /*TODO fix issue in icon positions of about page*/
-		//popUpOnIcons('claim',i,claimCount);
+		scoreClaims(i,claim,"About"); /*TODO fix issue in icon positions of about page*/
 	}
 }
 
@@ -81,8 +80,7 @@ function manipulateTimeLine(){
 	
 	for(var i=0;i<claimCount;i++){
 		var claim = claimAr[i].getElementsByClassName("_50f3")[0];
-		scoreClaimsOnTimeLine(i,claim,"");
-		//popUpOnIcons('claim',i,claimCount);
+		scoreClaims(i,claim,"");
 	}
 }
 
@@ -99,7 +97,7 @@ function addSidAnalyticsMenu(){
 }
 
 
-function scoreClaimsOnTimeLine(arrIndex, claim, classOffset){
+function scoreClaims(arrIndex, claim, classOffset){
 	//console.log(".. .. scoring claims on time line" + claim.innerHTML);
 	var profID = extract_UserID();
 	var rateIcon = document.createElement("DIV");
