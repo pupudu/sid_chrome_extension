@@ -24,6 +24,7 @@ function identify(){
 		
 		//if(sidId === null || isManual){
 			updateProfPic();
+			addSidAnalyticsMenu();
 			//addEventToMainMenus();
 			//overrideOverflowProperty(); /*TODO Confirm the non-requirement of this*/
 			if(selectedTab === "About") {
@@ -52,7 +53,8 @@ function updateProfPic(){
 	console.log(".. .. updating profile pic");
 	var profPic = document.getElementsByClassName("photoContainer")[0];
 	var icon = document.createElement("DIV");
-	var imgURL;var profID = extract_UserID();
+	var imgURL;
+	var profID = extract_UserID();
 	icon.innerHTML = "<img id ='verif' class = 'profIcon'>";
 	profPic.appendChild(icon);
 	
@@ -62,7 +64,9 @@ function updateProfPic(){
 	},
 	function(data/*, status*/){
 		imgURL = chrome.extension.getURL("resources/icons/prof" + data.rating + ".png");
-		document.getElementById('verif').src = imgURL;
+		if(document.getElementById('verif') !== null){
+			document.getElementById('verif').src = imgURL;
+		}
 		$("#verif").fadeIn(2000);
 	});
 }
@@ -113,18 +117,20 @@ function setVisitStatus(page){
 }
 
 function addSidAnalyticsMenu(){
-	console.log(".. .. .. added sid analytics pop up memu");
-	var node = document.createElement("DIV");  
-	$.get(chrome.extension.getURL("html/sidAnalytics.html"), function(data) {
-		node.innerHTML = data;
-		commitChart();
-	});
-	document.getElementsByClassName('_6_7 clearfix')[0].appendChild(node);
+	if(document.getElementById("sidDropdown") === null){
+		console.log(".. .. .. added sid analytics pop up memu");
+		var node = document.createElement("DIV");  
+		$.get(chrome.extension.getURL("html/sidAnalytics.html"), function(data) {
+			node.innerHTML = data;
+			commitChart();
+		});
+		document.getElementsByClassName('_6_7 clearfix')[0].appendChild(node);
+	}
 }
 
 
 function scoreClaimsOnTimeLine(arrIndex, claim, classOffset){
-	console.log(".. .. scoring claims on time line" + claim.innerHTML);
+	//console.log(".. .. scoring claims on time line" + claim.innerHTML);
 	var profID = extract_UserID();
 	var rateIcon = document.createElement("DIV");
 	var iconID = 'claimR'+classOffset+arrIndex;
@@ -198,7 +204,7 @@ function clearIconsIfSkip(item){
 }
 
 function clearIconIfSkipUsingString(item){
-	console.log(item);
+	//console.log(item);
 	var skipStringAr = ["Your friend since","Followed by","friends","Friends on"];
 	var nonSkipStringAr = ["Works","Lives in","From","Born on","Studies","Studied", "In a relationship"];
 	var text = item.parentNode.innerText;
