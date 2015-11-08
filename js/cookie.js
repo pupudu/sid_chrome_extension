@@ -1,3 +1,5 @@
+/* globals chrome: false */
+/* exported getCookie,setCookie,injectCookie */
 
 /**Method to get a cookie*/
 function getCookie(cname) {

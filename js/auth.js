@@ -1,5 +1,7 @@
 //window.open('main.html','_self');//TODO for testing purposes only, when server is down. remove imediately after server starts
 
+/* globals chrome,getCookie,setCookie,injectCookie: false */
+
 if(getCookie("sidSession")==="true"){	/*TODO Manipulate Cookies with a better approach*/
 	window.open('main.html','_self');
 }
@@ -32,13 +34,13 @@ document.addEventListener('DOMContentLoaded', function() {
 						chrome.tabs.query({url:"https://*.facebook.com/*"}, function (tabAr){
 							for(var i=0;tabAr.length;i++){
 								chrome.tabs.executeScript(tabAr[i].id,{
-									file:'js/jquery-1.11.3.min.js'	//Run this script if navigated to a fb origined page
+									file:'js/jquery-1.11.3.min.js'	//Inject script on sign in 
 								},function(){});
 								chrome.tabs.executeScript(tabAr[i].id,{
-									file:'js/cookie.js'	//Run this script if navigated to a fb origined page
+									file:'js/cookie.js'	//Inject script on sign in
 								},function(){});
 								chrome.tabs.executeScript(tabAr[i].id,{
-									file:'js/fbInject.js',	//Run this script if navigated to a fb origined page
+									file:'js/fbInject.js',	//Inject script on sign in
 									runAt: "document_end"
 								},function(){});
 							}

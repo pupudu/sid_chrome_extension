@@ -2,6 +2,8 @@
 This script runs as a backround script. To stop, change the manifest.json
 */
 
+/* globals chrome: false */
+
 var count =0;
 
 /** This will be fired whenever a tab changes. Runs only when this script file is active*/

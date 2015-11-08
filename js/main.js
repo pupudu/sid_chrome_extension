@@ -1,3 +1,4 @@
+/* globals setCookie,injectCookie: false */
 
 /**Log into the sid, if cookie says "yes"*/
 document.addEventListener('DOMContentLoaded', function() {
