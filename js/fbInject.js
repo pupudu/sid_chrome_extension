@@ -345,7 +345,7 @@ function extract_UserID(){
 	return profID;
 }
 
-/**Get a cookie from main browser*/
+/**Get a cookie from main browser
 function getCookie(cname) {
     var name = cname + "=";
     var ca = document.cookie.split(';');
@@ -356,6 +356,7 @@ function getCookie(cname) {
     }
     return "";
 }
+*/
 
 function commitChart(){
 	var sidDropdown = document.getElementById('sidDropdown');
