@@ -77,7 +77,7 @@ function manipulateAbout(){
 	}
 	for(var i=0;i<claimCount;i++){
 		var claim = claimAr[i];
-		//scoreClaimsOnTimeLine(i,claim,"About"); /*TODO fix issue in icon positions of about page*/
+		scoreClaimsOnTimeLine(i,claim,"About"); /*TODO fix issue in icon positions of about page*/
 		//popUpOnIcons('claim',i,claimCount);
 	}
 }
@@ -131,10 +131,11 @@ function scoreClaimsOnTimeLine(arrIndex, claim, classOffset){
 	var iconClass = 'claim';
 	var claimScore = 'T';
 	
-	if(clearIconsIfSkip(claim)){
-		return;
+	if(classOffset === ""){
+		if(clearIconsIfSkip(claim)){
+			return;
+		}
 	}
-	
 	/*Avoid adding icons again if already added*/
 	if(claim.getElementsByClassName("rateIconContainer").length === 0){
 		rateIcon.className = "rateIconContainer";
@@ -156,7 +157,7 @@ function scoreClaimsOnTimeLine(arrIndex, claim, classOffset){
 		if(icon!==null){
 			//console.log(imgURL + " added to " + iconID)
 			icon.src = imgURL;
-			popUpOnIconByID(iconID);
+			popUpOnIconByID(iconID,classOffset);
 		}
 		else{
 			//console.log("info .. .. .. Icons already added");
@@ -164,24 +165,11 @@ function scoreClaimsOnTimeLine(arrIndex, claim, classOffset){
 	});
 }
 
-function popUpOnIcons(iconClass,i,max){ //TODO
+function popUpOnIconByID(iconID,classOffset){ //TODO
 	var node = document.createElement("DIV");  
 	$.get(chrome.extension.getURL("html/ratePopup.html"), function(data) {
 		node.innerHTML = data;
-		node.className="claim";
-		document.getElementsByClassName('rateIconContainer')[i].appendChild(node);
-		if(i===max-1){
-			addIconsToPopupMenus();
-			clearSkipIcons();
-		}
-	});
-}
-
-function popUpOnIconByID(iconID){ //TODO
-	var node = document.createElement("DIV");  
-	$.get(chrome.extension.getURL("html/ratePopup.html"), function(data) {
-		node.innerHTML = data;
-		node.className="claim";
+		node.className="claim"+classOffset;
 		document.getElementById(iconID).parentNode.appendChild(node);
 		
 		var verified = node.getElementsByClassName("popVerifiedIcon");
@@ -317,6 +305,20 @@ function clearSkipIconsUsingIcon(){
 		}
 	}
 }
+
+function popUpOnIcons(iconClass,i,max){ //TODO
+	var node = document.createElement("DIV");  
+	$.get(chrome.extension.getURL("html/ratePopup.html"), function(data) {
+		node.innerHTML = data;
+		node.className="claim";
+		document.getElementsByClassName('rateIconContainer')[i].appendChild(node);
+		if(i===max-1){
+			addIconsToPopupMenus();
+			clearSkipIcons();
+		}
+	});
+}
+
 */
 
 
