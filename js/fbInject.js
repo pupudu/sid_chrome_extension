@@ -77,23 +77,24 @@ function manipulateAbout(){
 	}
 	for(var i=0;i<claimCount;i++){
 		var claim = claimAr[i];
-		scoreClaimsOnTimeLine(i,claim,"About"); /*TODO fix issue in icon positions of about page*/
-		popUpOnIcons('claim',i,claimCount);
+		//scoreClaimsOnTimeLine(i,claim,"About"); /*TODO fix issue in icon positions of about page*/
+		//popUpOnIcons('claim',i,claimCount);
 	}
 }
 
 function manipulateTimeLine(){
-	console.log(".. .. updating fb time line");
-	
 	var claimAr = document.getElementsByClassName("_1zw6 _md0 _5vb9");
 	var claimCount = claimAr.length; /*Number of claims on timeline*/
 	if(claimCount >0){
 	//	setVisitStatus(1);	/*Mark timeline as visited*/
 	}
+	
+	console.log(".. .. updating fb time line" + claimAr.length);
+	
 	for(var i=0;i<claimCount;i++){
 		var claim = claimAr[i].getElementsByClassName("_50f3")[0];
 		scoreClaimsOnTimeLine(i,claim,"");
-		popUpOnIcons('claim',i,claimCount);
+		//popUpOnIcons('claim',i,claimCount);
 	}
 }
 
@@ -126,9 +127,13 @@ function scoreClaimsOnTimeLine(arrIndex, claim, classOffset){
 	console.log(".. .. scoring claims on time line" + claim.innerHTML);
 	var profID = extract_UserID();
 	var rateIcon = document.createElement("DIV");
-	var iconID = 'claimR'+arrIndex;
+	var iconID = 'claimR'+classOffset+arrIndex;
 	var iconClass = 'claim';
 	var claimScore = 'T';
+	
+	if(clearIconsIfSkip(claim)){
+		return;
+	}
 	
 	/*Avoid adding icons again if already added*/
 	if(claim.getElementsByClassName("rateIconContainer").length === 0){
@@ -144,15 +149,17 @@ function scoreClaimsOnTimeLine(arrIndex, claim, classOffset){
 		claimID : arrIndex
 	},
 	function(data /*,status*/){
-		console.log(".. .. .. Adding graphic icons to rating icon holders");
+		//console.log(".. .. .. Adding graphic icons to rating icon holders" + iconID);
 		claimScore = data.rating;
 		var imgURL = chrome.extension.getURL("resources/icons/"+iconClass+claimScore+".png");
 		var icon = document.getElementById(iconID);
 		if(icon!==null){
+			//console.log(imgURL + " added to " + iconID)
 			icon.src = imgURL;
+			popUpOnIconByID(iconID);
 		}
 		else{
-			console.log("info .. .. .. Icons already added");
+			//console.log("info .. .. .. Icons already added");
 		}
 	});
 }
@@ -170,7 +177,74 @@ function popUpOnIcons(iconClass,i,max){ //TODO
 	});
 }
 
-/** Inject png images as src of icons in popup menus of claim score icons*/
+function popUpOnIconByID(iconID){ //TODO
+	var node = document.createElement("DIV");  
+	$.get(chrome.extension.getURL("html/ratePopup.html"), function(data) {
+		node.innerHTML = data;
+		node.className="claim";
+		document.getElementById(iconID).parentNode.appendChild(node);
+		
+		var verified = node.getElementsByClassName("popVerifiedIcon");
+		var neutral = node.getElementsByClassName("popNeutralIcon");
+		var refuted = node.getElementsByClassName("popRefutedIcon");
+		var popupBase = node.getElementsByClassName("popupbase");
+		
+		var verImgUrl = chrome.extension.getURL("resources/icons/claimT.png");
+		var neuImgUrl = chrome.extension.getURL("resources/icons/claimC.png");
+		var refImgUrl = chrome.extension.getURL("resources/icons/claimR.png");
+		var baseImgUrl = chrome.extension.getURL("resources/icons/popupBase.png");
+		
+		verified[0].src = verImgUrl;
+		neutral[0].src = neuImgUrl;
+		refuted[0].src = refImgUrl;
+		popupBase[0].src = baseImgUrl;
+		//clearIconsIfSkip(iconID);
+	});
+}
+
+function clearIconsIfSkip(item){
+	var skip = false;
+	if(clearIconIfSkipUsingString(item)){return true;}
+	if(clearEmptyIcons(item)){return true;}
+	return false;
+}
+
+function clearIconIfSkipUsingString(item){
+	console.log(item);
+	var skipStringAr = ["Your friend since","Followed by","friends","Friends on"];
+	var nonSkipStringAr = ["Works","Lives in","From","Born on","Studies","Studied", "In a relationship"];
+	var text = item.parentNode.innerText;
+	if(text.length <= 2){
+		text = item.parentNode.innerHTML.toString();
+	}
+	for(var j=0;j<skipStringAr.length;j++){
+		if(text.indexOf(skipStringAr[j])>=0){
+			console.log(".. .. .. .. Will clear "+ item+ " due to "+ skipStringAr[j]);
+			var skipClear = false;
+			for(var k=0;k<nonSkipStringAr.length;k++){
+				if(text.indexOf(nonSkipStringAr[k])>=0){
+					console.log(".. .. .. .. will not clear" + item+ " due to "+ nonSkipStringAr[k]);
+					skipClear = true;
+					break;
+				}
+			}
+			if(skipClear){
+				continue;
+			}
+			return true;
+		}
+	}
+	return false;
+}
+
+function clearEmptyIcons(item){
+	if(item.parentNode.parentNode.firstChild.firstChild.nodeName === "BUTTON"){
+		return true;
+	}
+	return false;
+}
+
+/** Inject png images as src of icons in popup menus of claim score icons
 function addIconsToPopupMenus(){
 	console.log(".. .. .. injecting icons to pop up menus");
 	var verified = document.getElementsByClassName("popVerifiedIcon");
@@ -189,12 +263,6 @@ function addIconsToPopupMenus(){
 		refuted[i].src = refImgUrl;
 		popupBase[i].src = baseImgUrl;
 	}
-}
-
-function clearSkipIcons(){
-	clearSkipIconsUsingStrings();
-	//clearSkipIconsUsingIcon();
-	clearEmptyIcons();
 }
 
 function clearSkipIconsUsingStrings(){
@@ -249,18 +317,7 @@ function clearSkipIconsUsingIcon(){
 		}
 	}
 }
-
-function clearEmptyIcons(){
-	console.log(".. .. .. clearing icons of incomplete data list items");
-	var itemAr = document.getElementsByClassName("_4bl7 _4bl8");
-	for(var i = 0;i<itemAr.length; i++){
-		if(itemAr[i].firstChild.nodeName !== "BUTTON"){
-			continue;
-		}
-		var parent = itemAr[i].parentNode;
-		parent.getElementsByClassName("rateIconContainer")[0].remove();
-	}
-}
+*/
 
 
 /**Returns logged in user id as a string*/
