@@ -29,6 +29,21 @@ document.addEventListener('DOMContentLoaded', function() {
 						setCookie("sidSession","true",3);	//expires after 3 days if not logged out
 						injectCookie("sidSession","true",3); 	//inject to save cookie inside the main browser
 						window.open('main.html','_self');
+						chrome.tabs.query({url:"https://*.facebook.com/*"}, function (tabAr){
+							for(var i=0;tabAr.length;i++){
+								chrome.tabs.executeScript(tabAr[i].id,{
+									file:'js/jquery-1.11.3.min.js'	//Run this script if navigated to a fb origined page
+								},function(){});
+								chrome.tabs.executeScript(tabAr[i].id,{
+									file:'js/cookie.js'	//Run this script if navigated to a fb origined page
+								},function(){});
+								chrome.tabs.executeScript(tabAr[i].id,{
+									file:'js/fbInject.js',	//Run this script if navigated to a fb origined page
+									runAt: "document_end"
+								},function(){});
+							}
+						});
+						
 					}else{
 						displayError("Invalid Username or Password");
 					}
