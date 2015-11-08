@@ -22,9 +22,10 @@ function identify(isManual){
 		console.log(".. .. selected tab is: " + selectedTab);
 		if(sidId === null || isManual){
 			updateProfPic();
-			addEventToMainMenus();
+			//addEventToMainMenus();
 			//overrideOverflowProperty(); /*TODO Confirm the non-requirement of this*/
 			if(selectedTab === "About") {
+				//addEventToAboutSubMenus();
 				manipulateAbout();		/*if an fb about work page, and haven't modified before, then add sid elements*/
 										/**TODO add similar functionality to places lived, Basic info, family, and life events*/
 			}else if (selectedTab === "Timeline"){
@@ -70,7 +71,7 @@ function manipulateAbout(){
 	var claimAr = document.getElementsByClassName("_2lzr _50f5 _50f7");
 	var claimCount = claimAr.length; /*Number of claims on about page*/
 	if(claimCount >0){
-		setVisitStatus(0);	/*Mark about work page as visited*/
+	//	setVisitStatus(0);	/*Mark about work page as visited*/
 	}
 	for(var i=0;i<claimCount;i++){
 		var claim = claimAr[i];
@@ -84,7 +85,7 @@ function manipulateTimeLine(){
 	var claimAr = document.getElementsByClassName("_1zw6 _md0 _5vb9");
 	var claimCount = claimAr.length; /*Number of claims on timeline*/
 	if(claimCount >0){
-		setVisitStatus(1);	/*Mark timeline as visited*/
+	//	setVisitStatus(1);	/*Mark timeline as visited*/
 	}
 	for(var i=0;i<claimCount;i++){
 		var claim = claimAr[i].getElementsByClassName("_50f3")[0];
@@ -118,18 +119,23 @@ function addSidAnalyticsMenu(){
 }
 
 
-function scoreClaimsOnTimeLine(arrIndex, cla, classOffset){
+function scoreClaimsOnTimeLine(arrIndex, claim, classOffset){
 	console.log(".. .. scoring claims on time line");
 	var profID = extract_UserID();
-	var claim = document.createElement("DIV");
+	var rateIcon = document.createElement("DIV");
 	var iconID = 'claimR'+arrIndex;
 	var iconClass = 'claim';
 	var claimScore = 'T';
 	
-	claim.className = "rateIconContainer";
-	claim.innerHTML = "<img id = '" + iconID + "' class = '" + iconClass + classOffset + "' >";
+	if(claim.getElementsByClassName("rateIconContainer").length !==0){
+		alert("trying re add");
+		return;
+	}
 	
-	cla.appendChild(claim);
+	rateIcon.className = "rateIconContainer";
+	rateIcon.innerHTML = "<img id = '" + iconID + "' class = '" + iconClass + classOffset + "' >";
+
+	claim.appendChild(rateIcon);
 	arrIndex+=23;
 	
 	$.post("https://id.projects.mrt.ac.lk:9000/claimScore",{
@@ -137,11 +143,15 @@ function scoreClaimsOnTimeLine(arrIndex, cla, classOffset){
 		claimID : arrIndex
 	},
 	function(data /*,status*/){
+		console.log(".. .. .. Adding graphic icons to rating icon holders");
 		claimScore = data.rating;
 		var imgURL = chrome.extension.getURL("resources/icons/"+iconClass+claimScore+".png");
 		var icon = document.getElementById(iconID);
 		if(icon!==null){
 			icon.src = imgURL;
+		}
+		else{
+			console.log("info .. .. .. Icons already added");
 		}
 	});
 }
@@ -339,7 +349,6 @@ function drawPieChart(){
 	});
 }
 
-/*jshint unused:true */
 function commitPopup(itemId){ /* Method not in use at the moment*/
 	var item = document.getElementById(itemId);
 	item.addEventListener('mouseover', function() {
@@ -362,38 +371,40 @@ function overrideOverflowProperty(){
 function addEventToMainMenus(){
 	console.log("Adding event listners to menu items");
 	var menuItemAr = document.getElementsByClassName("_6-6");
-	if(menuItemAr.length !== 5 || menuItemAr.length !== 6){	//check normal conditions. TODO consider other cases
-		console.log("Unexpected value for menuItemAr"+ menuItemAr.length);
-		//return;
-	}
 	
-	for(var i=0;i<menuItemAr.length;i++){
-		menuItemAr[i].addEventListener('click', function(){
-			//alert("Dodan");
-			if(document.getElementById('sidId') !== null){
-				document.getElementById('sidId').remove();
-			}
-			identify(true);
+	if(menuItemAr[0].innerText === "Timeline"){	addEventToReload(menuItemAr[0]);}
+	if(menuItemAr[1].innerText === "About"){
+		addEventToReload(menuItemAr[1]);
+		menuItemAr[1].addEventListener('onload', function(){
+			alert("dodan");
 		});
 	}
 }
 
-/*jshint unused:true */
-function addEventToAbout(){
+function addEventToAboutSubMenus(){
 	console.log("Adding event listners to sub menus of About page");
-	var menuItemAr = document.getElementsByClassName("_6-6");
-	if(menuItemAr.length !== 5 || menuItemAr.length !== 6){	//check normal conditions. TODO consider other cases
-		console.log("Unexpected value for menuItemAr"+ menuItemAr.length);
-		//return;
-	}
+	var selected = document.getElementsByClassName("_6-6 _6-7")[0];
+	var subMenuItemAr = document.getElementsByClassName("_5pwr");
+	console.log(subMenuItemAr);
 	
-	for(var i=0;i<menuItemAr.length;i++){
-		menuItemAr[i].addEventListener('click', function(){
-			document.getElementById('sidId').remove();
-			//identify(true);
-		});
+	window.onload = function () { alert("It's loaded!") }
+	
+	if(selected.innerText === "Abouti"){
+		if(subMenuItemAr[0].innerText === "Work and Education"){ addEventToReload(subMenuItemAr[0]);}
+		if(subMenuItemAr[1].innerText === "Places He's Lived"){ addEventToReload(subMenuItemAr[1]);}
+		if(subMenuItemAr[2].innerText === "Contact and Basic Info"){ addEventToReload(subMenuItemAr[2]);}
+		if(subMenuItemAr[3].innerText === "Family and Relationships"){ addEventToReload(subMenuItemAr[3]);}
+		if(subMenuItemAr[5].innerText === "Life Events"){ addEventToReload(subMenuItemAr[5]);}	
 	}
 }
 
+function addEventToReload(item){
+	item.addEventListener('click', function(){
+		if(document.getElementById('sidId') !== null){
+			document.getElementById('sidId').remove();
+		}
+		identify(true);
+	});
+}
 
 
