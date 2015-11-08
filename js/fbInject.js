@@ -8,19 +8,21 @@ var sidId = document.getElementById('sidId');
 console.log("Content Script loaded");
 
 if(getCookie("sidSession")==="true"){	/*check whether user is logged in*/
-	identify(false);	
+	identify();	
 }else{
 	console.log("Cookie mismatch. Need to log in again");
 }
 
 /**identify web page and take required actions*/
-function identify(isManual){
+function identify(){
 	console.log(".. Identifying Web Page");
 	if(timeLineCName!==null && timeLineHLine!==null){
 		//var isAbout = (document.getElementById("medley_header_about") !== null);	 //Did not work when came back to timeline from about
+		
 		var selectedTab = document.getElementsByClassName("_6-6 _6-7")[0].innerText;
 		console.log(".. .. selected tab is: " + selectedTab);
-		if(sidId === null || isManual){
+		
+		//if(sidId === null || isManual){
 			updateProfPic();
 			//addEventToMainMenus();
 			//overrideOverflowProperty(); /*TODO Confirm the non-requirement of this*/
@@ -31,10 +33,10 @@ function identify(isManual){
 			}else if (selectedTab === "Timeline"){
 				manipulateTimeLine();	/*if an fb profile timeline, and haven't modified before, then add sid elements*/
 			}
-		}else{
-			console.log(".. .. page already modified");
+		//}else{
+		//	console.log(".. .. page already modified");
 		/**TODO Handle event capture issue*/
-		}
+		//}
 		//addIconsToPopupMenus();
 	}
 }
@@ -82,6 +84,7 @@ function manipulateAbout(){
 
 function manipulateTimeLine(){
 	console.log(".. .. updating fb time line");
+	
 	var claimAr = document.getElementsByClassName("_1zw6 _md0 _5vb9");
 	var claimCount = claimAr.length; /*Number of claims on timeline*/
 	if(claimCount >0){
@@ -120,22 +123,20 @@ function addSidAnalyticsMenu(){
 
 
 function scoreClaimsOnTimeLine(arrIndex, claim, classOffset){
-	console.log(".. .. scoring claims on time line");
+	console.log(".. .. scoring claims on time line" + claim.innerHTML);
 	var profID = extract_UserID();
 	var rateIcon = document.createElement("DIV");
 	var iconID = 'claimR'+arrIndex;
 	var iconClass = 'claim';
 	var claimScore = 'T';
 	
-	if(claim.getElementsByClassName("rateIconContainer").length !==0){
-		alert("trying re add");
-		return;
+	/*Avoid adding icons again if already added*/
+	if(claim.getElementsByClassName("rateIconContainer").length === 0){
+		rateIcon.className = "rateIconContainer";
+		rateIcon.innerHTML = "<img id = '" + iconID + "' class = '" + iconClass + classOffset + "' >";
+		claim.appendChild(rateIcon);
 	}
 	
-	rateIcon.className = "rateIconContainer";
-	rateIcon.innerHTML = "<img id = '" + iconID + "' class = '" + iconClass + classOffset + "' >";
-
-	claim.appendChild(rateIcon);
 	arrIndex+=23;
 	
 	$.post("https://id.projects.mrt.ac.lk:9000/claimScore",{
