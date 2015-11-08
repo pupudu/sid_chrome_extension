@@ -1,4 +1,4 @@
-/* globals chrome,Chart: false */
+/* globals chrome,Chart,getCookie: false */
 
 var timeLineCName = document.getElementById('fb-timeline-cover-name');		//element to identify fb profile
 //var UpStatBtn = document.getElementsByClassName('uiIconText _51z7')[0];		//element to identify fb wall
@@ -126,17 +126,17 @@ function scoreClaimsOnTimeLine(arrIndex, claim, classOffset){
 		claimID : arrIndex
 	},
 	function(data /*,status*/){
-		//console.log(".. .. .. Adding graphic icons to rating icon holders" + iconID);
+		console.log(".. .. .. Adding graphic icons to rating icon holders" + iconID);
 		claimScore = data.rating;
 		var imgURL = chrome.extension.getURL("resources/icons/"+iconClass+claimScore+".png");
 		var icon = document.getElementById(iconID);
 		if(icon!==null){
-			//console.log(imgURL + " added to " + iconID)
+			console.log(imgURL + " added to " + iconID)
 			icon.src = imgURL;
 			popUpOnIconByID(iconID,classOffset);
 		}
 		else{
-			//console.log("info .. .. .. Icons already added");
+			console.log("info .. .. .. Icons already added");
 		}
 	});
 }
@@ -281,23 +281,4 @@ function drawPieChart(){
 			console.log(err);
 		}
 	});
-}
-
-function commitPopup(itemId){ /* Method not in use at the moment*/
-	var item = document.getElementById(itemId);
-	item.addEventListener('mouseover', function() {
-		//showRatingPopupMenu(itemId);
-	});
-}
-
-
-/** Allow overflowing divs over the base div of claims*/
-function overrideOverflowProperty(){
-	var containerArray = document.getElementsByClassName('_42ef');
-	for(var i=0;i<containerArray.length;i++){
-		var container = document.getElementsByClassName('_42ef')[i];
-		if(container.classList.length===1){
-		   container.setAttribute("style","overflow:visible");
-		}
-	}
 }
