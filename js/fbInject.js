@@ -152,7 +152,6 @@ function scoreClaims(arrIndex, claim, classOffset){
 	if(claim.getElementsByClassName("rateIconContainer")[0].childElementCount>1){
 		return;
 	}
-	console.log("......................................................................."+claim.getElementsByClassName("rateIconContainer").length+" "+ claim.getElementsByClassName("rateIconContainer")[0].childElementCount);
 	
 	arrIndex+=23;
 	
@@ -187,12 +186,16 @@ function popUpOnIconByID(claim,iconID,iconClass,classOffset){ //TODO
 		return;
 	}
 	
-	console.log(claimId+" "+ claim.innerText.trim()+" "+targetId+" "+myId);
+	//console.log(claimId+" "+ claim.innerText.trim()+" "+targetId+" "+myId);
 	
 	$.get(chrome.extension.getURL("html/ratePopup.html"), function(data) {
 		node.innerHTML = data;
 		node.className=iconClass+classOffset;
 		document.getElementById(iconID).parentNode.appendChild(node);
+		
+		node.getElementsByClassName("claimData")[0].setAttribute("data-claimId",claimId);
+		node.getElementsByClassName("claimData")[0].setAttribute("data-myId",myId);
+		node.getElementsByClassName("claimData")[0].setAttribute("data-targetId",targetId);
 		
 		var verified = node.getElementsByClassName("popVerifiedIcon");
 		var neutral = node.getElementsByClassName("popNeutralIcon");
@@ -209,6 +212,21 @@ function popUpOnIconByID(claim,iconID,iconClass,classOffset){ //TODO
 		refuted[0].src = refImgUrl;
 		popupBase[0].src = baseImgUrl;
 		//clearIconsIfSkip(iconID);
+		var obj = document.getElementById("ddd");
+		addEventToSendData(obj,targetId);
+	});
+}
+
+function addEventToSendData(obj,id){
+	console.log(".............................................................adding  event");
+	obj.addEventListener("click",function(){
+		alert("event added");
+		$.post("https://id.projects.mrt.ac.lk:9000/profRating",{
+			targetUser: id	
+		},
+		function(data){
+			alert(data.rating);
+		});
 	});
 }
 
