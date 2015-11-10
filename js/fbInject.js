@@ -212,7 +212,7 @@ function popUpOnIconByID(claim,iconID,iconClass,classOffset){ //TODO
 		refuted[0].src = refImgUrl;
 		popupBase[0].src = baseImgUrl;
 		//clearIconsIfSkip(iconID);
-		var obj = document.getElementById("ddd");
+		var obj = claim.getElementsByClassName("verA")[0];
 		addEventToSendData(obj,targetId);
 	});
 }
