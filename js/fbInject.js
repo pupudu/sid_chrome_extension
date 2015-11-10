@@ -183,6 +183,9 @@ function popUpOnIconByID(claim,iconID,iconClass,classOffset){ //TODO
 	var myId = extractId(0);
 	
 	classOffset = classOffset+"_d";
+	if(claim.getElementsByClassName(iconClass+classOffset).length > 0){
+		return;
+	}
 	
 	console.log(claimId+" "+ claim.innerText.trim()+" "+targetId+" "+myId);
 	
