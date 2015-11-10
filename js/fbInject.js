@@ -43,7 +43,7 @@ function updateProfPic(){
 	var profPic = document.getElementsByClassName("photoContainer")[0];
 	var icon = document.createElement("DIV");
 	var imgURL;
-	var profID = extract_UserID();
+	var profID = extract_TargetId();
 	icon.innerHTML = "<img id ='verif' class = 'profIcon'>";
 	profPic.appendChild(icon);
 	
@@ -67,7 +67,7 @@ function updFrndsProfInTimeLine(){
 	var friendAr = timelineRecent.getElementsByClassName("_s0 friendPhoto _rv img");
 
 	for(var i=0;i<friendAr.length;i++){
-		var profID = extractFriendID(friendAr[i]);
+		var profID = extractFriendId(friendAr[i]);
 		var test = friendAr[i];
 		var friendStr = "friend"+i;
 		var icon = document.createElement("DIV");
@@ -132,7 +132,7 @@ function addSidAnalyticsMenu(){
 
 function scoreClaims(arrIndex, claim, classOffset){
 	//console.log(".. .. scoring claims on time line" + claim.innerHTML);
-	var profID = extract_UserID();
+	var profID = extract_TargetId();
 	var rateIcon = document.createElement("DIV");
 	var iconID = 'claimR'+classOffset+arrIndex;
 	var iconClass = 'claim';
@@ -149,6 +149,10 @@ function scoreClaims(arrIndex, claim, classOffset){
 		rateIcon.innerHTML = "<img id = '" + iconID + "' class = '" + iconClass + classOffset + "' >";
 		claim.appendChild(rateIcon);
 	}
+	if(claim.getElementsByClassName("rateIconContainer")[0].childElementCount>1){
+		return;
+	}
+	console.log("......................................................................."+claim.getElementsByClassName("rateIconContainer").length+" "+ claim.getElementsByClassName("rateIconContainer")[0].childElementCount);
 	
 	arrIndex+=23;
 	
@@ -163,7 +167,7 @@ function scoreClaims(arrIndex, claim, classOffset){
 		var icon = document.getElementById(iconID);
 		if(icon!==null){
 			icon.src = imgURL;
-			popUpOnIconByID(iconID,classOffset);
+			popUpOnIconByID(claim,iconID,iconClass,classOffset);
 		}
 		else{
 			console.log("info .. .. .. Icons already added");
@@ -171,11 +175,20 @@ function scoreClaims(arrIndex, claim, classOffset){
 	});
 }
 
-function popUpOnIconByID(iconID,classOffset){ //TODO
+function popUpOnIconByID(claim,iconID,iconClass,classOffset){ //TODO
+	
 	var node = document.createElement("DIV");  
+	var claimId = hashId(claim.innerHTML.toString());
+	var targetId = extractId(1);
+	var myId = extractId(0);
+	
+	classOffset = classOffset+"_d";
+	
+	console.log(claimId+" "+ claim.innerText.trim()+" "+targetId+" "+myId);
+	
 	$.get(chrome.extension.getURL("html/ratePopup.html"), function(data) {
 		node.innerHTML = data;
-		node.className="claim"+classOffset;
+		node.className=iconClass+classOffset;
 		document.getElementById(iconID).parentNode.appendChild(node);
 		
 		var verified = node.getElementsByClassName("popVerifiedIcon");
@@ -238,8 +251,8 @@ function clearEmptyIcons(item){
 }
 
 
-/**Returns logged in user id as a string*/
-function extract_UserID(){
+/**Returns user id of timeline owner as a string*/
+function extract_TargetId(){
 	var str;
 	var profID;
 	var strObj;
@@ -254,8 +267,26 @@ function extract_UserID(){
 	return profID;
 }
 
-/**Returns logged in user id as a string*/
-function extractFriendID(node){
+/**Returns user id of viewer(0) or profile owner(1) as a string*/
+function extractId(userType){
+	var str;
+	var profID;
+	var strObj;
+	try{
+		str = document.getElementsByClassName("timelineReportContainer")[0].getAttribute("data-gt");
+		strObj = JSON.parse(str);
+		if(userType === 0){
+			profID = strObj.viewerid;
+		}else if(userType === 1){
+			profID = strObj.profileownerid;
+		}
+	}catch(e){
+	}
+	return profID;
+}
+
+/**Returns user id of a person in timeline friendlist as a string*/
+function extractFriendId(node){
 	var str;
 	var profID;
 	var strObj;
@@ -330,11 +361,13 @@ function drawPieChart(){
 /**Generate an Id given an string*/
 function hashId(str){
     var hash = 0;
-    if (str.length == 0) return hash;
+    if (str.length <= 2) return hash;
+	str = str.trim();
     for (var i = 0; i < str.length; i++) {
         var character = str.charCodeAt(i);
         hash = ((hash<<5)-hash)+character;
         hash = hash & hash; // Convert to 32bit integer
     }
+	//console.log(hash +" "+ str);
     return hash;
 }

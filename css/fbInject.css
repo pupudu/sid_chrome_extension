@@ -34,7 +34,7 @@ img.popupbase{
 	cursor:pointer
 }
 
-div.claim{
+div.claim_d{
 	position:absolute;
 	z-index:1;
 	height: 20px;
@@ -43,7 +43,7 @@ div.claim{
 	top:5px;
 }
 
-div.claimAbout{
+div.claimAbout_d{
 	position:absolute;
 	z-index:1;
 	height: 40px;
