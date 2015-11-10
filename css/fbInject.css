@@ -8,6 +8,15 @@ img.profIcon {
     width: 60px;
 }
 
+img.friendProfIcon{
+	position:absolute;
+	left:58px;
+	top:58px;
+	z-index:1;
+	height: 45px;
+	width: 45px;
+}
+
 img.claim{
 	position:absolute;
 	z-index:1;

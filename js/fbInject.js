@@ -1,11 +1,10 @@
 /* globals chrome,Chart,getCookie: false */
+console.log("Content Script loaded");
 
 var timeLineCName = document.getElementById('fb-timeline-cover-name');		//element to identify fb profile
 //var UpStatBtn = document.getElementsByClassName('uiIconText _51z7')[0];		//element to identify fb wall
 //var membersBtn = document.getElementsByClassName('_2l5d')[1];				//element to identify fb group
 var timeLineHLine = document.getElementById('fbTimelineHeadline');			//element to identify fb page
-//var sidId = document.getElementById('sidId');
-console.log("Content Script loaded");
 
 if(getCookie("sidSession")==="true"){	/*check whether user is logged in*/
 	identify();	
@@ -23,7 +22,7 @@ function identify(){
 		updateProfPic();
 		addSidAnalyticsMenu();
 		if(selectedTab === "About") {
-			manipulateAbout();		/*if an fb about work page, and haven't modified before, then add sid elements*/
+			manipulateAboutWork();		/*if an fb about work page, and haven't modified before, then add sid elements*/
 									/**TODO add similar functionality to places lived, Basic info, family, and life events*/
 		}else if (selectedTab === "Timeline"){
 			manipulateTimeLine();	/*if an fb profile timeline, and haven't modified before, then add sid elements*/
@@ -33,6 +32,7 @@ function identify(){
 
 /** Appends sid-rating state over fb profile picture*/
 function updateProfPic(){
+	updateFriendsProfPics();
 	if(document.getElementById("verif")!==null){
 		if(document.getElementById("verif").src.length>10){
 			console.log(".. .. Profile pic already updated");
@@ -60,10 +60,41 @@ function updateProfPic(){
 	});
 }
 
+/** Appends sid-rating state over fb profile picture*/
+function updateFriendsProfPics(){
+	
+	/**updating friends profile pics*/
+	var timelineRecent = document.getElementById("pagelet_timeline_recent");
+	var friendAr = timelineRecent.getElementsByClassName("_s0 friendPhoto _rv img");
+	for(var i=0;i<friendAr.length;i++){
+		friendAr[i].parentNode.innerHTML += "<img id='verif' class = 'friendProfIcon' >";
+	}
+	
+	/*
+	var profPic = document.getElementsByClassName("photoContainer")[0];
+	var icon = document.createElement("DIV");
+	var imgURL;
+	var profID = extract_UserID();
+	icon.innerHTML = "<img id ='verif' class = 'profIcon'>";
+	profPic.appendChild(icon);
+	
+	$.post("https://id.projects.mrt.ac.lk:9000/profRating",
+	{
+		targetUser: profID	
+	},
+	function(data, status){
+		imgURL = chrome.extension.getURL("resources/icons/prof" + data.rating + ".png");
+		if(document.getElementById('verif') !== null){
+			document.getElementById('verif').src = imgURL;
+		}
+		$("#verif").fadeIn(2000);
+	});*/
+}
 
-function manipulateAbout(){
+
+function manipulateAboutWork(){
 	console.log(".. .. updating about work page");
-	var claimAr = document.getElementsByClassName("_2lzr _50f5 _50f7");
+	var claimAr = document.getElementsByClassName("_50f5 _50f7");
 	var claimCount = claimAr.length; /*Number of claims on about page*/
 	
 	for(var i=0;i<claimCount;i++){
@@ -75,13 +106,16 @@ function manipulateAbout(){
 function manipulateTimeLine(){
 	var claimAr = document.getElementsByClassName("_1zw6 _md0 _5vb9");
 	var claimCount = claimAr.length; /*Number of claims on timeline*/
+	//console.log(".. .. updating fb time line" + claimAr.length);
 	
-	console.log(".. .. updating fb time line" + claimAr.length);
-	
+	/**Scoring claim summary*/
 	for(var i=0;i<claimCount;i++){
 		var claim = claimAr[i].getElementsByClassName("_50f3")[0];
 		scoreClaims(i,claim,"");
 	}
+	
+	
+	
 }
 
 function addSidAnalyticsMenu(){
@@ -209,12 +243,16 @@ function clearEmptyIcons(item){
 function extract_UserID(){
 	var str;
 	var profID;
+	var strObj;
 	try{
 		str = document.getElementById("pagelet_timeline_main_column").getAttribute("data-gt");
-		var a = str.indexOf('{');
-		var b = str.indexOf('}');
-		var profElementStr = str.substring(++a, b).split(',')[0].split(':')[1];
-		profID = profElementStr.substring(1,profElementStr.length-1);
+		strObj = JSON.parse(str);
+		profID = strObj.profile_owner;
+		//var a = str.indexOf('{');
+		//var b = str.indexOf('}');
+		//var profElementStr = str.substring(++a, b).split(',')[0].split(':')[1];
+		//profID = profElementStr.substring(1,profElementStr.length-1);
+		
 	}catch(e){
 		console.log(".. .. Synchronization Issue. Page will be reloded");
 		window.location.reload();
