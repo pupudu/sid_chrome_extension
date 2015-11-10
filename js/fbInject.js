@@ -212,20 +212,29 @@ function popUpOnIconByID(claim,iconID,iconClass,classOffset){ //TODO
 		refuted[0].src = refImgUrl;
 		popupBase[0].src = baseImgUrl;
 		//clearIconsIfSkip(iconID);
-		var obj = claim.getElementsByClassName("verA")[0];
-		addEventToSendData(obj,targetId);
+		var verLink = claim.getElementsByClassName("verA")[0];
+		var refLink = claim.getElementsByClassName("refA")[0];
+		var neuLink = claim.getElementsByClassName("neuA")[0];
+		
+		addEventToSendData(verLink,claimId,targetId,myId,claim.innerHTML.toString(),1);
+		addEventToSendData(refLink,claimId,targetId,myId,claim.innerHTML.toString(),-1);
+		addEventToSendData(neuLink,claimId,targetId,myId,claim.innerHTML.toString(),0);
 	});
 }
 
-function addEventToSendData(obj,id){
+function addEventToSendData(obj,claimId,targetId,myId,claimData,rate){
 	console.log(".............................................................adding  event");
 	obj.addEventListener("click",function(){
 		alert("event added");
-		$.post("https://id.projects.mrt.ac.lk:9000/profRating",{
-			targetUser: id	
+		$.post("https://id.projects.mrt.ac.lk:9000/test/addRating",{
+			myid: myId,
+			targetid: targetId,
+			claimid: claimId,
+			claim: claimData,
+			rating: rate
 		},
 		function(data){
-			alert(data.rating);
+			console.log(data);
 		});
 	});
 }
