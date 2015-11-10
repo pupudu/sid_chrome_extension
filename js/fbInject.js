@@ -26,13 +26,13 @@ function identify(){
 									/**TODO add similar functionality to places lived, Basic info, family, and life events*/
 		}else if (selectedTab === "Timeline"){
 			manipulateTimeLine();	/*if an fb profile timeline, and haven't modified before, then add sid elements*/
+			updFrndsProfInTimeLine();
 		}
 	}
 }
 
 /** Appends sid-rating state over fb profile picture*/
 function updateProfPic(){
-	updateFriendsProfPics();
 	if(document.getElementById("verif")!==null){
 		if(document.getElementById("verif").src.length>10){
 			console.log(".. .. Profile pic already updated");
@@ -61,36 +61,38 @@ function updateProfPic(){
 }
 
 /** Appends sid-rating state over fb profile picture*/
-function updateFriendsProfPics(){
-	
+function updFrndsProfInTimeLine(){
 	/**updating friends profile pics*/
 	var timelineRecent = document.getElementById("pagelet_timeline_recent");
 	var friendAr = timelineRecent.getElementsByClassName("_s0 friendPhoto _rv img");
+	//console.log(friendAr[0].parentNode);
 	for(var i=0;i<friendAr.length;i++){
-		friendAr[i].parentNode.innerHTML += "<img id='verif' class = 'friendProfIcon' >";
+		var profID = extractFriendID(friendAr[i]);
+		var test = friendAr[i];
+		var friendStr = "friend"+i;
+		var icon = document.createElement("DIV");
+		
+		if(document.getElementById(friendStr) === null){ 
+			icon.innerHTML = "<img id='friend"+i+"' class = 'friendProfIcon' >"
+			friendAr[i].parentNode.appendChild(icon);
+			if(document.getElementById(friendStr) !== null){ 
+				if(document.getElementById(friendStr).src === null ){ return; } 
+			}
+			addIconToFriendProf(profID,friendStr);
+		}
 	}
-	
-	/*
-	var profPic = document.getElementsByClassName("photoContainer")[0];
-	var icon = document.createElement("DIV");
-	var imgURL;
-	var profID = extract_UserID();
-	icon.innerHTML = "<img id ='verif' class = 'profIcon'>";
-	profPic.appendChild(icon);
-	
+}
+
+function addIconToFriendProf(profID, friendStr){
 	$.post("https://id.projects.mrt.ac.lk:9000/profRating",
 	{
 		targetUser: profID	
 	},
 	function(data, status){
 		imgURL = chrome.extension.getURL("resources/icons/prof" + data.rating + ".png");
-		if(document.getElementById('verif') !== null){
-			document.getElementById('verif').src = imgURL;
-		}
-		$("#verif").fadeIn(2000);
-	});*/
+		document.getElementById(friendStr).src = imgURL;
+	});
 }
-
 
 function manipulateAboutWork(){
 	console.log(".. .. updating about work page");
@@ -248,14 +250,24 @@ function extract_UserID(){
 		str = document.getElementById("pagelet_timeline_main_column").getAttribute("data-gt");
 		strObj = JSON.parse(str);
 		profID = strObj.profile_owner;
-		//var a = str.indexOf('{');
-		//var b = str.indexOf('}');
-		//var profElementStr = str.substring(++a, b).split(',')[0].split(':')[1];
-		//profID = profElementStr.substring(1,profElementStr.length-1);
-		
 	}catch(e){
 		console.log(".. .. Synchronization Issue. Page will be reloded");
 		window.location.reload();
+	}
+	return profID;
+}
+
+/**Returns logged in user id as a string*/
+function extractFriendID(node){
+	var str;
+	var profID;
+	var strObj;
+	try{
+		str = node.parentNode.getAttribute("data-gt");
+		strObj = JSON.parse(str);
+		profID = strObj.engagement.eng_tid;
+	}catch(e){
+		console.error(".. .. Synchronization Issue. Page will be reloded");
 	}
 	return profID;
 }
