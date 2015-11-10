@@ -65,7 +65,7 @@ function updFrndsProfInTimeLine(){
 	/**updating friends profile pics*/
 	var timelineRecent = document.getElementById("pagelet_timeline_recent");
 	var friendAr = timelineRecent.getElementsByClassName("_s0 friendPhoto _rv img");
-	//console.log(friendAr[0].parentNode);
+
 	for(var i=0;i<friendAr.length;i++){
 		var profID = extractFriendID(friendAr[i]);
 		var test = friendAr[i];
@@ -115,9 +115,6 @@ function manipulateTimeLine(){
 		var claim = claimAr[i].getElementsByClassName("_50f3")[0];
 		scoreClaims(i,claim,"");
 	}
-	
-	
-	
 }
 
 function addSidAnalyticsMenu(){
@@ -328,4 +325,16 @@ function drawPieChart(){
 			console.log(err);
 		}
 	});
+}
+
+/**Generate an Id given an string*/
+function hashId(str){
+    var hash = 0;
+    if (str.length == 0) return hash;
+    for (var i = 0; i < str.length; i++) {
+        var character = str.charCodeAt(i);
+        hash = ((hash<<5)-hash)+character;
+        hash = hash & hash; // Convert to 32bit integer
+    }
+    return hash;
 }
