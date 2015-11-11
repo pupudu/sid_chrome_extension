@@ -24,6 +24,7 @@ var font_size_big = '24px';
 var alert_color_success_background = '#57BF57';
 var alert_color_warning_background = '#E3B771';
 var alert_color_error_background = '#E1715B';
+var alert_color_info_background = '#3366FF';
 var alert_color_text = 'white';
 
 var confirm_color_background = '#4D82D6';
@@ -33,6 +34,10 @@ var confirm_color_text = 'white';
 var confirm_color_yes_text = 'white';
 var confirm_color_no_text = 'white';
 // *********************************************
+
+
+
+
 
 
 // NOTIE
@@ -134,6 +139,9 @@ function show(type, message, seconds) {
         case 3:
             outer.style.backgroundColor = alert_color_error_background;
             break;
+		case 4:
+            outer.style.backgroundColor = alert_color_info_background;
+            break;
     }
     
     // Set notie text
@@ -151,7 +159,7 @@ function show(type, message, seconds) {
         outer.style.MozTransition = 'all 0.8s ease';
         outer.style.WebkitTransition = 'all 0.8s ease';
         outer.style.transition = 'all 0.8s ease';
-        outer.style.opacity = '0.8';
+		outer.style.opacity = '0.8';
         
         outer.style.top = 0;
         
@@ -164,7 +172,7 @@ function show(type, message, seconds) {
         }, duration);
         
     }, 20);
-   
+    
 }
 
 function hide(callback) {
@@ -192,7 +200,6 @@ function hide(callback) {
 // *********************************************
 
 // confirm elements and styling
-/*
 var confirm_outer = document.createElement('div');
 confirm_outer.style.position = 'fixed';
 confirm_outer.style.top = '0';
@@ -322,9 +329,9 @@ function confirm_show(title, yes_text, no_text, yes_callback) {
         setTimeout(function() {
 
             if (shadow) { confirm_outer.style.boxShadow = '0px 0px 10px 0px rgba(0,0,0,0.5)'; }
-            confirm_outer.style.MozTransition = 'all 0.3s ease';
-            confirm_outer.style.WebkitTransition = 'all 0.3s ease';
-            confirm_outer.style.transition = 'all 0.3s ease';
+            confirm_outer.style.MozTransition = 'all 0.8s ease';
+            confirm_outer.style.WebkitTransition = 'all 0.8s ease';
+            confirm_outer.style.transition = 'all 0.8s ease';
 
             confirm_outer.style.top = 0;
             confirm_backdrop.style.opacity = '0.75';
@@ -361,6 +368,7 @@ function confirm_hide() {
         confirm_outer.style.WebkitTransition = '';
         confirm_outer.style.transition = '';
         confirm_backdrop.style.display = 'none';
+		confirm_backdrop.style.opacity = '0.8';
         
         scroll_enable();
         
@@ -382,7 +390,7 @@ function scroll_enable() {
     document.body.style.height = '';
     document.body.style.overflow = '';
     document.ontouchstart = function(e){ return true; }
-}*/
+}
 return {
     alert: alert,
     confirm: confirm

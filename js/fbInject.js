@@ -222,7 +222,7 @@ function addEventToSendData(obj,claimId,targetId,myId,claimData,rate){
 	//console.log(".............................................................adding  event");
 	obj.addEventListener("click",function(){
 		//alert("event added");
-		notie.alert(1, 'Rating added!', 2);
+		notie.alert(4, 'Adding rating to siD system', 2);
 		$.post("https://id.projects.mrt.ac.lk:9000/test/addRating",{
 			myid: myId,
 			targetid: targetId,
@@ -233,7 +233,9 @@ function addEventToSendData(obj,claimId,targetId,myId,claimData,rate){
 		function(data){
 			//console.log(data);
 			if(data !== "OK"){
-				notie.alert(3, 'An unexpected error occured!', 2);
+				notie.alert(3, 'An unexpected error occured! Please Try Again', 3);
+			}else{
+				notie.alert(1, 'Rating added successfully!', 2);
 			}
 		});
 	});
