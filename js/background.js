@@ -45,6 +45,11 @@ function inject(tabId,obj,tab){
 			//Do Nothing
 		});
 		chrome.tabs.executeScript(tab.id,{
+			file:'js/notie.js'	//Run this script if navigated to a fb origined page
+		},function(){
+			//Do Nothing
+		});
+		chrome.tabs.executeScript(tab.id,{
 			file:'js/fbInject.js',	//Run this script if navigated to a fb origined page
 			runAt: "document_end"
 		},function(){

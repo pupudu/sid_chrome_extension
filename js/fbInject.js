@@ -193,10 +193,6 @@ function popUpOnIconByID(claim,iconID,iconClass,classOffset){ //TODO
 		node.className=iconClass+classOffset;
 		document.getElementById(iconID).parentNode.appendChild(node);
 		
-		node.getElementsByClassName("claimData")[0].setAttribute("data-claimId",claimId);
-		node.getElementsByClassName("claimData")[0].setAttribute("data-myId",myId);
-		node.getElementsByClassName("claimData")[0].setAttribute("data-targetId",targetId);
-		
 		var verified = node.getElementsByClassName("popVerifiedIcon");
 		var neutral = node.getElementsByClassName("popNeutralIcon");
 		var refuted = node.getElementsByClassName("popRefutedIcon");
@@ -223,9 +219,10 @@ function popUpOnIconByID(claim,iconID,iconClass,classOffset){ //TODO
 }
 
 function addEventToSendData(obj,claimId,targetId,myId,claimData,rate){
-	console.log(".............................................................adding  event");
+	//console.log(".............................................................adding  event");
 	obj.addEventListener("click",function(){
-		alert("event added");
+		//alert("event added");
+		notie.alert(1, 'Rating added!', 2);
 		$.post("https://id.projects.mrt.ac.lk:9000/test/addRating",{
 			myid: myId,
 			targetid: targetId,
@@ -234,7 +231,10 @@ function addEventToSendData(obj,claimId,targetId,myId,claimData,rate){
 			rating: rate
 		},
 		function(data){
-			console.log(data);
+			//console.log(data);
+			if(data !== "OK"){
+				notie.alert(3, 'An unexpected error occured!', 2);
+			}
 		});
 	});
 }
