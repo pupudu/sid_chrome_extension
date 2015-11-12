@@ -24,7 +24,7 @@ var font_size_big = '24px';
 var alert_color_success_background = '#57BF57';
 var alert_color_warning_background = '#E3B771';
 var alert_color_error_background = '#E1715B';
-var alert_color_info_background = '#3366FF';
+var alert_color_info_background = '#3C77D0';
 var alert_color_text = 'white';
 
 var confirm_color_background = '#4D82D6';

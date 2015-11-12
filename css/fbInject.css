@@ -43,7 +43,7 @@ div.claim_d{
 	top:5px;
 }
 
-div.claimAbout_d{
+div.claimWork_d{
 	position:absolute;
 	z-index:1;
 	height: 40px;
@@ -57,7 +57,7 @@ img.popup{
     width: 30px;
 }
 
-img.claimAbout{
+img.claimWork{
 	position:absolute;
 	z-index:1;
 	height: 40px;

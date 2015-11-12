@@ -101,7 +101,7 @@ function manipulateAboutWork(){
 	
 	for(var i=0;i<claimCount;i++){
 		var claim = claimAr[i];
-		scoreClaims(i,claim,"About"); /*TODO fix issue in icon positions of about page*/
+		scoreClaims(i,claim,"Work"); /*TODO fix issue in icon positions of about page*/
 	}
 }
 
@@ -231,11 +231,11 @@ function addEventToSendData(obj,claimId,targetId,myId,claimData,rate){
 			rating: rate
 		},
 		function(data){
-			//console.log(data);
+			console.log(data);
 			if(data !== "OK"){
 				notie.alert(3, 'An unexpected error occured! Please Try Again', 3);
 			}else{
-				notie.alert(1, 'Rating added successfully!', 2);
+				notie.alert(1, 'Rating added successfully!', 3);
 			}
 		});
 	});
