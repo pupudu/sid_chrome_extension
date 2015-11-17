@@ -50,13 +50,17 @@ function updateProfPic(){
 
 function manipulateProfile(){
 	console.log(".. .. updating sections");
-	var bgSections = document.getElementsByClassName("background-section");
-	var claimAr = bgSections[1].getElementsByClassName("section-item");
-	var claimCount = claimAr.length; /*Number of claims on about page*/
+	var bgSectionAr = document.getElementsByClassName("background-section");
 	
-	for(var i=0;i<claimCount;i++){
-		var claim = claimAr[i];
-		scoreClaims(i,claim,"Events"); /*TODO fix issue in icon positions of about page*/
+	
+	for(var j=0;j<bgSectionAr.length;j++){
+		var claimAr = bgSectionAr[j].getElementsByClassName("section-item");
+		var claimCount = claimAr.length; /*Number of claims on about page*/
+		
+		for(var i=0;i<claimCount;i++){
+			var claim = claimAr[i];
+			scoreClaims((10*j+i),claim,"Events"); /*TODO fix issue in icon positions of about page*/
+		}
 	}
 }
 
@@ -156,7 +160,7 @@ function addSidAnalyticsMenu(){
 
 function scoreClaims(arrIndex, claim, classOffset){
 	//console.log(".. .. scoring claims on time line" + claim.innerHTML);
-	var profID = extract_TargetId();
+	var profID = hashId(profile.innerText.substring(24));
 	var rateIcon = document.createElement("DIV");
 	var iconID = 'claimR'+classOffset+arrIndex;
 	var iconClass = 'claim';
