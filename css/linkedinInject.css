@@ -44,20 +44,12 @@ div.claim_d{
 }
 
 div.claimWork_d{
-	position:absolute;
+	position:relative;
 	z-index:1;
 	height: 40px;
     width: 40px;
 	left:530px;
 	top:20px;
-}
-
-div.claimEvents_d{
-	position:absolute;
-	z-index:1;
-	height: 20px;
-    width: 20px;
-	top:-20px;
 }
 
 img.popup{
@@ -66,7 +58,7 @@ img.popup{
 }
 
 img.claimWork{
-	position:absolute;
+	position:relative;
 	z-index:1;
 	height: 40px;
     width: 40px;
@@ -74,12 +66,22 @@ img.claimWork{
 	top:15px;
 }
 
+div.claimEvents_d{
+	position:absolute;
+	z-index:1;
+	height: 20px;
+    width: 20px;
+	top:-55px;
+	left:-570px;
+}
+
 img.claimEvents{
 	position:relative;
 	z-index:1;
 	height: 20px;
     width: 20px;
-	top:-20px;
+	top:-55px;
+	left:-570px;
 }
 
 img.ring{

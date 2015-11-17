@@ -15,7 +15,7 @@ function identify(){
 	if(profile!==null){
 		updateProfPic();
 		//addSidAnalyticsMenu();
-		//manipulateProfile();
+		manipulateProfile();
 	}
 }
 
@@ -47,6 +47,31 @@ function updateProfPic(){
 		$("#verif").fadeIn(2000);
 	});
 }
+
+function manipulateProfile(){
+	console.log(".. .. updating sections");
+	var bgSections = document.getElementsByClassName("background-section");
+	var claimAr = bgSections[1].getElementsByClassName("section-item");
+	var claimCount = claimAr.length; /*Number of claims on about page*/
+	
+	for(var i=0;i<claimCount;i++){
+		var claim = claimAr[i];
+		scoreClaims(i,claim,"Events"); /*TODO fix issue in icon positions of about page*/
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /** Appends sid-rating state over fb profile picture*/
 function updFrndsProfInTimeLine(){
