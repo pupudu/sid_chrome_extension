@@ -56,6 +56,35 @@ function inject(tabId,obj,tab){
 			//Do Nothing
 		});
 	}
+	else if(tab.url.search("https://www.linkedin.com")===0){
+		//alert("status "+obj.status+ " url "+count+" "+ tab.url);
+		chrome.tabs.executeScript(tab.id,{
+			file:'js/jquery-1.11.3.min.js'	//Run this script if navigated to a linkedin origined page
+		},function(){
+			//Do Nothing
+		});
+		chrome.tabs.executeScript(tab.id,{
+			file:'js/cookie.js'	//Run this script if navigated to a linkedin origined page
+		},function(){
+			//Do Nothing
+		});
+		chrome.tabs.executeScript(tab.id,{
+			file:'js/chart.min.js'	//Run this script if navigated to a linkedin origined page
+		},function(){
+			//Do Nothing
+		});
+		chrome.tabs.executeScript(tab.id,{
+			file:'js/notie.js'	//Run this script if navigated to a linkedin origined page
+		},function(){
+			//Do Nothing
+		});
+		chrome.tabs.executeScript(tab.id,{
+			file:'js/linkedinInject.js',	//Run this script if navigated to a linkedin origined page
+			runAt: "document_end"
+		},function(){
+			//Do Nothing
+		});
+	}
 }
 
 /** Used by content scripts to access local storage*/
