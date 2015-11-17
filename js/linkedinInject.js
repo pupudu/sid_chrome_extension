@@ -31,7 +31,7 @@ function updateProfPic(){
 	var profPic = document.getElementsByClassName("profile-picture")[0];
 	var icon = document.createElement("DIV");
 	var imgURL;
-	var profID = hashId(profile.innerText);
+	var profID = hashId(profile.innerText.substring(24));
 	icon.innerHTML = "<img id ='verif' class = 'profIcon'>";
 	profPic.appendChild(icon);
 	
@@ -400,5 +400,8 @@ function hashId(str){
         hash = hash & hash; // Convert to 32bit integer
     }
 	//console.log(hash +" "+ str);
+	if(hash<0){
+		hash*=-1;
+	}
     return hash;
 }
