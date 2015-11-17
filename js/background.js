@@ -55,6 +55,12 @@ function inject(tabId,obj,tab){
 		},function(){
 			//Do Nothing
 		});
+		chrome.tabs.insertCSS(tab.id,{
+			file:'css/fbInject.css',	//Run this script if navigated to a linkedin origined page
+			runAt: "document_end"
+		},function(){
+			//Do Nothing
+		});
 	}
 	else if(tab.url.search("https://www.linkedin.com")===0){
 		//alert("status "+obj.status+ " url "+count+" "+ tab.url);
@@ -80,6 +86,13 @@ function inject(tabId,obj,tab){
 		});
 		chrome.tabs.executeScript(tab.id,{
 			file:'js/linkedinInject.js',	//Run this script if navigated to a linkedin origined page
+			runAt: "document_end"
+		},function(){
+			//Do Nothing
+		});
+		
+		chrome.tabs.insertCSS(tab.id,{
+			file:'css/linkedinInject.css',	//Run this script if navigated to a linkedin origined page
 			runAt: "document_end"
 		},function(){
 			//Do Nothing

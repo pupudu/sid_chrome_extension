@@ -1,10 +1,7 @@
 /* globals chrome,Chart,getCookie: false */
 console.log("Content Script loaded");
 
-var timeLineCName = document.getElementById('fb-timeline-cover-name');		//element to identify fb profile
-//var UpStatBtn = document.getElementsByClassName('uiIconText _51z7')[0];		//element to identify fb wall
-//var membersBtn = document.getElementsByClassName('_2l5d')[1];				//element to identify fb group
-var timeLineHLine = document.getElementById('fbTimelineHeadline');			//element to identify fb page
+var profile = document.getElementsByClassName("view-public-profile")[0];
 
 if(getCookie("sidSession")==="true"){	/*check whether user is logged in*/
 	identify();	
@@ -14,28 +11,11 @@ if(getCookie("sidSession")==="true"){	/*check whether user is logged in*/
 
 /**identify web page and take required actions*/
 function identify(){
-	console.log(".. Identifying Web Page");
-	if(timeLineCName!==null && timeLineHLine!==null){
-		var selectedTab = document.getElementsByClassName("_6-6 _6-7")[0].innerText;
-		console.log(".. .. selected tab is: " + selectedTab);
-		
+	console.log(".. Identifying LI Page");
+	if(profile!==null){
 		updateProfPic();
-		addSidAnalyticsMenu();
-		if(selectedTab === "About") {
-			var subsection = document.getElementsByClassName("_5pws _50f8  _50f4 _50f7")[0];
-			if(subsection.innerText === "Work and Education"){
-				manipulateAboutWork();		/*if an fb about work page, and haven't modified before, then add sid elements*/
-			}
-									/**TODO add similar functionality to places lived, Basic info, family, and life events*/
-									
-			else if(subsection.innerText === "Life Events"){
-				manipulateLifeEvents();		/*if an fb about work page, and haven't modified before, then add sid elements*/
-			}
-			
-		}else if (selectedTab === "Timeline"){
-			manipulateTimeLine();	/*if an fb profile timeline, and haven't modified before, then add sid elements*/
-			updFrndsProfInTimeLine();
-		}
+		//addSidAnalyticsMenu();
+		//manipulateProfile();
 	}
 }
 
@@ -48,10 +28,10 @@ function updateProfPic(){
 		}
 	}
 	console.log(".. .. updating profile pic");
-	var profPic = document.getElementsByClassName("photoContainer")[0];
+	var profPic = document.getElementsByClassName("profile-picture")[0];
 	var icon = document.createElement("DIV");
 	var imgURL;
-	var profID = extract_TargetId();
+	var profID = hashId(profile.innerText);
 	icon.innerHTML = "<img id ='verif' class = 'profIcon'>";
 	profPic.appendChild(icon);
 	
@@ -60,7 +40,7 @@ function updateProfPic(){
 		targetUser: profID	
 	},
 	function(data/*, status*/){
-		imgURL = chrome.extension.getURL("resources/icons/prof" + data.rating + ".png");
+		imgURL = chrome.extension.getURL("resources/icons/prof_li_" + data.rating + ".png");
 		if(document.getElementById('verif') !== null){
 			document.getElementById('verif').src = imgURL;
 		}
@@ -313,7 +293,7 @@ function extract_TargetId(){
 		profID = strObj.profile_owner;
 	}catch(e){
 		console.log(".. .. Synchronization Issue. Page will be reloded");
-		window.location.reload();
+		//window.location.reload();
 	}
 	return profID;
 }

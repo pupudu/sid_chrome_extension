@@ -1,0 +1,129 @@
+img.profIcon {
+	position:absolute;
+	z-index:1;
+	display:none;
+	height: inherit;
+    width: inherit;
+	left:0px;
+	top:0px;
+}
+
+img.friendProfIcon{
+	position:absolute;
+	left:58px;
+	top:58px;
+	z-index:1;
+	height: 45px;
+	width: 45px;
+}
+
+img.claim{
+	position:absolute;
+	z-index:1;
+	height: 20px;
+    width: 20px;
+	left:295px;
+	top:5px;
+}
+
+img.popupbase{
+	position:absolute;
+	z-index:1;
+	height: 30px;
+    width: 30px;
+	cursor:pointer
+}
+
+div.claim_d{
+	position:absolute;
+	z-index:1;
+	height: 20px;
+    width: 20px;
+	left:295px;
+	top:5px;
+}
+
+div.claimWork_d{
+	position:absolute;
+	z-index:1;
+	height: 40px;
+    width: 40px;
+	left:530px;
+	top:20px;
+}
+
+div.claimEvents_d{
+	position:absolute;
+	z-index:1;
+	height: 20px;
+    width: 20px;
+	top:-20px;
+}
+
+img.popup{
+	height: 30px;
+    width: 30px;
+}
+
+img.claimWork{
+	position:absolute;
+	z-index:1;
+	height: 40px;
+    width: 40px;
+	left:520px;
+	top:15px;
+}
+
+img.claimEvents{
+	position:relative;
+	z-index:1;
+	height: 20px;
+    width: 20px;
+	top:-20px;
+}
+
+img.ring{
+	position:absolute;
+	z-index:1;
+	height: 20px;
+    width: 20px;
+	left:8px;
+	top:5px;
+}
+
+i.arrow{
+	position:absolute;
+	z-index:1;
+	left:105px;
+	top:20px;
+}
+
+ul.dropElement{
+	background-color: #ffffff;
+	outline-style: solid;
+    outline-width: thin;
+	outline-color: #bbbbdd;
+	width:250px;
+	max-width: 250px;
+	min-width: 130px;
+}
+
+canvas.sid_chart{
+	width: 150px;
+	height: 150px;
+	min-width: 150px;
+	min-height: 150px;
+	margin-top:25px;
+	margin-left:50px;
+}
+
+img.popup{
+	position:absolute;
+}
+
+div.Events{
+	position:absolute;
+	height:auto;
+	width:auto;
+	left:550px;
+}

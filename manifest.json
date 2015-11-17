@@ -19,6 +19,7 @@
   "web_accessible_resources": [
     "resources/icons/claimT.png" , "resources/icons/claimR.png" , "resources/icons/claimC.png",
 	"resources/icons/profT.png" , "resources/icons/profR.png" , "resources/icons/profC.png"  , 
+	"resources/icons/prof_li_T.png" , "resources/icons/prof_li_R.png" , "resources/icons/prof_li_C.png"  ,
 	"resources/icons/ringT.png", "resources/icons/ringR.png", "resources/icons/ringC.png",
 	"resources/icons/popupBase.png",
 	"html/sidAnalytics.html", "html/ratePopup.html"
@@ -26,7 +27,7 @@
   "content_scripts":[
 	  {
 		"matches": ["http://*/*","https://*/*"],
-		"css": ["css/fbInject.css","css/dropdown.css","css/popUpStyles.css"],
+		"css": ["css/dropdown.css","css/popUpStyles.css"],
 		"html":["html/ratePopup.html"]
 	  }
   ]
