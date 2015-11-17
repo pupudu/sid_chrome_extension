@@ -22,8 +22,16 @@ function identify(){
 		updateProfPic();
 		addSidAnalyticsMenu();
 		if(selectedTab === "About") {
-			manipulateAboutWork();		/*if an fb about work page, and haven't modified before, then add sid elements*/
+			var subsection = document.getElementsByClassName("_5pws _50f8  _50f4 _50f7")[0];
+			if(subsection.innerText === "Work and Education"){
+				manipulateAboutWork();		/*if an fb about work page, and haven't modified before, then add sid elements*/
+			}
 									/**TODO add similar functionality to places lived, Basic info, family, and life events*/
+									
+			else if(subsection.innerText === "Life Events"){
+				manipulateLifeEvents();		/*if an fb about work page, and haven't modified before, then add sid elements*/
+			}
+			
 		}else if (selectedTab === "Timeline"){
 			manipulateTimeLine();	/*if an fb profile timeline, and haven't modified before, then add sid elements*/
 			updFrndsProfInTimeLine();
@@ -105,6 +113,17 @@ function manipulateAboutWork(){
 	}
 }
 
+function manipulateLifeEvents(){
+	console.log(".. .. updating life events");
+	var claimAr = document.getElementsByClassName("_c24 _50f4");
+	var claimCount = claimAr.length; /*Number of claims on about page*/
+	
+	for(var i=0;i<claimCount;i++){
+		var claim = claimAr[i];
+		scoreClaims(i,claim,"Events"); /*TODO fix issue in icon positions of about page*/
+	}
+}
+
 function manipulateTimeLine(){
 	var claimAr = document.getElementsByClassName("_1zw6 _md0 _5vb9");
 	var claimCount = claimAr.length; /*Number of claims on timeline*/
@@ -145,7 +164,7 @@ function scoreClaims(arrIndex, claim, classOffset){
 	}
 	/*Avoid adding icons again if already added*/
 	if(claim.getElementsByClassName("rateIconContainer").length === 0){
-		rateIcon.className = "rateIconContainer";
+		rateIcon.className = "rateIconContainer "+ classOffset;
 		rateIcon.innerHTML = "<img id = '" + iconID + "' class = '" + iconClass + classOffset + "' >";
 		claim.appendChild(rateIcon);
 	}

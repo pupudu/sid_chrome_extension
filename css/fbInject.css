@@ -52,6 +52,14 @@ div.claimWork_d{
 	top:20px;
 }
 
+div.claimEvents_d{
+	position:absolute;
+	z-index:1;
+	height: 20px;
+    width: 20px;
+	top:-20px;
+}
+
 img.popup{
 	height: 30px;
     width: 30px;
@@ -64,6 +72,14 @@ img.claimWork{
     width: 40px;
 	left:520px;
 	top:15px;
+}
+
+img.claimEvents{
+	position:relative;
+	z-index:1;
+	height: 20px;
+    width: 20px;
+	top:-20px;
 }
 
 img.ring{
@@ -103,4 +119,11 @@ canvas.sid_chart{
 
 img.popup{
 	position:absolute;
+}
+
+div.Events{
+	position:absolute;
+	height:auto;
+	width:auto;
+	left:550px;
 }
