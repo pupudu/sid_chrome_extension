@@ -54,6 +54,13 @@ function manipulateProfile(){
 	//var isOffset = false;
 	
 	for(var j=0;j<bgSectionAr.length;j++){
+	
+		if(bgSectionAr[j].id === "background-languages-container"){
+			continue;
+		}
+		if(bgSectionAr[j].id === "background-additional-info-container"){
+			continue;
+		}
 		var claimAr = bgSectionAr[j].getElementsByClassName("section-item");
 		var claimCount = claimAr.length; /*Number of claims on about page*/
 		
@@ -252,6 +259,7 @@ function popUpOnIconByID(claim,iconID,iconClass,classOffset){ //TODO
 		neutral[0].src = neuImgUrl;
 		refuted[0].src = refImgUrl;
 		popupBase[0].src = baseImgUrl;
+		popupBase[0].style.top = "-27px";
 		//clearIconsIfSkip(iconID);
 		var verLink = claim.getElementsByClassName("verA")[0];
 		var refLink = claim.getElementsByClassName("refA")[0];
