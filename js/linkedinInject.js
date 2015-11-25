@@ -51,15 +51,22 @@ function updateProfPic(){
 function manipulateProfile(){
 	console.log(".. .. updating sections");
 	var bgSectionAr = document.getElementsByClassName("background-section");
-	
+	//var isOffset = false;
 	
 	for(var j=0;j<bgSectionAr.length;j++){
 		var claimAr = bgSectionAr[j].getElementsByClassName("section-item");
 		var claimCount = claimAr.length; /*Number of claims on about page*/
 		
+		if(j == 4){
+			//alert("error");
+		}
+		
 		for(var i=0;i<claimCount;i++){
+			//if(claimAr[i].parentNode.id === "background-experience" || claimAr[i].parentNode.id === "background-education"){
+				//isOffset = true;
+			//}
 			var claim = claimAr[i];
-			scoreClaims((10*j+i),claim,"Events"); /*TODO fix issue in icon positions of about page*/
+			scoreClaims(j,i,claim,"Events"); /*TODO fix issue in icon positions of about page*/
 		}
 	}
 }
@@ -158,8 +165,17 @@ function addSidAnalyticsMenu(){
 }
 
 
-function scoreClaims(arrIndex, claim, classOffset){
+function scoreClaims(secIndex, arrIndex, claim, classOffset, isOffset){
 	//console.log(".. .. scoring claims on time line" + claim.innerHTML);
+	
+	var offsetTop = claim.offsetTop - arrIndex*17;
+	
+	//if(isOffset){
+		//offsetTop -= arrIndex*17;
+	//}
+	
+	arrIndex = 100*secIndex + arrIndex;
+	
 	var profID = hashId(profile.innerText.substring(24));
 	var rateIcon = document.createElement("DIV");
 	var iconID = 'claimR'+classOffset+arrIndex;
@@ -174,6 +190,7 @@ function scoreClaims(arrIndex, claim, classOffset){
 	/*Avoid adding icons again if already added*/
 	if(claim.getElementsByClassName("rateIconContainer").length === 0){
 		rateIcon.className = "rateIconContainer "+ classOffset;
+		rateIcon.style.top = offsetTop+"px";
 		rateIcon.innerHTML = "<img id = '" + iconID + "' class = '" + iconClass + classOffset + "' >";
 		claim.appendChild(rateIcon);
 	}
