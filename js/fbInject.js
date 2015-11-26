@@ -9,6 +9,7 @@ var timeLineHLine = document.getElementById('fbTimelineHeadline');			//element t
 if(getCookie("sidSession")==="true"){	/*check whether user is logged in*/
 	identify();	
 }else{
+	chrome.runtime.sendMessage("any message");
 	console.log("Cookie mismatch. Need to log in again");
 }
 

@@ -3,6 +3,17 @@ This script runs as a backround script. To stop, change the manifest.json
 */
 
 /* globals chrome: false */
+count = 0;
+
+chrome.runtime.onMessage.addListener(function (){
+	count = (count+1)%3;
+	if(count === 1){
+		//alert(count)
+		chrome.tabs.executeScript({
+			code:"notie.alert(3, 'Sid could not load. Please login again', 4);"
+		},function(){});
+	}
+});
 
 var count =0;
 
@@ -22,6 +33,7 @@ chrome.tabs.onUpdated.addListener(function (tabId,obj,tab){
 		setTimeout(function(){
 			inject(tabId,obj,tab);
 		}, 5000);	//retry in 5 seconds as backup
+		
 		
 	}
 });

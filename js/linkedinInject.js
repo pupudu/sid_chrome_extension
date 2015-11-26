@@ -1,3 +1,7 @@
+/*TODO**
+* Profile icon issue with premium users
+*/ 
+
 /* globals chrome,Chart,getCookie: false */
 console.log("Content Script loaded");
 
@@ -31,7 +35,11 @@ function updateProfPic(){
 	var profPic = document.getElementsByClassName("profile-picture")[0];
 	var icon = document.createElement("DIV");
 	var imgURL;
-	var profID = hashId(profile.innerText.substring(24));
+	//var profID = hashId(profile.innerText.substring(24));
+	var url = document.getElementsByName("currenturl")[0].getAttribute("value").toString();
+	alert(url);
+	var profID = getQueryVariable("id",url);
+	//alert(profID);
 	icon.innerHTML = "<img id ='verif' class = 'profIcon'>";
 	profPic.appendChild(icon);
 	
@@ -51,7 +59,6 @@ function updateProfPic(){
 function manipulateProfile(){
 	console.log(".. .. updating sections");
 	var bgSectionAr = document.getElementsByClassName("background-section");
-	//var isOffset = false;
 	
 	for(var j=0;j<bgSectionAr.length;j++){
 	
@@ -64,14 +71,7 @@ function manipulateProfile(){
 		var claimAr = bgSectionAr[j].getElementsByClassName("section-item");
 		var claimCount = claimAr.length; /*Number of claims on about page*/
 		
-		if(j == 4){
-			//alert("error");
-		}
-		
 		for(var i=0;i<claimCount;i++){
-			//if(claimAr[i].parentNode.id === "background-experience" || claimAr[i].parentNode.id === "background-education"){
-				//isOffset = true;
-			//}
 			var claim = claimAr[i];
 			scoreClaims(j,i,claim,"Events"); /*TODO fix issue in icon positions of about page*/
 		}
@@ -89,7 +89,7 @@ function getQueryVariable(variable,string) {
             return decodeURIComponent(pair[1]);
         }
     }
-    console.log('Query variable %s not found', variable);
+    return null;
 }
 
 
@@ -186,7 +186,7 @@ function addSidAnalyticsMenu(){
 function scoreClaims(secIndex, arrIndex, claim, classOffset, isOffset){
 	//console.log(".. .. scoring claims on time line" + claim.innerHTML);
 	
-	var offsetTop = claim.offsetTop - arrIndex*17;
+	var offsetTop = claim.offsetTop;
 	
 	//if(isOffset){
 		//offsetTop -= arrIndex*17;
