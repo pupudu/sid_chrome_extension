@@ -9,7 +9,7 @@ var timeLineHLine = document.getElementById(fbstrings.fbTimelineHeadline);			//e
 if(getCookie("sidSession")==="true"){	/*check whether user is logged in*/
 	identify();	
 }else{
-	chrome.runtime.sendMessage("any message");
+	chrome.runtime.sendMessage("cookie mismatch");
 	console.log("Cookie mismatch. Need to log in again");
 }
 
@@ -42,8 +42,8 @@ function identify(){
 
 /** Appends sid-rating state over fb profile picture*/
 function updateProfPic(){
-	if(document.getElementById("verif")!==null){
-		if(document.getElementById("verif").src.length>10){
+	if(document.getElementById(fbstrings.sidSign)!==null){
+		if(document.getElementById(fbstrings.sidSign).src.length>10){
 			console.log(".. .. Profile pic already updated");
 			return;
 		}
@@ -53,7 +53,7 @@ function updateProfPic(){
 	var icon = document.createElement("DIV");
 	var imgURL;
 	var profID = extract_TargetId();
-	icon.innerHTML = "<img id ='verif' class = 'profIcon'>";
+	icon.innerHTML = "<img id ="+fbstrings.sidSign+" class = 'profIcon'>";
 	profPic.appendChild(icon);
 	
 	$.post("https://id.projects.mrt.ac.lk:9000/profRating",
@@ -62,17 +62,17 @@ function updateProfPic(){
 	},
 	function(data/*, status*/){
 		imgURL = chrome.extension.getURL("resources/icons/prof" + data.rating + ".png");
-		if(document.getElementById('verif') !== null){
-			document.getElementById('verif').src = imgURL;
+		if(document.getElementById(fbstrings.sidSign) !== null){
+			document.getElementById(fbstrings.sidSign).src = imgURL;
 		}
-		$("#verif").fadeIn(2000);
+		$("#"+fbstrings.sidSign).fadeIn(2000);
 	});
 }
 
 /** Appends sid-rating state over fb profile picture*/
 function updFrndsProfInTimeLine(){
 	/**updating friends profile pics*/
-	var timelineRecent = document.getElementById("pagelet_timeline_recent");
+	var timelineRecent = document.getElementById(fbstrings.timelineRecent);
 	var friendAr = timelineRecent.getElementsByClassName(fbstrings.friendProfiles);
 
 	for(var i=0;i<friendAr.length;i++){
@@ -138,7 +138,7 @@ function manipulateTimeLine(){
 }
 
 function addSidAnalyticsMenu(){
-	if(document.getElementById("sidDropdown") === null){
+	if(document.getElementById(fbstrings.sidDropdown) === null){
 		console.log(".. .. .. added sid analytics pop up memu");
 		var node = document.createElement("DIV");  
 		$.get(chrome.extension.getURL("html/sidAnalytics.html"), function(data) {
@@ -310,7 +310,7 @@ function extract_TargetId(){
 	var profID;
 	var strObj;
 	try{
-		str = document.getElementById("pagelet_timeline_main_column").getAttribute("data-gt");
+		str = document.getElementById(fbstrings.timelineMain).getAttribute("data-gt");
 		strObj = JSON.parse(str);
 		profID = strObj.profile_owner;
 	}catch(e){
@@ -354,7 +354,7 @@ function extractFriendId(node){
 }
 
 function commitChart(){
-	var sidDropdown = document.getElementById('sidDropdown');
+	var sidDropdown = document.getElementById(fbstrings.sidDropdown);
 	sidDropdown.addEventListener('mouseover', function() {
 		drawPieChart();
 	});
@@ -398,7 +398,7 @@ function drawPieChart(){
 			}
 		];
 		
-		var ctx = document.getElementById("myChart").getContext("2d");
+		var ctx = document.getElementById(fbstrings.analyticsChart).getContext("2d");
 		try{
 			window.myPie = new Chart(ctx).Pie(pieData,{
 				animation: true,
