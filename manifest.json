@@ -28,7 +28,8 @@
 	  {
 		"matches": ["http://*/*","https://*/*"],
 		"css": ["css/dropdown.css","css/popUpStyles.css"],
-		"html":["html/ratePopup.html"]
+		"html":["html/ratePopup.html"],
+		"js":["js/wakeUp.js"]
 	  }
   ]
 }

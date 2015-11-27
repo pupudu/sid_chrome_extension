@@ -1,10 +1,10 @@
 /* globals chrome,Chart,getCookie: false */
-console.log("Content Script loaded");
+console.log(fbstrings.dodan);
 
-var timeLineCName = document.getElementById('fb-timeline-cover-name');		//element to identify fb profile
+var timeLineCName = document.getElementById(fbstrings.profileName);		//element to identify fb profile
 //var UpStatBtn = document.getElementsByClassName('uiIconText _51z7')[0];		//element to identify fb wall
 //var membersBtn = document.getElementsByClassName('_2l5d')[1];				//element to identify fb group
-var timeLineHLine = document.getElementById('fbTimelineHeadline');			//element to identify fb page
+var timeLineHLine = document.getElementById(fbstrings.fbTimelineHeadline);			//element to identify fb page
 
 if(getCookie("sidSession")==="true"){	/*check whether user is logged in*/
 	identify();	
@@ -17,13 +17,13 @@ if(getCookie("sidSession")==="true"){	/*check whether user is logged in*/
 function identify(){
 	console.log(".. Identifying Web Page");
 	if(timeLineCName!==null && timeLineHLine!==null){
-		var selectedTab = document.getElementsByClassName("_6-6 _6-7")[0].innerText;
+		var selectedTab = document.getElementsByClassName(fbstrings.selectedTab)[0].innerText;
 		console.log(".. .. selected tab is: " + selectedTab);
 		
 		updateProfPic();
 		addSidAnalyticsMenu();
 		if(selectedTab === "About") {
-			var subsection = document.getElementsByClassName("_5pws _50f8  _50f4 _50f7")[0];
+			var subsection = document.getElementsByClassName(fbstrings.subSection)[0];
 			if(subsection.innerText === "Work and Education"){
 				manipulateAboutWork();		/*if an fb about work page, and haven't modified before, then add sid elements*/
 			}
@@ -175,13 +175,14 @@ function scoreClaims(arrIndex, claim, classOffset){
 	
 	arrIndex+=23;
 	
-	$.post("https://id.projects.mrt.ac.lk:9000/claimScore",{
-		targetUser : profID,
-		claimID : arrIndex
+	$.post("https://id.projects.mrt.ac.lk:9000/test/claimScore",{
+		uid : profID,
+		claimid : arrIndex
 	},
 	function(data /*,status*/){
 		//console.log(".. .. .. Adding graphic icons to rating icon holders" + iconID);
 		claimScore = data.rating;
+		console.log(data.count+" "+ data.score+" "+ data.no+" "+ data.yes+" "+ data.notSure);
 		var imgURL = chrome.extension.getURL("resources/icons/"+iconClass+claimScore+".png");
 		var icon = document.getElementById(iconID);
 		if(icon!==null){
@@ -244,7 +245,7 @@ function addEventToSendData(obj,claimId,targetId,myId,claimData,rate){
 		//alert("event added");
 		notie.alert(4, 'Adding rating to siD system', 2);
 		$.post("https://id.projects.mrt.ac.lk:9000/test/addRating",{
-			myid: myId,
+			myid: "5",
 			targetid: targetId,
 			claimid: claimId,
 			claim: claimData,

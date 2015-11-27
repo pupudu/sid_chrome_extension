@@ -5,10 +5,13 @@ This script runs as a backround script. To stop, change the manifest.json
 /* globals chrome: false */
 count = 0;
 
-chrome.runtime.onMessage.addListener(function (){
+chrome.runtime.onMessage.addListener(function (message,sender){
+	if(message === "wake up"){
+		console.log("Background page woke up from content script");
+		return;
+	}
 	count = (count+1)%3;
 	if(count === 1){
-		//alert(count)
 		chrome.tabs.executeScript({
 			code:"notie.alert(3, 'Sid could not load. Please login again', 4);"
 		},function(){});
@@ -41,6 +44,11 @@ chrome.tabs.onUpdated.addListener(function (tabId,obj,tab){
 function inject(tabId,obj,tab){
 	if(tab.url.search("https://www.facebook.com")===0 || tab.url.search("https://web.facebook.com")===0){
 		//alert("status "+obj.status+ " url "+count+" "+ tab.url);
+		chrome.tabs.executeScript(tab.id,{
+			file:'js/configs.js'	//Run this script if navigated to a fb origined page
+		},function(){
+			//Do Nothing
+		});
 		chrome.tabs.executeScript(tab.id,{
 			file:'js/jquery-1.11.3.min.js'	//Run this script if navigated to a fb origined page
 		},function(){
