@@ -11,7 +11,7 @@ var fbstrings = {
 	timelineClaimContainer:'_1zw6 _md0 _5vb9',
 	timelineClaim:'_50f3',
 	fbMenubar:'_6_7 clearfix',
-	sidContainer:'rateIconContainer',
+	rateIconContainer:'rateIconContainer',
 	popVerifiedIcon:'popVerifiedIcon',
 	popNeutralIcon:'popNeutralIcon',
 	popRefutedIcon:'popRefutedIcon',

@@ -49,7 +49,7 @@ function updateProfPic(){
 		}
 	}
 	console.log(".. .. updating profile pic");
-	var profPic = document.getElementsByClassName("photoContainer")[0];
+	var profPic = document.getElementsByClassName(fbstrings.photoContainer)[0];
 	var icon = document.createElement("DIV");
 	var imgURL;
 	var profID = extract_TargetId();
@@ -73,7 +73,7 @@ function updateProfPic(){
 function updFrndsProfInTimeLine(){
 	/**updating friends profile pics*/
 	var timelineRecent = document.getElementById("pagelet_timeline_recent");
-	var friendAr = timelineRecent.getElementsByClassName("_s0 friendPhoto _rv img");
+	var friendAr = timelineRecent.getElementsByClassName(fbstrings.friendProfiles);
 
 	for(var i=0;i<friendAr.length;i++){
 		var profID = extractFriendId(friendAr[i]);
@@ -105,7 +105,7 @@ function addIconToFriendProf(profID, friendStr){
 
 function manipulateAboutWork(){
 	console.log(".. .. updating about work page");
-	var claimAr = document.getElementsByClassName("_50f5 _50f7");
+	var claimAr = document.getElementsByClassName(fbstrings.workClaim);
 	var claimCount = claimAr.length; /*Number of claims on about page*/
 	
 	for(var i=0;i<claimCount;i++){
@@ -116,7 +116,7 @@ function manipulateAboutWork(){
 
 function manipulateLifeEvents(){
 	console.log(".. .. updating life events");
-	var claimAr = document.getElementsByClassName("_c24 _50f4");
+	var claimAr = document.getElementsByClassName(fbstrings.lifeEventClaim);
 	var claimCount = claimAr.length; /*Number of claims on about page*/
 	
 	for(var i=0;i<claimCount;i++){
@@ -126,13 +126,13 @@ function manipulateLifeEvents(){
 }
 
 function manipulateTimeLine(){
-	var claimAr = document.getElementsByClassName("_1zw6 _md0 _5vb9");
-	var claimCount = claimAr.length; /*Number of claims on timeline*/
+	var claimContainerAr = document.getElementsByClassName(fbstrings.timelineClaimContainer);
+	var claimCount = claimContainerAr.length; /*Number of claims on timeline*/
 	//console.log(".. .. updating fb time line" + claimAr.length);
 	
 	/**Scoring claim summary*/
 	for(var i=0;i<claimCount;i++){
-		var claim = claimAr[i].getElementsByClassName("_50f3")[0];
+		var claim = claimContainerAr[i].getElementsByClassName(fbstrings.timelineClaim)[0];
 		scoreClaims(i,claim,"");
 	}
 }
@@ -145,7 +145,7 @@ function addSidAnalyticsMenu(){
 			node.innerHTML = data;
 			commitChart();
 		});
-		document.getElementsByClassName('_6_7 clearfix')[0].appendChild(node);
+		document.getElementsByClassName(fbstrings.fbMenubar)[0].appendChild(node);
 	}
 }
 
@@ -164,12 +164,12 @@ function scoreClaims(arrIndex, claim, classOffset){
 		}
 	}
 	/*Avoid adding icons again if already added*/
-	if(claim.getElementsByClassName("rateIconContainer").length === 0){
+	if(claim.getElementsByClassName(fbstrings.rateIconContainer).length === 0){
 		rateIcon.className = "rateIconContainer "+ classOffset;
 		rateIcon.innerHTML = "<img id = '" + iconID + "' class = '" + iconClass + classOffset + "' >";
 		claim.appendChild(rateIcon);
 	}
-	if(claim.getElementsByClassName("rateIconContainer")[0].childElementCount>1){
+	if(claim.getElementsByClassName(fbstrings.rateIconContainer)[0].childElementCount>1){
 		return;
 	}
 	
@@ -214,10 +214,10 @@ function popUpOnIconByID(claim,iconID,iconClass,classOffset){ //TODO
 		node.className=iconClass+classOffset;
 		document.getElementById(iconID).parentNode.appendChild(node);
 		
-		var verified = node.getElementsByClassName("popVerifiedIcon");
-		var neutral = node.getElementsByClassName("popNeutralIcon");
-		var refuted = node.getElementsByClassName("popRefutedIcon");
-		var popupBase = node.getElementsByClassName("popupbase");
+		var verified = node.getElementsByClassName(fbstrings.popVerifiedIcon);
+		var neutral = node.getElementsByClassName(fbstrings.popNeutralIcon);
+		var refuted = node.getElementsByClassName(fbstrings.popRefutedIcon);
+		var popupBase = node.getElementsByClassName(fbstrings.popupbase);
 		
 		var verImgUrl = chrome.extension.getURL("resources/icons/claimT.png");
 		var neuImgUrl = chrome.extension.getURL("resources/icons/claimC.png");
@@ -229,9 +229,9 @@ function popUpOnIconByID(claim,iconID,iconClass,classOffset){ //TODO
 		refuted[0].src = refImgUrl;
 		popupBase[0].src = baseImgUrl;
 		//clearIconsIfSkip(iconID);
-		var verLink = claim.getElementsByClassName("verA")[0];
-		var refLink = claim.getElementsByClassName("refA")[0];
-		var neuLink = claim.getElementsByClassName("neuA")[0];
+		var verLink = claim.getElementsByClassName(fbstrings.btnVerifiedIcon)[0];
+		var refLink = claim.getElementsByClassName(fbstrings.btnRefutedIcon)[0];
+		var neuLink = claim.getElementsByClassName(fbstrings.btnNeutralIcon)[0];
 		
 		addEventToSendData(verLink,claimId,targetId,myId,claim.innerHTML.toString(),1);
 		addEventToSendData(refLink,claimId,targetId,myId,claim.innerHTML.toString(),-1);
@@ -326,7 +326,7 @@ function extractId(userType){
 	var profID;
 	var strObj;
 	try{
-		str = document.getElementsByClassName("timelineReportContainer")[0].getAttribute("data-gt");
+		str = document.getElementsByClassName(fbstrings.timelineBoxes)[0].getAttribute("data-gt");
 		strObj = JSON.parse(str);
 		if(userType === 0){
 			profID = strObj.viewerid;
