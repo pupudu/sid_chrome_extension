@@ -1,4 +1,4 @@
-/* globals chrome,Chart,getCookie: false */
+/* globals chrome,Chart,getCookie,fbstrings,notie: false */
 console.log(fbstrings.dodan);
 
 var timeLineCName = document.getElementById(fbstrings.profileName);		//element to identify fb profile
@@ -77,12 +77,11 @@ function updFrndsProfInTimeLine(){
 
 	for(var i=0;i<friendAr.length;i++){
 		var profID = extractFriendId(friendAr[i]);
-		var test = friendAr[i];
 		var friendStr = "friend"+i;
 		var icon = document.createElement("DIV");
 		
 		if(document.getElementById(friendStr) === null){ 
-			icon.innerHTML = "<img id='friend"+i+"' class = 'friendProfIcon' >"
+			icon.innerHTML = "<img id='friend"+i+"' class = 'friendProfIcon' >";
 			friendAr[i].parentNode.appendChild(icon);
 			if(document.getElementById(friendStr) !== null){ 
 				if(document.getElementById(friendStr).src === null ){ return; } 
@@ -97,7 +96,7 @@ function addIconToFriendProf(profID, friendStr){
 	{
 		targetUser: profID	
 	},
-	function(data, status){
+	function(data){
 		imgURL = chrome.extension.getURL("resources/icons/prof" + data.rating + ".png");
 		document.getElementById(friendStr).src = imgURL;
 	});
@@ -414,7 +413,9 @@ function drawPieChart(){
 /**Generate an Id given an string*/
 function hashId(str){
     var hash = 0;
-    if (str.length <= 2) return hash;
+    if (str.length <= 2){ 
+		return hash;
+	}
 	str = str.trim();
     for (var i = 0; i < str.length; i++) {
         var character = str.charCodeAt(i);
