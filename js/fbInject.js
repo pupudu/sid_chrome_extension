@@ -97,7 +97,7 @@ function addIconToFriendProf(profID, friendStr){
 		targetUser: profID	
 	},
 	function(data){
-		imgURL = chrome.extension.getURL("resources/icons/prof" + data.rating + ".png");
+		var imgURL = chrome.extension.getURL("resources/icons/prof" + data.rating + ".png");
 		document.getElementById(friendStr).src = imgURL;
 	});
 }

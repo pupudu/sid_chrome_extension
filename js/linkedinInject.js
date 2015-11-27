@@ -102,73 +102,6 @@ function getQueryVariable(variable,string) {
 
 
 
-/** Appends sid-rating state over fb profile picture*/
-function updFrndsProfInTimeLine(){
-	/**updating friends profile pics*/
-	var timelineRecent = document.getElementById("pagelet_timeline_recent");
-	var friendAr = timelineRecent.getElementsByClassName("_s0 friendPhoto _rv img");
-
-	for(var i=0;i<friendAr.length;i++){
-		var profID = extractFriendId(friendAr[i]);
-		var test = friendAr[i];
-		var friendStr = "friend"+i;
-		var icon = document.createElement("DIV");
-		
-		if(document.getElementById(friendStr) === null){ 
-			icon.innerHTML = "<img id='friend"+i+"' class = 'friendProfIcon' >"
-			friendAr[i].parentNode.appendChild(icon);
-			if(document.getElementById(friendStr) !== null){ 
-				if(document.getElementById(friendStr).src === null ){ return; } 
-			}
-			addIconToFriendProf(profID,friendStr);
-		}
-	}
-}
-
-function addIconToFriendProf(profID, friendStr){
-	$.post("https://id.projects.mrt.ac.lk:9000/profRating",
-	{
-		targetUser: profID	
-	},
-	function(data, status){
-		imgURL = chrome.extension.getURL("resources/icons/prof" + data.rating + ".png");
-		document.getElementById(friendStr).src = imgURL;
-	});
-}
-
-function manipulateAboutWork(){
-	console.log(".. .. updating about work page");
-	var claimAr = document.getElementsByClassName("_50f5 _50f7");
-	var claimCount = claimAr.length; /*Number of claims on about page*/
-	
-	for(var i=0;i<claimCount;i++){
-		var claim = claimAr[i];
-		scoreClaims(i,claim,"Work"); /*TODO fix issue in icon positions of about page*/
-	}
-}
-
-function manipulateLifeEvents(){
-	console.log(".. .. updating life events");
-	var claimAr = document.getElementsByClassName("_c24 _50f4");
-	var claimCount = claimAr.length; /*Number of claims on about page*/
-	
-	for(var i=0;i<claimCount;i++){
-		var claim = claimAr[i];
-		scoreClaims(i,claim,"Events"); /*TODO fix issue in icon positions of about page*/
-	}
-}
-
-function manipulateTimeLine(){
-	var claimAr = document.getElementsByClassName("_1zw6 _md0 _5vb9");
-	var claimCount = claimAr.length; /*Number of claims on timeline*/
-	//console.log(".. .. updating fb time line" + claimAr.length);
-	
-	/**Scoring claim summary*/
-	for(var i=0;i<claimCount;i++){
-		var claim = claimAr[i].getElementsByClassName("_50f3")[0];
-		scoreClaims(i,claim,"");
-	}
-}
 
 function addSidAnalyticsMenu(){
 	if(document.getElementById("sidDropdown") === null){
@@ -305,46 +238,6 @@ function addEventToSendData(obj,claimId,targetId,myId,claimData,rate){
 	});
 }
 
-function clearIconsIfSkip(item){
-	if(clearIconIfSkipUsingString(item)){return true;}
-	if(clearEmptyIcons(item)){return true;}
-	return false;
-}
-
-function clearIconIfSkipUsingString(item){
-	//console.log(item);
-	var skipStringAr = ["Your friend since","Followed by","friends","Friends on"];
-	var nonSkipStringAr = ["Works","Lives in","From","Born on","Studies","Studied", "In a relationship"];
-	var text = item.parentNode.innerText;
-	if(text.length <= 2){
-		text = item.parentNode.innerHTML.toString();
-	}
-	for(var j=0;j<skipStringAr.length;j++){
-		if(text.indexOf(skipStringAr[j])>=0){
-			console.log(".. .. .. .. Will clear "+ item+ " due to "+ skipStringAr[j]);
-			var skipClear = false;
-			for(var k=0;k<nonSkipStringAr.length;k++){
-				if(text.indexOf(nonSkipStringAr[k])>=0){
-					console.log(".. .. .. .. will not clear" + item+ " due to "+ nonSkipStringAr[k]);
-					skipClear = true;
-					break;
-				}
-			}
-			if(skipClear){
-				continue;
-			}
-			return true;
-		}
-	}
-	return false;
-}
-
-function clearEmptyIcons(item){
-	if(item.parentNode.parentNode.firstChild.firstChild.nodeName === "BUTTON"){
-		return true;
-	}
-	return false;
-}
 
 
 /**Returns user id of timeline owner as a string*/
