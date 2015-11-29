@@ -186,7 +186,7 @@ function scoreClaims(arrIndex, claim, classOffset){
 		claimid : claimId
 	},
 	function(data /*,status*/){
-		console.log(data);
+		//console.log(data);
 		//console.log(".. .. .. Adding graphic icons to rating icon holders" + iconID);
 		claimScore = data.rating;
 		//console.log(data.count+" "+ data.score+" "+ data.no+" "+ data.yes+" "+ data.notSure);
@@ -206,7 +206,7 @@ function popUpOnIconByID(claim,iconID,iconClass,classOffset){ //TODO
 	
 	var node = document.createElement("DIV");  
 	var claimId = hashId(claim.getAttribute("data-html"));
-	console.log(claim.innerHTML);
+	//console.log(claim.innerHTML);
 	var targetId = extractId(1);
 	var myId = extractId(0);
 	
@@ -241,9 +241,9 @@ function popUpOnIconByID(claim,iconID,iconClass,classOffset){ //TODO
 		var refLink = claim.getElementsByClassName(fbstrings.btnRefutedIcon)[0];
 		var neuLink = claim.getElementsByClassName(fbstrings.btnNeutralIcon)[0];
 		
-		addEventToSendData(verLink,claimId,targetId,myId,claim.innerHTML.toString(),1);
-		addEventToSendData(refLink,claimId,targetId,myId,claim.innerHTML.toString(),-1);
-		addEventToSendData(neuLink,claimId,targetId,myId,claim.innerHTML.toString(),0);
+		addEventToSendData(verLink,claimId,targetId,myId,claim.getAttribute("data-html"),1);
+		addEventToSendData(refLink,claimId,targetId,myId,claim.getAttribute("data-html"),-1);
+		addEventToSendData(neuLink,claimId,targetId,myId,claim.getAttribute("data-html"),0);
 	});
 }
 
