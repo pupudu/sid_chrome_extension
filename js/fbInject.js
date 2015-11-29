@@ -141,10 +141,11 @@ function manipulateTimeLine(){
 function addSidAnalyticsMenu(){
 	if(document.getElementById(fbstrings.sidDropdown) === null){
 		console.log(".. .. .. added sid analytics pop up memu");
+		var profId = extract_TargetId();
 		var node = document.createElement("DIV");  
 		$.get(chrome.extension.getURL("html/sidAnalytics.html"), function(data) {
 			node.innerHTML = data;
-			commitChart();
+			commitChart(profId);
 		});
 		document.getElementsByClassName(fbstrings.fbMenubar)[0].appendChild(node);
 	}
@@ -361,29 +362,26 @@ function extractFriendId(node){
 	return profID;
 }
 
-function commitChart(){
+function commitChart(profId){
 	var sidDropdown = document.getElementById(fbstrings.sidDropdown);
 	sidDropdown.addEventListener('mouseover', function() {
-		drawPieChart();
+		drawPieChart(profId);
 	});
 }
 
 /*TODO Move post request to solve loading time issues*/
-function drawPieChart(){
+function drawPieChart(profId){
 	console.log("drawing chart");
 	var verified =50;
 	var rejected =50;
 	var uncertain=50;
-	$.post("https://id.projects.mrt.ac.lk:9000/claimRating",{
-		sender : 12,
-		target : 12,
-		cClass : 12,
-		claimId :12
+	$.post("https://id.projects.mrt.ac.lk:9000/test/allCounts",{
+		uid : profId
 	},
 	function(data /*,status*/){
-		verified = data.positive;
-		rejected = data.negative;
-		uncertain = data.uncertain;
+		verified = data.yes;
+		rejected = data.no;
+		uncertain = data.notSure;
 		
 		var pieData = [
 			{
@@ -406,9 +404,14 @@ function drawPieChart(){
 			}
 		];
 		
+		var chartHolder = document.getElementById(fbstrings.chartHolder)
+		chartHolder.firstChild.remove();
+		chartHolder.innerHTML = '<canvas class="sid_chart" id="myChart"></canvas>';
+
 		var ctx = document.getElementById(fbstrings.analyticsChart).getContext("2d");
 		try{
-			window.myPie = new Chart(ctx).Pie(pieData,{
+			var myPie;
+			myPie = new Chart(ctx).Pie(pieData,{
 				animation: true,
 				animationEasing: "easeInOutQuart"
 				//add more chart configs here as needed
@@ -416,6 +419,7 @@ function drawPieChart(){
 		}catch(err){
 			console.log(err);
 		}
+		//ctx.clearRect(0,0,1000,1000);
 	});
 }
 

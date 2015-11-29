@@ -23,5 +23,6 @@ var fbstrings = {
 	timelineRecent:'pagelet_timeline_recent',
 	timelineMain:'pagelet_timeline_main_column',
 	sidDropdown:'sidDropdown',
-	analyticsChart:'myChart'
+	analyticsChart:'myChart',
+	chartHolder:'canvas-holder'
 }
