@@ -13,7 +13,7 @@
    "default_popup": "popup.html"
   },
   "background": {
-    "scripts": ["js/background.js"],
+    "scripts": ["js/background.js","js/cookie.js"],
     "persistent": true
   },
   "web_accessible_resources": [

@@ -3,18 +3,22 @@ This script runs as a backround script. To stop, change the manifest.json
 */
 
 /* globals chrome: false */
-count = 0;
+//count = 0;
 
 chrome.runtime.onMessage.addListener(function (message,sender){
+	console.log(sender);
 	if(message === "wake up"){
 		console.log("Background page woke up from content script");
-		return;
-	}
-	count = (count+1)%3;
-	if(count === 1){
-		chrome.tabs.executeScript({
-			code:"notie.alert(3, 'Sid could not load. Please login again', 4);"
-		},function(){});
+		return true;
+	}else if(message === "cookie mismatch"){
+		count = (count+1)%3;
+		if(count === 1){
+			chrome.tabs.executeScript({
+				code:"notie.alert(3, 'Sid could not load. Please login again', 4);"
+			},function(){});
+		}
+	}else if(message === "login check"){
+		
 	}
 });
 
@@ -22,6 +26,10 @@ var count =0;
 
 /** This will be fired whenever a tab changes. Runs only when this script file is active*/
 chrome.tabs.onUpdated.addListener(function (tabId,obj,tab){
+	if(getCookie("sidSession")!=="true"){
+		console.log("cookie mismatch");
+		return;
+	}
 	count++;
 	if(obj.status === "complete"){	//inject script only after update is complete
 		setTimeout(function(){ 

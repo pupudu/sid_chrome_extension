@@ -6,12 +6,14 @@ var timeLineCName = document.getElementById(fbstrings.profileName);		//element t
 //var membersBtn = document.getElementsByClassName('_2l5d')[1];				//element to identify fb group
 var timeLineHLine = document.getElementById(fbstrings.fbTimelineHeadline);			//element to identify fb page
 
-if(getCookie("sidSession")==="true"){	/*check whether user is logged in*/
+
+
+//if(getCookie("sidSession")!=="true"){	/*check whether user is logged in*/
 	identify();	
-}else{
-	chrome.runtime.sendMessage("cookie mismatch");
-	console.log("Cookie mismatch. Need to log in again");
-}
+//}else{
+//	chrome.runtime.sendMessage("cookie mismatch");
+//	console.log("Cookie mismatch. Need to log in again");
+//}
 
 /**identify web page and take required actions*/
 function identify(){
@@ -163,6 +165,9 @@ function scoreClaims(arrIndex, claim, classOffset){
 		}
 	}
 	/*Avoid adding icons again if already added*/
+	if(claim.getAttribute("data-html")===null){
+		claim.setAttribute("data-html",claim.innerHTML);
+	}
 	if(claim.getElementsByClassName(fbstrings.rateIconContainer).length === 0){
 		rateIcon.className = "rateIconContainer "+ classOffset;
 		rateIcon.innerHTML = "<img id = '" + iconID + "' class = '" + iconClass + classOffset + "' >";
@@ -172,16 +177,19 @@ function scoreClaims(arrIndex, claim, classOffset){
 		return;
 	}
 	
+	var claimId = hashId(claim.getAttribute("data-html"));
+	//alert(profID);
 	arrIndex+=23;
-	
-	$.post("https://id.projects.mrt.ac.lk:9000/test/claimScore",{
+	//console.log(claim.remove().innerHTML);
+	$.post("https://id.projects.mrt.ac.lk:9000/test/ratedByOthersCounts",{
 		uid : profID,
-		claimid : arrIndex
+		claimid : claimId
 	},
 	function(data /*,status*/){
+		console.log(data);
 		//console.log(".. .. .. Adding graphic icons to rating icon holders" + iconID);
 		claimScore = data.rating;
-		console.log(data.count+" "+ data.score+" "+ data.no+" "+ data.yes+" "+ data.notSure);
+		//console.log(data.count+" "+ data.score+" "+ data.no+" "+ data.yes+" "+ data.notSure);
 		var imgURL = chrome.extension.getURL("resources/icons/"+iconClass+claimScore+".png");
 		var icon = document.getElementById(iconID);
 		if(icon!==null){
@@ -197,7 +205,8 @@ function scoreClaims(arrIndex, claim, classOffset){
 function popUpOnIconByID(claim,iconID,iconClass,classOffset){ //TODO
 	
 	var node = document.createElement("DIV");  
-	var claimId = hashId(claim.innerHTML.toString());
+	var claimId = hashId(claim.getAttribute("data-html"));
+	console.log(claim.innerHTML);
 	var targetId = extractId(1);
 	var myId = extractId(0);
 	
@@ -244,7 +253,7 @@ function addEventToSendData(obj,claimId,targetId,myId,claimData,rate){
 		//alert("event added");
 		notie.alert(4, 'Adding rating to siD system', 2);
 		$.post("https://id.projects.mrt.ac.lk:9000/test/addRating",{
-			myid: "5",
+			myid: myId,
 			targetid: targetId,
 			claimid: claimId,
 			claim: claimData,

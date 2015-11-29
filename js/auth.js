@@ -33,8 +33,11 @@ document.addEventListener('DOMContentLoaded', function() {
 						window.open('main.html','_self');
 						chrome.tabs.query({url:"https://*.facebook.com/*"}, function (tabAr){
 							for(var i=0;tabAr.length;i++){
-								chrome.tabs.executeScript(tabAr[i].id,{
+								/*chrome.tabs.executeScript(tabAr[i].id,{
 									file:'js/jquery-1.11.3.min.js'	//Inject script on sign in 
+								},function(){});
+								chrome.tabs.executeScript(tabAr[i].id,{
+									file:'js/configs.js'	//Inject script on sign in 
 								},function(){});
 								chrome.tabs.executeScript(tabAr[i].id,{
 									file:'js/cookie.js'	//Inject script on sign in
@@ -43,6 +46,8 @@ document.addEventListener('DOMContentLoaded', function() {
 									file:'js/fbInject.js',	//Inject script on sign in
 									runAt: "document_end"
 								},function(){});
+								*/
+								//TODO Load these from separate js file
 							}
 						});
 						
