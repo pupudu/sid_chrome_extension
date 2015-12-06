@@ -158,21 +158,25 @@ function addSidAnalyticsMenu(){
 		var node = document.createElement("DIV");  
 		
 		var headerURL = chrome.extension.getURL("resources/images/analytics_header.png");
-		var trueTipURL = chrome.extension.getURL("resources/icons/claimT.png");
-		var falseTipURL = chrome.extension.getURL("resources/icons/claimR.png");
-		var uncertainTipURL = chrome.extension.getURL("resources/icons/claimC.png");
-		var notRatedTipURL = chrome.extension.getURL("resources/icons/claimN.png");
 		var legendURL = chrome.extension.getURL("resources/images/legend.png");
 		
 		$.get(chrome.extension.getURL("html/sidAnalytics.html"), function(data) {
 			node.innerHTML = data;
 			document.getElementById("analytics_header").src = headerURL;
-			/*document.getElementById("true_tip").src = trueTipURL;
-			document.getElementById("false_tip").src = falseTipURL;
-			document.getElementById("uncertain_tip").src = uncertainTipURL;
-			document.getElementById("notRated_tip").src = notRatedTipURL;*/
 			document.getElementById("analytics_legend").src = legendURL;
 			commitChart(profId);
+			try{
+				$.post("https://id.projects.mrt.ac.lk:9000/test/getLinkedinURL",{
+					uid : profID
+				},
+				function(data){
+					document.getElementById("li_nav").href="data.url";
+				});
+			}catch(e){
+				document.getElementById("li_nav").addEventListener('click',function(){
+					notie.alert(3, 'Linked In profile not connected', 3);
+				});
+			}
 		});
 		document.getElementsByClassName(fbstrings.fbMenubar)[0].appendChild(node);
 	}

@@ -138,9 +138,10 @@ div.Events{
 }
 
 a.myButton {
-	background-color:#f9f9f9;
+	background-color:#f6f6f6;
 	display:inline-block;
-	width:202px;
+	width:200px;
+	height:40px;
 	cursor:pointer;
 	color:#666666;
 	font-family:Arial;
@@ -149,6 +150,7 @@ a.myButton {
 	text-align:center;
 	padding:6px 24px;
 	text-decoration:none;
+	border:1px solid #ffffff;
 }
 .myButton:hover {
 	background-color:#ededed;
@@ -158,3 +160,4 @@ a.myButton {
 	position:relative;
 	top:1px;
 }
+
