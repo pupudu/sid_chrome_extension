@@ -121,6 +121,15 @@ img.popup{
 	position:absolute;
 }
 
+img.dropHeader{
+	width:250px;
+}
+
+img.chartTip{
+	width:20px;
+	position:absolute;
+}
+
 div.Events{
 	position:absolute;
 	height:auto;

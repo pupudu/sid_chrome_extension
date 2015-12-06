@@ -24,6 +24,7 @@ function identify(){
 		
 		updateProfPic();
 		addSidAnalyticsMenu();
+		
 		if(selectedTab === "About") {
 			var subsection = document.getElementsByClassName(fbstrings.subSection)[0];
 			if(subsection.innerText === "Work and Education"){
@@ -143,8 +144,22 @@ function addSidAnalyticsMenu(){
 		console.log(".. .. .. added sid analytics pop up memu");
 		var profId = extract_TargetId();
 		var node = document.createElement("DIV");  
+		
+		var headerURL = chrome.extension.getURL("resources/images/analytics_header.png");
+		var trueTipURL = chrome.extension.getURL("resources/icons/claimT.png");
+		var falseTipURL = chrome.extension.getURL("resources/icons/claimR.png");
+		var uncertainTipURL = chrome.extension.getURL("resources/icons/claimC.png");
+		var notRatedTipURL = chrome.extension.getURL("resources/icons/claimN.png");
+		var legendURL = chrome.extension.getURL("resources/images/legend.png");
+		
 		$.get(chrome.extension.getURL("html/sidAnalytics.html"), function(data) {
 			node.innerHTML = data;
+			document.getElementById("analytics_header").src = headerURL;
+			/*document.getElementById("true_tip").src = trueTipURL;
+			document.getElementById("false_tip").src = falseTipURL;
+			document.getElementById("uncertain_tip").src = uncertainTipURL;
+			document.getElementById("notRated_tip").src = notRatedTipURL;*/
+			document.getElementById("analytics_legend").src = legendURL;
 			commitChart(profId);
 		});
 		document.getElementsByClassName(fbstrings.fbMenubar)[0].appendChild(node);
