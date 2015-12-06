@@ -107,14 +107,20 @@ function updFrndsProfInTimeLine(){
 }
 
 function addIconToFriendProf(profID, friendStr){
-	$.post("https://id.projects.mrt.ac.lk:9000/profRating",
-	{
-		targetUser: profID	
-	},
-	function(data){
-		var imgURL = chrome.extension.getURL("resources/icons/prof" + data.rating + ".png");
+	try{
+		$.post("https://id.projects.mrt.ac.lk:9000/profRating",
+		{
+			targetUser: profID	
+		},
+		function(data){
+			var imgURL = chrome.extension.getURL("resources/icons/prof" + data.rating + ".png");
+			document.getElementById(friendStr).src = imgURL;
+		});
+	}catch(e){
+		console.error(e);
+		var imgURL = chrome.extension.getURL("resources/icons/profN.png");
 		document.getElementById(friendStr).src = imgURL;
-	});
+	}
 }
 
 function manipulateAboutWork(){
@@ -170,7 +176,7 @@ function addSidAnalyticsMenu(){
 					uid : profID
 				},
 				function(data){
-					document.getElementById("li_nav").href="data.url";
+					document.getElementById("li_nav").href=data.url;
 				});
 			}catch(e){
 				document.getElementById("li_nav").addEventListener('click',function(){
@@ -210,18 +216,14 @@ function scoreClaims(arrIndex, claim, classOffset){
 	}
 	
 	var claimId = hashId(claim.getAttribute("data-html"));
-	//alert(profID);
 	arrIndex+=23;
-	//console.log(claim.remove().innerHTML);
+	
 	$.post("https://id.projects.mrt.ac.lk:9000/test/ratedByOthersCounts",{
 		uid : profID,
 		claimid : claimId
 	},
 	function(data /*,status*/){
-		//console.log(data);
-		//console.log(".. .. .. Adding graphic icons to rating icon holders" + iconID);
 		claimScore = data.rating;
-		//console.log(data.count+" "+ data.score+" "+ data.no+" "+ data.yes+" "+ data.notSure);
 		var imgURL = chrome.extension.getURL("resources/icons/"+iconClass+claimScore+".png");
 		var icon = document.getElementById(iconID);
 		if(icon!==null){
