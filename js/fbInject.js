@@ -6,7 +6,19 @@ var timeLineCName = document.getElementById(fbstrings.profileName);		//element t
 //var membersBtn = document.getElementsByClassName('_2l5d')[1];				//element to identify fb group
 var timeLineHLine = document.getElementById(fbstrings.fbTimelineHeadline);			//element to identify fb page
 
-
+/*(function() {
+    var origOpen = XMLHttpRequest.prototype.open;
+    XMLHttpRequest.prototype.open = function() {
+        console.log('request started!');
+        this.addEventListener('load', function() {
+            console.log('request completed!');
+            console.log(this.readyState); //will always be 4 (ajax is completed successfully)
+            console.log(this.responseText); //whatever the response was
+			alert("dodan ajax");
+        });
+        origOpen.apply(this, arguments);
+    };
+})();*/
 
 //if(getCookie("sidSession")!=="true"){	/*check whether user is logged in*/
 	identify();	
