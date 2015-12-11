@@ -170,7 +170,7 @@ function addSidAnalyticsMenu(){
 			node.innerHTML = data;
 			document.getElementById("analytics_header").src = headerURL;
 			document.getElementById("analytics_legend").src = legendURL;
-			commitChart(profId);
+			commitChart(profId,fbstrings.sidDropdown);
 			try{
 				$.post(fbstrings.sidServer+"/test/getLinkedinURL",{
 					uid : profID
@@ -229,7 +229,7 @@ function scoreClaims(arrIndex, claim, classOffset){
 		var icon = document.getElementById(iconID);
 		if(icon!==null){
 			icon.src = imgURL;
-			popUpOnIconByID(claim,iconID,iconClass,classOffset);
+			popUpOnIconByID(claim,iconID,iconClass,classOffset,data.yes,data.no,data.notSure);
 		}
 		else{
 			console.log("info .. .. .. Icons already added");
@@ -241,12 +241,12 @@ function scoreClaims(arrIndex, claim, classOffset){
 		var icon = document.getElementById(iconID);
 		if(icon!==null){
 			icon.src = imgURL;
-			popUpOnIconByID(claim,iconID,iconClass,classOffset);
+			popUpOnIconByID(claim,iconID,iconClass,classOffset,1,1,1);
 		}
 	}
 }
 
-function popUpOnIconByID(claim,iconID,iconClass,classOffset){ //TODO
+function popUpOnIconByID(claim,iconID,iconClass,classOffset,yes,no,notSure){ //TODO
 	
 	var node = document.createElement("DIV");  
 	var claimId = hashId(claim.getAttribute("data-html"));
@@ -288,6 +288,11 @@ function popUpOnIconByID(claim,iconID,iconClass,classOffset){ //TODO
 		addEventToSendData(verLink,claimId,targetId,myId,claim.getAttribute("data-html"),1);
 		addEventToSendData(refLink,claimId,targetId,myId,claim.getAttribute("data-html"),-1);
 		addEventToSendData(neuLink,claimId,targetId,myId,claim.getAttribute("data-html"),0);
+		
+		console.log("try");
+		var profId = extract_TargetId();
+		//console.log(data.yes+" "+data.no+" "+data.notSure)
+		commitChart1(profId,"DodanDodan",yes,no,notSure,claim);
 	});
 }
 
@@ -405,8 +410,8 @@ function extractFriendId(node){
 	return profID;
 }
 
-function commitChart(profId){
-	var sidDropdown = document.getElementById(fbstrings.sidDropdown);
+function commitChart(profId,chartId){
+	var sidDropdown = document.getElementById(chartId);
 	sidDropdown.addEventListener('mouseover', function() {
 		drawPieChart(profId);
 	});
@@ -480,4 +485,61 @@ function hashId(str){
     }
 	//console.log(hash +" "+ str);
     return hash;
+}
+
+function commitChart1(profId,chartId,a,b,c,claim){
+	var sidDropdown = document.getElementById("popupDodan");
+	sidDropdown.addEventListener('mouseover', function() {
+		drawPieChart1(profId,a,b,c,claim);
+	});
+}
+
+function drawPieChart1(profId,a,b,c,claim){
+	console.log("drawing chart");
+	var verified =a;
+	var rejected =b;
+	var uncertain=c;
+	
+		//verified = data.yes;
+		//rejected = data.no;
+		//uncertain = data.notSure;
+		
+		var pieData = [
+			{
+				value: rejected,
+				color:"#F7464A",
+				highlight: "#FF5A5E",
+				label: "Rejected"
+			},
+			{
+				value: verified,
+				color: "#46BF7D",
+				highlight: "#5AD391",
+				label: "Verified"
+			},
+			{
+				value: uncertain,
+				color: "#FDB45C",
+				highlight: "#FFC870",
+				label: "Uncertain"
+			}
+		];
+		
+		var chartHolder = claim.getElementsByClassName("chartHolder")[0];
+		chartHolder.firstChild.remove();
+		chartHolder.innerHTML = '<canvas class="pop_chart DodanDodan" id="DodanDodan"></canvas>';
+
+		var ctx = claim.getElementsByClassName("DodanDodan")[0].getContext("2d");
+		try{
+			var myPie;
+			myPie = new Chart(ctx).Pie(pieData,{
+				animation: false,
+				//animationEasing: "easeInOutQuart"
+				//add more chart configs here as needed
+			});
+		}catch(err){
+			console.log(err);
+		}
+		//ctx.clearRect(0,0,1000,1000);
+	
 }
