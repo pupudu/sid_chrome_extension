@@ -60,6 +60,20 @@ div.claimEvents_d{
 	top:-20px;
 }
 
+div.popupChart{
+    position: absolute;
+    top: 0px;
+    left: 110px;
+    height: 108px;
+    width: 108px;
+    background-color: red;
+}
+
+li.listElement{
+	width:110px;
+}
+
+
 img.popup{
 	height: 30px;
     width: 30px;
@@ -160,4 +174,5 @@ a.myButton {
 	position:relative;
 	top:1px;
 }
+
 

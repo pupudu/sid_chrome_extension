@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				displayError("Please fill your details");
 				return;
 			}
-			$.post("https://id.projects.mrt.ac.lk:9000/authenticate",
+			$.post("https://sid.projects.mrt.ac.lk:9000/authenticate",
 			{
 				username: usr.value,	//get value from input text field
 				password: pwd.value		//get value from input text field
@@ -31,8 +31,8 @@ document.addEventListener('DOMContentLoaded', function() {
 						setCookie("sidSession","true",3);	//expires after 3 days if not logged out
 						injectCookie("sidSession","true",3); 	//inject to save cookie inside the main browser
 						window.open('main.html','_self');
-						chrome.tabs.query({url:"https://*.facebook.com/*"}, function (tabAr){
-							for(var i=0;tabAr.length;i++){
+						//chrome.tabs.query({url:"https://*.facebook.com/*"}, function (tabAr){
+							//for(var i=0;tabAr.length;i++){
 								/*chrome.tabs.executeScript(tabAr[i].id,{
 									file:'js/jquery-1.11.3.min.js'	//Inject script on sign in 
 								},function(){});
@@ -48,8 +48,8 @@ document.addEventListener('DOMContentLoaded', function() {
 								},function(){});
 								*/
 								//TODO Load these from separate js file
-							}
-						});
+							//}
+						//});
 						
 					}else{
 						displayError("Invalid Username or Password");

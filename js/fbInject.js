@@ -71,7 +71,7 @@ function updateProfPic(){
 	icon.innerHTML = "<img id ="+fbstrings.sidSign+" class = 'profIcon'>";
 	profPic.appendChild(icon);
 	
-	$.post("https://id.projects.mrt.ac.lk:9000/profRating",
+	$.post(fbstrings.sidServer+"/profRating",
 	{
 		targetUser: profID	
 	},
@@ -108,7 +108,7 @@ function updFrndsProfInTimeLine(){
 
 function addIconToFriendProf(profID, friendStr){
 	try{
-		$.post("https://id.projects.mrt.ac.lk:9000/profRating",
+		$.post(fbstrings.sidServer+"/profRating",
 		{
 			targetUser: profID	
 		},
@@ -117,7 +117,7 @@ function addIconToFriendProf(profID, friendStr){
 			document.getElementById(friendStr).src = imgURL;
 		});
 	}catch(e){
-		console.error(e);
+		//console.error(e);
 		var imgURL = chrome.extension.getURL("resources/icons/profN.png");
 		document.getElementById(friendStr).src = imgURL;
 	}
@@ -172,7 +172,7 @@ function addSidAnalyticsMenu(){
 			document.getElementById("analytics_legend").src = legendURL;
 			commitChart(profId);
 			try{
-				$.post("https://id.projects.mrt.ac.lk:9000/test/getLinkedinURL",{
+				$.post(fbstrings.sidServer+"/test/getLinkedinURL",{
 					uid : profID
 				},
 				function(data){
@@ -218,7 +218,8 @@ function scoreClaims(arrIndex, claim, classOffset){
 	var claimId = hashId(claim.getAttribute("data-html"));
 	arrIndex+=23;
 	
-	$.post("https://id.projects.mrt.ac.lk:9000/test/ratedByOthersCounts",{
+	try{
+	$.post(fbstrings.sidServer+"/test/ratedByOthersCounts",{
 		uid : profID,
 		claimid : claimId
 	},
@@ -234,6 +235,15 @@ function scoreClaims(arrIndex, claim, classOffset){
 			console.log("info .. .. .. Icons already added");
 		}
 	});
+	}catch(e){
+		//console.error(e);
+		var imgURL = chrome.extension.getURL("resources/icons/"+iconClass+"N.png");
+		var icon = document.getElementById(iconID);
+		if(icon!==null){
+			icon.src = imgURL;
+			popUpOnIconByID(claim,iconID,iconClass,classOffset);
+		}
+	}
 }
 
 function popUpOnIconByID(claim,iconID,iconClass,classOffset){ //TODO
@@ -286,7 +296,7 @@ function addEventToSendData(obj,claimId,targetId,myId,claimData,rate){
 	obj.addEventListener("click",function(){
 		//alert("event added");
 		notie.alert(4, 'Adding rating to siD system', 2);
-		$.post("https://id.projects.mrt.ac.lk:9000/test/addRating",{
+		$.post(fbstrings.sidServer+"/test/addRating",{
 			myid: myId,
 			targetid: targetId,
 			claimid: claimId,
@@ -408,7 +418,7 @@ function drawPieChart(profId){
 	var verified =50;
 	var rejected =50;
 	var uncertain=50;
-	$.post("https://id.projects.mrt.ac.lk:9000/test/allCounts",{
+	$.post(fbstrings.sidServer+"/test/allCounts",{
 		uid : profId
 	},
 	function(data /*,status*/){

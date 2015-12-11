@@ -19,7 +19,10 @@ chrome.runtime.onMessage.addListener(function (message,sender){
 		}
 	}else if(message === "login check"){
 		
+	}else if(message === "reinject"){
+		
 	}
+	
 });
 
 var count =0;

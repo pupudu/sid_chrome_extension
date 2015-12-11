@@ -7,11 +7,7 @@ console.log("Content Script loaded");
 
 var profile = document.getElementsByClassName("view-public-profile")[0];
 
-if(getCookie("sidSession")==="true"){	/*check whether user is logged in*/
-	identify();	
-}else{
-	console.log("Cookie mismatch. Need to log in again");
-}
+identify();	
 
 /**identify web page and take required actions*/
 function identify(){
@@ -37,7 +33,7 @@ function updateProfPic(){
 	var imgURL;
 	//var profID = hashId(profile.innerText.substring(24));
 	var url = document.getElementsByName("currenturl")[0].getAttribute("value").toString();
-	alert(url);
+	//alert(url);
 	var profID = getQueryVariable("id",url);
 	//alert(profID);
 	icon.innerHTML = "<img id ='verif' class = 'profIcon'>";
