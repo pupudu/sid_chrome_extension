@@ -170,7 +170,25 @@ function addSidAnalyticsMenu(){
 			node.innerHTML = data;
 			document.getElementById("analytics_header").src = headerURL;
 			document.getElementById("analytics_legend").src = legendURL;
-			commitChart(profId,fbstrings.sidDropdown);
+			
+			$.post(fbstrings.sidServer+"/test/allCounts",{
+				uid : profId
+			},
+			function(rating /*,status*/){
+				console.log("code test");
+				var chartData = {};
+				chartData.yesCount = rating.yes;
+				chartData.noCount = rating.no;
+				chartData.notSureCount = rating.notSure;
+				
+				var chartConfigs = {};
+				chartConfigs.animation = true;
+				chartConfigs.type = "drop";
+				chartConfigs.base = "_9ry _p";
+				
+				addChartListener(chartData,chartConfigs,node);
+			});
+			
 			try{
 				$.post(fbstrings.sidServer+"/test/getLinkedinURL",{
 					uid : profID
@@ -301,6 +319,7 @@ function popUpOnIconByID(claim,iconID,iconClass,classOffset,yes,no,notSure){ //T
 		var chartConfigs = {};
 		chartConfigs.animation = false;
 		chartConfigs.type = "mini";
+		chartConfigs.base = "popupbase"
 		
 		addChartListener(chartData,chartConfigs,claim);
 	});
@@ -498,7 +517,8 @@ function hashId(str){
 }
 
 function addChartListener(chartData,chartConfigs,parent){
-	var sidDropdown = document.getElementById("popupDodan");
+	var sidDropdown = parent.getElementsByClassName(chartConfigs.base)[0];
+	console.log(chartConfigs.base+".............."+sidDropdown);
 	sidDropdown.addEventListener('mouseover', function() {
 		drawPieChart2(chartData,chartConfigs,parent);
 	});
