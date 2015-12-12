@@ -463,68 +463,6 @@ function extractFriendId(node){
 	return profID;
 }
 
-/*
-function commitChart(profId,chartId){
-	var sidDropdown = document.getElementById(chartId);
-	sidDropdown.addEventListener('mouseover', function() {
-		drawPieChart(profId);
-	});
-}
-
-TODO Move post request to solve loading time issues
-function drawPieChart(profId){
-	console.log("drawing chart");
-	var verified =50;
-	var rejected =50;
-	var uncertain=50;
-	$.post(fbstrings.sidServer+"/test/allCounts",{
-		uid : profId
-	},
-	function(data ,status){
-		verified = data.yes;
-		rejected = data.no;
-		uncertain = data.notSure;
-		
-		var pieData = [
-			{
-				value: rejected,
-				color:"#F7464A",
-				highlight: "#FF5A5E",
-				label: "Rejected"
-			},
-			{
-				value: verified,
-				color: "#46BF7D",
-				highlight: "#5AD391",
-				label: "Verified"
-			},
-			{
-				value: uncertain,
-				color: "#FDB45C",
-				highlight: "#FFC870",
-				label: "Uncertain"
-			}
-		];
-		
-		var chartHolder = document.getElementById(fbstrings.chartHolder)
-		chartHolder.firstChild.remove();
-		chartHolder.innerHTML = '<canvas class="sid_chart" id="myChart"></canvas>';
-
-		var ctx = document.getElementById(fbstrings.analyticsChart).getContext("2d");
-		try{
-			var myPie;
-			myPie = new Chart(ctx).Pie(pieData,{
-				animation: true,
-				animationEasing: "easeInOutQuart"
-				//add more chart configs here as needed
-			});
-		}catch(err){
-			console.log(err);
-		}
-		//ctx.clearRect(0,0,1000,1000);
-	});
-}
-*/
 
 /**Generate an Id given an string*/
 function hashId(str){
@@ -586,7 +524,7 @@ function drawPieChart(chartData,chartConfigs,parent){
 		var myPie;
 		myPie = new Chart(ctx).Pie(pieData,{
 			animation: chartConfigs.animation,
-			animationEasing: "easeInOutSine"
+			animationEasing: "easeInOutQuart"
 			//add more chart configs here as needed
 		});
 	}catch(err){
