@@ -171,23 +171,7 @@ function addSidAnalyticsMenu(){
 			document.getElementById("analytics_header").src = headerURL;
 			document.getElementById("analytics_legend").src = legendURL;
 			
-			$.post(fbstrings.sidServer+"/test/allCounts",{
-				uid : profId
-			},
-			function(rating /*,status*/){
-				console.log("code test");
-				var chartData = {};
-				chartData.yesCount = rating.yes;
-				chartData.noCount = rating.no;
-				chartData.notSureCount = rating.notSure;
-				
-				var chartConfigs = {};
-				chartConfigs.animation = true;
-				chartConfigs.type = "drop";
-				chartConfigs.base = "_9ry _p";
-				
-				addChartListener(chartData,chartConfigs,node);
-			});
+			commitDropdownChart(profId,node);
 			
 			try{
 				$.post(fbstrings.sidServer+"/test/getLinkedinURL",{
@@ -206,6 +190,25 @@ function addSidAnalyticsMenu(){
 	}
 }
 
+function commitDropdownChart(profId,node){
+	$.post(fbstrings.sidServer+"/test/allCounts",{
+				uid : profId
+	},
+	function(rating /*,status*/){
+		console.log("code test");
+		var chartData = {};
+		chartData.yesCount = rating.yes;
+		chartData.noCount = rating.no;
+		chartData.notSureCount = rating.notSure;
+		
+		var chartConfigs = {};
+		chartConfigs.animation = true;
+		chartConfigs.type = "drop";
+		chartConfigs.base = "_9ry _p";
+		
+		addChartListener(chartData,chartConfigs,node);
+	});
+}
 
 function scoreClaims(arrIndex, claim, classOffset){
 	//console.log(".. .. scoring claims on time line" + claim.innerHTML);
@@ -360,8 +363,10 @@ function addEventToSendData(obj,claimId,targetId,myId,claim,rate){
 					chartConfigs.base = "popupbase"
 					
 					drawPieChart(chartData,chartConfigs,claim);
-					
 				});
+				
+				var dropdown = document.getElementsByClassName("sid_dropdown")[0];
+				commitDropdownChart(targetId,dropdown);
 			}
 		});
 	});
@@ -581,7 +586,7 @@ function drawPieChart(chartData,chartConfigs,parent){
 		var myPie;
 		myPie = new Chart(ctx).Pie(pieData,{
 			animation: chartConfigs.animation,
-			animationEasing: "easeInOutQuart"
+			animationEasing: "easeInOutSine"
 			//add more chart configs here as needed
 		});
 	}catch(err){
