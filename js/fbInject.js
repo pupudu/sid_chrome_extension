@@ -303,9 +303,9 @@ function popUpOnIconByID(claim,iconID,iconClass,classOffset,yes,no,notSure){ //T
 		var refLink = claim.getElementsByClassName(fbstrings.btnRefutedIcon)[0];
 		var neuLink = claim.getElementsByClassName(fbstrings.btnNeutralIcon)[0];
 		
-		addEventToSendData(verLink,claimId,targetId,myId,claim.getAttribute("data-html"),1);
-		addEventToSendData(refLink,claimId,targetId,myId,claim.getAttribute("data-html"),-1);
-		addEventToSendData(neuLink,claimId,targetId,myId,claim.getAttribute("data-html"),0);
+		addEventToSendData(verLink,claimId,targetId,myId,claim,1);
+		addEventToSendData(refLink,claimId,targetId,myId,claim,-1);
+		addEventToSendData(neuLink,claimId,targetId,myId,claim,0);
 		
 		console.log("try");
 		var profId = extract_TargetId();
@@ -325,8 +325,9 @@ function popUpOnIconByID(claim,iconID,iconClass,classOffset,yes,no,notSure){ //T
 	});
 }
 
-function addEventToSendData(obj,claimId,targetId,myId,claimData,rate){
+function addEventToSendData(obj,claimId,targetId,myId,claim,rate){
 	//console.log(".............................................................adding  event");
+	claimData = claim.getAttribute("data-html");
 	obj.addEventListener("click",function(){
 		//alert("event added");
 		notie.alert(4, 'Adding rating to siD system', 2);
@@ -343,6 +344,24 @@ function addEventToSendData(obj,claimId,targetId,myId,claimData,rate){
 				notie.alert(3, 'An unexpected error occured! Please Try Again', 3);
 			}else{
 				notie.alert(1, 'Rating added successfully!', 3);
+				
+				$.post(fbstrings.sidServer+"/test/ratedByOthersCounts",{
+					uid : targetId,
+					claimid : claimId
+				},function(data){
+					var chartData = {};
+					chartData.yesCount = data.yes;
+					chartData.noCount = data.no;
+					chartData.notSureCount = data.notSure;
+					
+					var chartConfigs = {};
+					chartConfigs.animation = true;
+					chartConfigs.type = "mini";
+					chartConfigs.base = "popupbase"
+					
+					drawPieChart(chartData,chartConfigs,claim);
+					
+				});
 			}
 		});
 	});
@@ -439,6 +458,7 @@ function extractFriendId(node){
 	return profID;
 }
 
+/*
 function commitChart(profId,chartId){
 	var sidDropdown = document.getElementById(chartId);
 	sidDropdown.addEventListener('mouseover', function() {
@@ -446,7 +466,7 @@ function commitChart(profId,chartId){
 	});
 }
 
-/*TODO Move post request to solve loading time issues*/
+TODO Move post request to solve loading time issues
 function drawPieChart(profId){
 	console.log("drawing chart");
 	var verified =50;
@@ -455,7 +475,7 @@ function drawPieChart(profId){
 	$.post(fbstrings.sidServer+"/test/allCounts",{
 		uid : profId
 	},
-	function(data /*,status*/){
+	function(data ,status){
 		verified = data.yes;
 		rejected = data.no;
 		uncertain = data.notSure;
@@ -499,6 +519,7 @@ function drawPieChart(profId){
 		//ctx.clearRect(0,0,1000,1000);
 	});
 }
+*/
 
 /**Generate an Id given an string*/
 function hashId(str){
@@ -520,11 +541,11 @@ function addChartListener(chartData,chartConfigs,parent){
 	var sidDropdown = parent.getElementsByClassName(chartConfigs.base)[0];
 	console.log(chartConfigs.base+".............."+sidDropdown);
 	sidDropdown.addEventListener('mouseover', function() {
-		drawPieChart2(chartData,chartConfigs,parent);
+		drawPieChart(chartData,chartConfigs,parent);
 	});
 }
 
-function drawPieChart2(chartData,chartConfigs,parent){
+function drawPieChart(chartData,chartConfigs,parent){
 	console.log("drawing chart");
 	var verified =chartData.yesCount;
 	var rejected =chartData.noCount;
