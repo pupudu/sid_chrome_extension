@@ -122,7 +122,7 @@ ul.dropElement{
 	min-width: 130px;
 }
 
-canvas.sid_chart{
+canvas.drop_chart{
 	width: 150px;
 	height: 150px;
 	min-width: 150px;
@@ -131,7 +131,7 @@ canvas.sid_chart{
 	margin-left:50px;
 }
 
-canvas.pop_chart{
+canvas.mini_chart{
 	width: 100px;
 	height: 100px;
 	min-width: 100px;

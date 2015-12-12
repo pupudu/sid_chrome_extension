@@ -292,7 +292,17 @@ function popUpOnIconByID(claim,iconID,iconClass,classOffset,yes,no,notSure){ //T
 		console.log("try");
 		var profId = extract_TargetId();
 		//console.log(data.yes+" "+data.no+" "+data.notSure)
-		commitChart1(profId,"DodanDodan",yes,no,notSure,claim);
+		
+		var chartData = {};
+		chartData.yesCount = yes;
+		chartData.noCount = no;
+		chartData.notSureCount = notSure;
+		
+		var chartConfigs = {};
+		chartConfigs.animation = false;
+		chartConfigs.type = "mini";
+		
+		addChartListener(chartData,chartConfigs,claim);
 	});
 }
 
@@ -487,59 +497,53 @@ function hashId(str){
     return hash;
 }
 
-function commitChart1(profId,chartId,a,b,c,claim){
+function addChartListener(chartData,chartConfigs,parent){
 	var sidDropdown = document.getElementById("popupDodan");
 	sidDropdown.addEventListener('mouseover', function() {
-		drawPieChart1(profId,a,b,c,claim);
+		drawPieChart2(chartData,chartConfigs,parent);
 	});
 }
 
-function drawPieChart1(profId,a,b,c,claim){
+function drawPieChart2(chartData,chartConfigs,parent){
 	console.log("drawing chart");
-	var verified =a;
-	var rejected =b;
-	var uncertain=c;
-	
-		//verified = data.yes;
-		//rejected = data.no;
-		//uncertain = data.notSure;
-		
-		var pieData = [
-			{
-				value: rejected,
-				color:"#F7464A",
-				highlight: "#FF5A5E",
-				label: "Rejected"
-			},
-			{
-				value: verified,
-				color: "#46BF7D",
-				highlight: "#5AD391",
-				label: "Verified"
-			},
-			{
-				value: uncertain,
-				color: "#FDB45C",
-				highlight: "#FFC870",
-				label: "Uncertain"
-			}
-		];
-		
-		var chartHolder = claim.getElementsByClassName("chartHolder")[0];
-		chartHolder.firstChild.remove();
-		chartHolder.innerHTML = '<canvas class="pop_chart DodanDodan" id="DodanDodan"></canvas>';
+	var verified =chartData.yesCount;
+	var rejected =chartData.noCount;
+	var uncertain=chartData.notSureCount;
 
-		var ctx = claim.getElementsByClassName("DodanDodan")[0].getContext("2d");
-		try{
-			var myPie;
-			myPie = new Chart(ctx).Pie(pieData,{
-				animation: false,
-				//animationEasing: "easeInOutQuart"
-				//add more chart configs here as needed
-			});
-		}catch(err){
-			console.log(err);
+	var pieData = [
+		{
+			value: rejected,
+			color:"#F7464A",
+			highlight: "#FF5A5E",
+			label: "Rejected"
+		},
+		{
+			value: verified,
+			color: "#46BF7D",
+			highlight: "#5AD391",
+			label: "Verified"
+		},
+		{
+			value: uncertain,
+			color: "#FDB45C",
+			highlight: "#FFC870",
+			label: "Uncertain"
 		}
-		//ctx.clearRect(0,0,1000,1000);
+	];
 	
+	var chartHolder = parent.getElementsByClassName("chartHolder")[0];
+	chartHolder.firstChild.remove();
+	chartHolder.innerHTML = '<canvas class='+chartConfigs.type+'_chart'+'></canvas>';
+
+	var ctx = parent.getElementsByClassName(chartConfigs.type+'_chart')[0].getContext("2d");
+	try{
+		var myPie;
+		myPie = new Chart(ctx).Pie(pieData,{
+			animation: chartConfigs.animation,
+			animationEasing: "easeInOutQuart"
+			//add more chart configs here as needed
+		});
+	}catch(err){
+		console.log(err);
+	}
 }
