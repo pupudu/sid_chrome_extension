@@ -1,4 +1,5 @@
 /* globals chrome,Chart,getCookie,fbstrings,notie: false */
+//TODO - Realtime update icons when rated a claim
 console.log(fbstrings.dodan);
 
 var timeLineCName = document.getElementById(fbstrings.profileName);		//element to identify fb profile

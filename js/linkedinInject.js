@@ -68,12 +68,11 @@ function manipulateProfile(){
 		var claimCount = claimAr.length; /*Number of claims on about page*/
 		
 		for(var i=0;i<claimCount;i++){
-			var claim = claimAr[i];
+			var claim = claimAr[i].getElementsByTagName("h4")[0];
 			scoreClaims(j,i,claim,"Events"); /*TODO fix issue in icon positions of about page*/
 		}
 	}
 }
-
 
 function getQueryVariable(variable,string) {
     var qId = string.indexOf("?");
@@ -87,6 +86,65 @@ function getQueryVariable(variable,string) {
     }
     return null;
 }
+
+function addChartListener(chartData,chartConfigs,parent){
+	var sidDropdown = parent.getElementsByClassName(chartConfigs.base)[0];
+	console.log(chartConfigs.base+".............."+sidDropdown);
+	sidDropdown.addEventListener('mouseover', function() {
+		drawPieChart(chartData,chartConfigs,parent);
+	});
+}
+
+function drawPieChart(chartData,chartConfigs,parent){
+	console.log("drawing chart");
+	var verified =chartData.yesCount;
+	var rejected =chartData.noCount;
+	var uncertain=chartData.notSureCount;
+
+	var pieData = [
+		{
+			value: rejected,
+			color:"#F7464A",
+			highlight: "#FF5A5E",
+			label: "Rejected"
+		},
+		{
+			value: verified,
+			color: "#46BF7D",
+			highlight: "#5AD391",
+			label: "Verified"
+		},
+		{
+			value: uncertain,
+			color: "#FDB45C",
+			highlight: "#FFC870",
+			label: "Uncertain"
+		}
+	];
+	
+	var chartHolder = parent.getElementsByClassName("chartHolder")[0];
+	chartHolder.firstChild.remove();
+	chartHolder.innerHTML = '<canvas class='+chartConfigs.type+'_chart'+'></canvas>';
+
+	var ctx = parent.getElementsByClassName(chartConfigs.type+'_chart')[0].getContext("2d");
+	try{
+		var myPie;
+		myPie = new Chart(ctx).Pie(pieData,{
+			animation: chartConfigs.animation,
+			animationEasing: "easeInOutQuart"
+			//add more chart configs here as needed
+		});
+	}catch(err){
+		console.log(err);
+	}
+}
+
+
+
+
+
+
+
 
 
 
@@ -115,12 +173,12 @@ function addSidAnalyticsMenu(){
 function scoreClaims(secIndex, arrIndex, claim, classOffset, isOffset){
 	//console.log(".. .. scoring claims on time line" + claim.innerHTML);
 	
-	var offsetTop = claim.offsetTop;
+	//var offsetTop = claim.offsetTop;
 	
 	//if(isOffset){
 		//offsetTop -= arrIndex*17;
 	//}
-	
+	if(claim == undefined){return;}
 	arrIndex = 100*secIndex + arrIndex;
 	
 	var profID = hashId(profile.innerText.substring(24));
@@ -137,7 +195,7 @@ function scoreClaims(secIndex, arrIndex, claim, classOffset, isOffset){
 	/*Avoid adding icons again if already added*/
 	if(claim.getElementsByClassName("rateIconContainer").length === 0){
 		rateIcon.className = "rateIconContainer "+ classOffset;
-		rateIcon.style.top = offsetTop+"px";
+		//rateIcon.offsetTop = "-20px";
 		rateIcon.innerHTML = "<img id = '" + iconID + "' class = '" + iconClass + classOffset + "' >";
 		claim.appendChild(rateIcon);
 	}
@@ -359,3 +417,5 @@ function hashId(str){
 	}
     return hash;
 }
+
+
