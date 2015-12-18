@@ -105,8 +105,9 @@
 /*text decoration*/
 #cssmenu > ul a:link,
 #cssmenu > ul a:visited {
-  color: #9a9a00;
+  /*color: #000000;*/
   text-decoration: none;
+  font-size:12px;
 }
 
 

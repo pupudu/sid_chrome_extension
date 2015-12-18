@@ -57,14 +57,14 @@ document.addEventListener('DOMContentLoaded', function() {
 											console.log(node);
 										}
 										console.log(profID);
-										//window.open('main.html','_self');
+										window.open('main.html','_self');
 									});
 								}else{
 									//TODO : Handle issue
-									//window.open('main.html','_self');
+									window.open('main.html','_self');
 								}
 							}else{
-								//window.open('main.html','_self');
+								window.open('main.html','_self');
 							}
 						}else{
 							//TODO: Handle issue

@@ -43,9 +43,9 @@ function updateProfPic(){
 	icon.innerHTML = "<img id ='verif' class = 'profIcon "+accType+"'>";
 	profPic.appendChild(icon);
 	
-	$.post("https://sid.projects.mrt.ac.lk:9000/rate/facebook/getOverallProfileRating",
+	$.post("https://sid.projects.mrt.ac.lk:9000/rate/linkedin/getOverallProfileRating",
 	{
-		targetid: "100001459216880"//profID	
+		targetid: profID	
 	},
 	function(data/*, status*/){
 		imgURL = chrome.extension.getURL("resources/icons/prof_li_" + "N"/*data.rating*/ + ".png");
@@ -217,6 +217,12 @@ function scoreClaims(secIndex, arrIndex, claim, classOffset, isOffset){
 			return;
 		}
 	}
+	
+	if(claim.getAttribute("data-html")===null){
+		claim.setAttribute("data-html",claim.innerHTML);
+	}
+	var claimId = hashId(claim.getAttribute("data-html"));
+	
 	/*Avoid adding icons again if already added*/
 	if(claim.getElementsByClassName("rateIconContainer").length === 0){
 		rateIcon.className = "rateIconContainer "+ classOffset;
@@ -230,13 +236,14 @@ function scoreClaims(secIndex, arrIndex, claim, classOffset, isOffset){
 	
 	arrIndex+=23;
 	
-	$.post("https://id.projects.mrt.ac.lk:9000/claimScore",{
-		targetUser : profID,
-		claimID : arrIndex
+	$.post("https://sid.projects.mrt.ac.lk:9000/rate/linkedin/getRating",{
+		targetid : profID,
+		claimid : claimId
 	},
 	function(data /*,status*/){
 		//console.log(".. .. .. Adding graphic icons to rating icon holders" + iconID);
-		claimScore = data.rating;
+		console.log(JSON.stringify(data));
+		claimScore = data.claimScore;
 		var imgURL = chrome.extension.getURL("resources/icons/"+iconClass+claimScore+".png");
 		var icon = document.getElementById(iconID);
 		if(icon!==null){
@@ -253,9 +260,11 @@ function popUpOnIconByID(claim,iconID,iconClass,classOffset){ //TODO
 	
 	var node = document.createElement("DIV");  
 	var claimId = hashId(claim.innerHTML.toString());
-	var targetId = extractId(1);
-	var myId = extractId(0);
 	
+	var url = document.getElementsByName("currenturl")[0].getAttribute("value").toString();
+	var targetId = getQueryVariable("id",url);
+	var myId = getQueryVariable("id",url);
+	alert(myId)
 	classOffset = classOffset+"_d";
 	if(claim.getElementsByClassName(iconClass+classOffset).length > 0){
 		return;
@@ -299,7 +308,7 @@ function addEventToSendData(obj,claimId,targetId,myId,claimData,rate){
 	obj.addEventListener("click",function(){
 		//alert("event added");
 		notie.alert(4, 'Adding rating to siD system', 2);
-		$.post("https://id.projects.mrt.ac.lk:9000/test/addRating",{
+		$.post("https://sid.projects.mrt.ac.lk:9000/rate/linkedin/addRating",{
 			myid: myId,
 			targetid: targetId,
 			claimid: claimId,
@@ -442,5 +451,6 @@ function hashId(str){
 	}
     return hash;
 }
+
 
 
