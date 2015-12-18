@@ -394,7 +394,7 @@ function addEventToSendData(obj,claimId,iconId,iconClass,targetId,myId,claim,rat
 		console.log(claimData);
 		
 		
-		alert(claimId);
+		//alert(claimId);
 		$.post(fbstrings.sidServer+"/rate/facebook/addRating",{
 			myid: myId,
 			targetid: targetId,
