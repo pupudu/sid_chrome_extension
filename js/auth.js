@@ -30,7 +30,47 @@ document.addEventListener('DOMContentLoaded', function() {
 						console.log("Authentication success");
 						setCookie("sidSession","true",3);	//expires after 3 days if not logged out
 						injectCookie("sidSession","true",3); 	//inject to save cookie inside the main browser
-						window.open('main.html','_self');
+						
+						console.log(data);
+						if(data.linked===true){
+							if(data.fbid===undefined){
+								if(data.fbappid!==undefined){
+									$.get("https://www.facebook.com/"+data.fbappid,function(data){
+										//console.log(data)
+										var str;
+										var profID;
+										var strObj;
+										var node=document.createElement("DIV");
+										node.innerHTML=data;
+										try{
+											var fbid = node.getElementsByTagName("meta")[4].getAttribute("content").substring(13);
+											$.post("https://sid.projects.mrt.ac.lk:9000/rate/facebook/setID",
+											{
+												email: usr.value,	
+												uid: fbid		
+											},
+											function(data, status){
+												alert(JSON.stringify(data))
+											});	
+										}catch(e){
+											console.error(e);
+											console.log(node);
+										}
+										console.log(profID);
+										//window.open('main.html','_self');
+									});
+								}else{
+									//TODO : Handle issue
+									//window.open('main.html','_self');
+								}
+							}else{
+								//window.open('main.html','_self');
+							}
+						}else{
+							//TODO: Handle issue
+							window.open('main.html','_self');
+						}
+						//alert(JSON.stringify(data))
 						//chrome.tabs.query({url:"https://*.facebook.com/*"}, function (tabAr){
 							//for(var i=0;tabAr.length;i++){
 								/*chrome.tabs.executeScript(tabAr[i].id,{
@@ -60,7 +100,9 @@ document.addEventListener('DOMContentLoaded', function() {
 			});
 		});
 		
-	}catch(e){/*Do nothing*/}
+	}catch(e){/*Do nothing*/
+		console.error(e);
+	}
 	
 	try{
 		var btnRegister = document.getElementById('btnRegister');	//Register button in login page
@@ -68,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		btnRegister.addEventListener('click', function() {
 			chrome.tabs.getSelected(null, function(tab) {
 				chrome.tabs.executeScript(tab.id,{
-				code:'window.open("http://id.projects.mrt.ac.lk")'
+				code:'window.open("http://sid.projects.mrt.ac.lk")'
 				},function(){
 					/*Log Navigation*/
 					console.log("Redirect to Sid|Main Web Page");

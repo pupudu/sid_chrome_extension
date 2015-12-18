@@ -7,6 +7,30 @@ var timeLineCName = document.getElementById(fbstrings.profileName);		//element t
 //var membersBtn = document.getElementsByClassName('_2l5d')[1];				//element to identify fb group
 var timeLineHLine = document.getElementById(fbstrings.fbTimelineHeadline);			//element to identify fb page
 
+/*
+$.get("https://www.facebook.com/Pupudu",function(data){
+	var str;
+	var profID;
+	var strObj;
+	var node=document.createElement("DIV");
+	node.innerHTML=data;
+	try{
+		str = node.getElementsByClassName(fbstrings.timelineBoxes)[0].getAttribute("data-gt");
+		console.log(node);
+		strObj = JSON.parse(str);
+		if(userType === 0){
+			profID = strObj.viewerid;
+		}else if(userType === 1){
+			profID = strObj.profileownerid;
+		}
+	}catch(e){
+		console.error(e);
+		console.log(node);
+		
+	}
+	console.log(profID);
+});*/
+
 /*(function() {
     var origOpen = XMLHttpRequest.prototype.open;
     XMLHttpRequest.prototype.open = function() {
@@ -48,11 +72,15 @@ function identify(){
 			else if(subsection.innerText === "Life Events"){
 				manipulateLifeEvents();		/*if an fb about work page, and haven't modified before, then add sid elements*/
 			}
+			else if(subsection.innerText === "Overview"){
+				manipulateOverview();
+			}
 			
 		}else if (selectedTab === "Timeline"){
 			manipulateTimeLine();	/*if an fb profile timeline, and haven't modified before, then add sid elements*/
 			updFrndsProfInTimeLine();
 		}
+			
 	}
 }
 
@@ -72,12 +100,13 @@ function updateProfPic(){
 	icon.innerHTML = "<img id ="+fbstrings.sidSign+" class = 'profIcon'>";
 	profPic.appendChild(icon);
 	
-	$.post(fbstrings.sidServer+"/profRating",
+	$.post(fbstrings.sidServer+"/rate/facebook/getOverallProfileRating",
 	{
-		targetUser: profID	
+		targetid: profID	
 	},
 	function(data/*, status*/){
-		imgURL = chrome.extension.getURL("resources/icons/prof" + data.rating + ".png");
+		//alert(JSON.stringify(data))
+		imgURL = chrome.extension.getURL("resources/icons/prof" + data.ratingLevel + ".png");
 		if(document.getElementById(fbstrings.sidSign) !== null){
 			document.getElementById(fbstrings.sidSign).src = imgURL;
 		}
@@ -109,12 +138,12 @@ function updFrndsProfInTimeLine(){
 
 function addIconToFriendProf(profID, friendStr){
 	try{
-		$.post(fbstrings.sidServer+"/profRating",
+		$.post(fbstrings.sidServer+"/rate/facebook/getOverallProfileRating",
 		{
-			targetUser: profID	
+			targetid: profID	
 		},
 		function(data){
-			var imgURL = chrome.extension.getURL("resources/icons/prof" + data.rating + ".png");
+			var imgURL = chrome.extension.getURL("resources/icons/prof" + data.ratingLevel + ".png");
 			document.getElementById(friendStr).src = imgURL;
 		});
 	}catch(e){
@@ -143,6 +172,17 @@ function manipulateLifeEvents(){
 	for(var i=0;i<claimCount;i++){
 		var claim = claimAr[i];
 		scoreClaims(i,claim,"Events"); /*TODO fix issue in icon positions of about page*/
+	}
+}
+
+function manipulateOverview(){
+	console.log(".. .. updating overview");
+	var claimAr = document.getElementsByClassName(fbstrings.lifeEventClaim);
+	var claimCount = claimAr.length; /*Number of claims on about page*/
+	
+	for(var i=0;i<claimCount;i++){
+		var claim = claimAr[i];
+		scoreClaims(i,claim,"Overview"); /*TODO fix issue in icon positions of about page*/
 	}
 }
 
@@ -192,11 +232,11 @@ function addSidAnalyticsMenu(){
 }
 
 function commitDropdownChart(profId,node){
-	$.post(fbstrings.sidServer+"/test/allCounts",{
-				uid : profId
+	$.post(fbstrings.sidServer+"/rate/facebook/getAllRatingsCount",{
+		targetid : profId
 	},
 	function(rating /*,status*/){
-		console.log("code test");
+		console.log(rating);
 		var chartData = {};
 		chartData.yesCount = rating.yes;
 		chartData.noCount = rating.no;
@@ -219,7 +259,7 @@ function scoreClaims(arrIndex, claim, classOffset){
 	var iconClass = 'claim';
 	var claimScore = 'T';
 	
-	if(classOffset === ""){
+	if(classOffset === "" || classOffset === "Overview"){
 		if(clearIconsIfSkip(claim)){
 			return;
 		}
@@ -239,19 +279,21 @@ function scoreClaims(arrIndex, claim, classOffset){
 	
 	var claimId = hashId(claim.getAttribute("data-html"));
 	arrIndex+=23;
-	
+	console.log(claim.getAttribute("data-html")+" "+profID+" "+claimId);
 	try{
-	$.post(fbstrings.sidServer+"/test/ratedByOthersCounts",{
-		uid : profID,
+	$.post(fbstrings.sidServer+"/rate/facebook/getRating",{
+		targetid : profID,
 		claimid : claimId
 	},
 	function(data /*,status*/){
-		claimScore = data.rating;
+		console.log(JSON.stringify(data));
+		claimScore = data.claimScore;
 		var imgURL = chrome.extension.getURL("resources/icons/"+iconClass+claimScore+".png");
 		var icon = document.getElementById(iconID);
 		if(icon!==null){
 			icon.src = imgURL;
 			popUpOnIconByID(claim,iconID,iconClass,classOffset,data.yes,data.no,data.notSure);
+			console.log(data.yes+" "+data.no+" "+data.notSure);
 		}
 		else{
 			console.log("info .. .. .. Icons already added");
@@ -268,7 +310,9 @@ function scoreClaims(arrIndex, claim, classOffset){
 	}
 }
 
-function popUpOnIconByID(claim,iconID,iconClass,classOffset,yes,no,notSure){ //TODO
+function popUpOnIconByID(claim,iconId,iconClass,classOffset,yes,no,notSure){ //TODO
+
+	//console.log(claim);
 	
 	var node = document.createElement("DIV");  
 	var claimId = hashId(claim.getAttribute("data-html"));
@@ -286,7 +330,7 @@ function popUpOnIconByID(claim,iconID,iconClass,classOffset,yes,no,notSure){ //T
 	$.get(chrome.extension.getURL("html/ratePopup.html"), function(data) {
 		node.innerHTML = data;
 		node.className=iconClass+classOffset;
-		document.getElementById(iconID).parentNode.appendChild(node);
+		document.getElementById(iconId).parentNode.appendChild(node);
 		
 		var verified = node.getElementsByClassName(fbstrings.popVerifiedIcon);
 		var neutral = node.getElementsByClassName(fbstrings.popNeutralIcon);
@@ -302,14 +346,17 @@ function popUpOnIconByID(claim,iconID,iconClass,classOffset,yes,no,notSure){ //T
 		neutral[0].src = neuImgUrl;
 		refuted[0].src = refImgUrl;
 		popupBase[0].src = baseImgUrl;
-		//clearIconsIfSkip(iconID);
+		//clearIconsIfSkip(iconId);
+		
+		//console.log(claim);
+		
 		var verLink = claim.getElementsByClassName(fbstrings.btnVerifiedIcon)[0];
 		var refLink = claim.getElementsByClassName(fbstrings.btnRefutedIcon)[0];
 		var neuLink = claim.getElementsByClassName(fbstrings.btnNeutralIcon)[0];
 		
-		addEventToSendData(verLink,claimId,targetId,myId,claim,1);
-		addEventToSendData(refLink,claimId,targetId,myId,claim,-1);
-		addEventToSendData(neuLink,claimId,targetId,myId,claim,0);
+		addEventToSendData(verLink,claimId,iconId,iconClass,targetId,myId,claim,1);
+		addEventToSendData(refLink,claimId,iconId,iconClass,targetId,myId,claim,-1);
+		addEventToSendData(neuLink,claimId,iconId,iconClass,targetId,myId,claim,0);
 		
 		console.log("try");
 		var profId = extract_TargetId();
@@ -329,13 +376,24 @@ function popUpOnIconByID(claim,iconID,iconClass,classOffset,yes,no,notSure){ //T
 	});
 }
 
-function addEventToSendData(obj,claimId,targetId,myId,claim,rate){
+function addEventToSendData(obj,claimId,iconId,iconClass,targetId,myId,claim,rate){
 	//console.log(".............................................................adding  event");
-	claimData = claim.getAttribute("data-html");
+	
+	
+	//console.log(claim);
+	//console.log(claimData);
+	
 	obj.addEventListener("click",function(){
 		//alert("event added");
 		notie.alert(4, 'Adding rating to siD system', 2);
-		$.post(fbstrings.sidServer+"/test/addRating",{
+		claimData = claim.getAttribute("data-html");
+		//console.log(myId+" "+targetId+" "+claimId+" "+claimData+" "+rate);
+		console.log(claim);
+		console.log(claimData);
+		
+		
+		
+		$.post(fbstrings.sidServer+"/rate/facebook/addRating",{
 			myid: myId,
 			targetid: targetId,
 			claimid: claimId,
@@ -349,8 +407,8 @@ function addEventToSendData(obj,claimId,targetId,myId,claim,rate){
 			}else{
 				notie.alert(1, 'Rating added successfully!', 3);
 				
-				$.post(fbstrings.sidServer+"/test/ratedByOthersCounts",{
-					uid : targetId,
+				$.post(fbstrings.sidServer+"/rate/facebook/getRating",{
+					targetid : targetId,
 					claimid : claimId
 				},function(data){
 					var chartData = {};
@@ -363,7 +421,10 @@ function addEventToSendData(obj,claimId,targetId,myId,claim,rate){
 					chartConfigs.type = "mini";
 					chartConfigs.base = "popupbase"
 					
+					var imgURL = chrome.extension.getURL("resources/icons/"+iconClass+data.claimScore+".png");
+					document.getElementById(iconId).src=imgURL;
 					drawPieChart(chartData,chartConfigs,claim);
+					addChartListener(chartData,chartConfigs,claim);
 				});
 				
 				var dropdown = document.getElementsByClassName("sid_dropdown")[0];
@@ -381,11 +442,11 @@ function clearIconsIfSkip(item){
 
 function clearIconIfSkipUsingString(item){
 	//console.log(item);
-	var skipStringAr = ["Your friend since","Followed by","friends","Friends on"];
+	var skipStringAr = ["Your friend since","Followed by","friends","Friends on","family members"];
 	var nonSkipStringAr = ["Works","Lives in","From","Born on","Studies","Studied", "In a relationship"];
-	var text = item.parentNode.innerText;
+	var text = item.outerText;
 	if(text.length <= 2){
-		text = item.parentNode.innerHTML.toString();
+		text = item.outerHTML.toString();
 	}
 	for(var j=0;j<skipStringAr.length;j++){
 		if(text.indexOf(skipStringAr[j])>=0){
@@ -445,6 +506,7 @@ function extractId(userType){
 			profID = strObj.profileownerid;
 		}
 	}catch(e){
+		console.error(e)
 	}
 	return profID;
 }
@@ -490,7 +552,7 @@ function addChartListener(chartData,chartConfigs,parent){
 }
 
 function drawPieChart(chartData,chartConfigs,parent){
-	console.log("drawing chart");
+	console.log("drawing chart" + chartData.yesCount);
 	var verified =chartData.yesCount;
 	var rejected =chartData.noCount;
 	var uncertain=chartData.notSureCount;

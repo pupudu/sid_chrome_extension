@@ -30,21 +30,25 @@ function updateProfPic(){
 	console.log(".. .. updating profile pic");
 	var profPic = document.getElementsByClassName("profile-picture")[0];
 	var icon = document.createElement("DIV");
+	var accType="free";
 	var imgURL;
 	//var profID = hashId(profile.innerText.substring(24));
 	var url = document.getElementsByName("currenturl")[0].getAttribute("value").toString();
 	//alert(url);
 	var profID = getQueryVariable("id",url);
 	//alert(profID);
-	icon.innerHTML = "<img id ='verif' class = 'profIcon'>";
+	if(document.getElementsByClassName("premiumicon").length>0){
+		accType="premium";
+	}
+	icon.innerHTML = "<img id ='verif' class = 'profIcon "+accType+"'>";
 	profPic.appendChild(icon);
 	
-	$.post("https://id.projects.mrt.ac.lk:9000/profRating",
+	$.post("https://sid.projects.mrt.ac.lk:9000/rate/facebook/getOverallProfileRating",
 	{
-		targetUser: profID	
+		targetid: "100001459216880"//profID	
 	},
 	function(data/*, status*/){
-		imgURL = chrome.extension.getURL("resources/icons/prof_li_" + data.rating + ".png");
+		imgURL = chrome.extension.getURL("resources/icons/prof_li_" + "N"/*data.rating*/ + ".png");
 		if(document.getElementById('verif') !== null){
 			document.getElementById('verif').src = imgURL;
 		}

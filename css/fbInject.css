@@ -60,6 +60,15 @@ div.claimEvents_d{
 	top:-20px;
 }
 
+div.claimOverview_d{
+	position:absolute;
+	z-index:1;
+	height: 20px;
+    width: 20px;
+	top:-20px;
+	left:-200px;
+}
+
 div.popupChart{
     position: absolute;
     top: 0px;
@@ -94,6 +103,15 @@ img.claimEvents{
 	height: 20px;
     width: 20px;
 	top:-20px;
+}
+
+img.claimOverview{
+	position:relative;
+	z-index:1;
+	height: 20px;
+    width: 20px;
+	top:-20px;
+	left:-200px;
 }
 
 img.ring{
@@ -160,6 +178,13 @@ div.Events{
 	left:550px;
 }
 
+div.Overview{
+	position:absolute;
+	height:auto;
+	width:auto;
+	left:550px;
+}
+
 a.myButton {
 	background-color:#f6f6f6;
 	display:inline-block;
@@ -184,4 +209,12 @@ a.myButton {
 	top:1px;
 }
 
-
+a.verA{
+	width:inherit;
+}
+a.neuA{
+	width:inherit;
+}
+a.refA{
+	width:inherit;
+}

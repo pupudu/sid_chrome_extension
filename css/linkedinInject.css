@@ -141,3 +141,10 @@ canvas.drop_chart{
 img.dropHeader{
 	width:250px;
 }
+
+img.premium{
+	top:30px;
+	left:30px;
+	width:180px;
+	height:180px;
+}
