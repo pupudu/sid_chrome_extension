@@ -266,7 +266,8 @@ function scoreClaims(arrIndex, claim, classOffset){
 	}
 	/*Avoid adding icons again if already added*/
 	if(claim.getAttribute("data-html")===null){
-		claim.setAttribute("data-html",claim.innerHTML);
+		var html = claim.innerHTML.replace(/web./,"www.");
+		claim.setAttribute("data-html",html);
 	}
 	if(claim.getElementsByClassName(fbstrings.rateIconContainer).length === 0){
 		rateIcon.className = "rateIconContainer "+ classOffset;
