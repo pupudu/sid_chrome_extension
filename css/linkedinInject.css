@@ -1,3 +1,20 @@
+
+img.premium{
+	top:30px;
+	left:30px;
+	width:180px;
+	height:180px;
+}
+
+canvas.drop_chart{
+	width: 150px;
+	height: 150px;
+	min-width: 150px;
+	min-height: 150px;
+	margin-top:50px;
+	margin-left:50px;
+}
+
 img.profIcon {
 	position:absolute;
 	z-index:1;
@@ -7,6 +24,8 @@ img.profIcon {
 	left:0px;
 	top:0px;
 }
+
+
 
 img.friendProfIcon{
 	position:absolute;
@@ -129,25 +148,13 @@ div.Events{
 	left:550px;
 }
 
-canvas.drop_chart{
-	width: 150px;
-	height: 150px;
-	min-width: 150px;
-	min-height: 150px;
-	margin-top:25px;
-	margin-left:50px;
-}
+
 
 img.dropHeader{
 	width:250px;
 }
 
-img.premium{
-	top:30px;
-	left:30px;
-	width:180px;
-	height:180px;
-}
+
 
 a.verA{
 	width:inherit;
@@ -168,14 +175,6 @@ div.popupChart{
     background-color: white;
 }
 
-canvas.drop_chart{
-	width: 150px;
-	height: 150px;
-	min-width: 150px;
-	min-height: 150px;
-	margin-top:25px;
-	margin-left:50px;
-}
 
 canvas.mini_chart{
 	width: 100px;
@@ -189,3 +188,4 @@ canvas.mini_chart{
 li.listElement{
 	width:110px;
 }
+
