@@ -35,6 +35,7 @@ function updateProfPic(){
 	//var profID = hashId(profile.innerText.substring(24));
 	var url = document.getElementsByName("currenturl")[0].getAttribute("value").toString();
 	//alert(url);
+	console.log(url);
 	var profID = getQueryVariable("id",url);
 	//alert(profID);
 	if(document.getElementsByClassName("premiumicon").length>0){
@@ -82,8 +83,11 @@ function getQueryVariable(variable,string) {
     var qId = string.indexOf("?");
     var query = string.substring(qId+1);
     var vars = query.split('&');
+	//console.log(vars);
     for (var i = 0; i < vars.length; i++) {
         var pair = vars[i].split('=');
+		//console.log(pair);
+		//console.log(decodeURIComponent(pair[0])+" "+variable);
         if (decodeURIComponent(pair[0]) == variable) {
             return decodeURIComponent(pair[1]);
         }
@@ -263,8 +267,9 @@ function popUpOnIconByID(claim,iconID,iconClass,classOffset){ //TODO
 	
 	var url = document.getElementsByName("currenturl")[0].getAttribute("value").toString();
 	var targetId = getQueryVariable("id",url);
-	var myId = getQueryVariable("id",url);
-	alert(myId)
+	var myId = getQueryVariable("id",document.getElementsByClassName("act-set-name")[0].getElementsByTagName("a")[0].getAttribute("href"));
+	console.log("myId")
+	//alert(myId)
 	classOffset = classOffset+"_d";
 	if(claim.getElementsByClassName(iconClass+classOffset).length > 0){
 		return;

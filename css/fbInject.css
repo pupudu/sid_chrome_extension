@@ -80,6 +80,10 @@ div.popupChart{
 
 li.listElement{
 	width:110px;
+	color:#666666;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
 }
 
 
@@ -211,10 +215,13 @@ a.myButton {
 
 a.verA{
 	width:inherit;
+	color:#666666;
 }
 a.neuA{
 	width:inherit;
+	color:#666666;
 }
 a.refA{
 	width:inherit;
+	color:#666666;
 }

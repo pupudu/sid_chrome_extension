@@ -445,8 +445,8 @@ function clearIconsIfSkip(item){
 
 function clearIconIfSkipUsingString(item){
 	//console.log(item);
-	var skipStringAr = ["Your friend since","Followed by","friends","Friends on","family members"];
-	var nonSkipStringAr = ["Works","Lives in","From","Born on","Studies","Studied", "In a relationship"];
+	var skipStringAr = fbSkipStrings;
+	var nonSkipStringAr = fbNonSkipStrings;
 	var text = item.outerText;
 	if(text.length <= 2){
 		text = item.outerHTML.toString();

@@ -27,3 +27,7 @@ var fbstrings = {
 	analyticsChart:'myChart',
 	chartHolder:'canvas-holder'
 }
+
+var fbSkipStrings = ["Your friend since","Followed by","friends","Friends on","family members"];
+
+var fbNonSkipStrings = ["Works","Lives in","From","Born on","Studies","Studied", "In a relationship"];
