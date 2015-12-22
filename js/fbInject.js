@@ -83,7 +83,6 @@ function identify(){
 			manipulateTimeLine();	/*if an fb profile timeline, and haven't modified before, then add sid elements*/
 			updFrndsProfInTimeLine();
 		}
-			
 	}
 }
 
@@ -371,8 +370,8 @@ function addEventToSendData(obj,claimId,iconId,iconClass,targetId,myId,claim,rat
 		notie.alert(4, 'Adding rating to siD system', 2);
 		claimData = claim.getAttribute("data-html");
 		//console.log(myId+" "+targetId+" "+claimId+" "+claimData+" "+rate);
-		console.log(claim);
-		console.log(claimData);
+		//console.log(claim);
+		//console.log(claimData);
 		
 		
 		//alert(claimId);
