@@ -1,4 +1,5 @@
 var vieweeId = getVieweeId();
+var myId = getMyId();
 
 updateProfPic();
 addSidAnalyticsMenu();
@@ -7,6 +8,15 @@ manipulateProfile();
 /** Returs the id of the profile being viewed*/
 function getVieweeId(){
 	return document.getElementsByClassName("profile-overview-content")[0].firstChild.id.replace("member-","");
+}
+
+function getMyId(){
+	chrome.storage.sync.get("email",function(items){
+		var email = items.email;
+		$.post("https://sid.projects.mrt.ac.lk:9000/rate/linkedin/getId",{email:email},function(data){
+			return data.id;
+		});
+	});
 }
 
 /** Appends sid-rating state over fb profile picture*/

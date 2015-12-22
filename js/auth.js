@@ -31,6 +31,10 @@ document.addEventListener('DOMContentLoaded', function() {
 						setCookie("sidSession","true",3);	//expires after 3 days if not logged out
 						injectCookie("sidSession","true",3); 	//inject to save cookie inside the main browser
 						
+						chrome.storage.sync.set({
+							email: usr.value
+						});
+						
 						console.log(data);
 						if(data.linked===true){
 							if(data.fbid===undefined || data.fbid === ""){

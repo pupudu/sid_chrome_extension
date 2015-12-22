@@ -4,7 +4,7 @@
   "name": "sID",
   "description": "Chromium Extension for sID",
   "version": "1.0",
-  "permissions": [ "webNavigation", "activeTab" , "tabs", "http://*/*", "https://*/*", "unlimitedStorage", "https://www.facebook.com/*", "https://web.facebook.com/*","notifications" ],
+  "permissions": [ "webNavigation", "activeTab" , "tabs", "http://*/*", "https://*/*", "unlimitedStorage", "https://www.facebook.com/*", "https://web.facebook.com/*","notifications", "storage" ],
   
   "optional_permissions": [ "webRequest" ],
      
