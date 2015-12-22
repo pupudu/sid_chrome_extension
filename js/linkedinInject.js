@@ -1,19 +1,7 @@
+console.log(getVieweeId());
 
-console.log(getId(1));
-console.log(getId(0));
-
-function getMyId(){
-	var url = document.getElementsByClassName("act-set-name")[0].getElementsByTagName("a")[0].href;
-	return getQueryVariable("id",url)
-}
-
-function getId(viewerType){
-	if(viewerType === 0){
-		var url = document.getElementsByClassName("act-set-name")[0].getElementsByTagName("a")[0].href;
-	}else if(viewerType === 1){
-		var url = window.location.search;
-	}
-	return getQueryVariable("id",url);
+function getVieweeId(){
+	return document.getElementsByClassName("profile-overview-content")[0].firstChild.id.replace("member-","");
 }
 
 function getQueryVariable(variable,string) {
