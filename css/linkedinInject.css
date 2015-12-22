@@ -85,7 +85,7 @@ img.claimWork{
 	top:15px;
 }
 
-div.claimEvents_d{
+div.claimMain_d{
 	position:absolute;
 	z-index:1;
 	height: 20px;
@@ -94,7 +94,7 @@ div.claimEvents_d{
 	top:-20px;
 }
 
-img.claimEvents{
+img.claimMain{
 	position:relative;
 	z-index:1;
 	height: 20px;
@@ -142,7 +142,7 @@ img.popup{
 	position:absolute;
 }
 
-div.Events{
+div.Main{
 	position:absolute;
 	height:auto;
 	width:auto;

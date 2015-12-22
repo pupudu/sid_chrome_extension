@@ -60,7 +60,7 @@ function addSidAnalyticsMenu(){
 			commitDropdownChart(vieweeId,document);
 			
 			try{
-				$.post("https://sid.projects.mrt.ac.lk:9000/test/getLinkedinURL",{
+				$.post("https://sid.projects.mrt.ac.lk:9000/rate/linkedin/getFbURL",{
 					uid : profID
 				},
 				function(data){
@@ -68,30 +68,11 @@ function addSidAnalyticsMenu(){
 				});
 			}catch(e){
 				document.getElementById("li_nav").addEventListener('click',function(){
-					notie.alert(3, 'Linked In profile not connected', 3);
+					notie.alert(3, 'Facebook profile not connected', 3);
 				});
 			}
 		});
 		document.getElementsByClassName("nav main-nav nav-bar")[0].appendChild(node);
-	}
-}
-
-function manipulateProfile(){
-	var bgSectionAr = document.getElementsByClassName("background-section");
-	for(var j=0;j<bgSectionAr.length;j++){
-		if(bgSectionAr[j].id === "background-languages-container"){
-			continue;
-		}
-		if(bgSectionAr[j].id === "background-additional-info-container"){
-			continue;
-		}
-		var claimAr = bgSectionAr[j].getElementsByClassName("section-item");
-		var claimCount = claimAr.length; /*Number of claims on about page*/
-		
-		for(var i=0;i<claimCount;i++){
-			var claim = claimAr[i].getElementsByTagName("h4")[0];
-			scoreClaims(j,i,claim,"Events"); /*TODO fix issue in icon positions of about page*/
-		}
 	}
 }
 
@@ -169,6 +150,24 @@ function drawPieChart(chartData,chartConfigs,parent){
 	}
 }
 
+function manipulateProfile(){
+	var bgSectionAr = document.getElementsByClassName("background-section");
+	for(var j=0;j<bgSectionAr.length;j++){
+		if(bgSectionAr[j].id === "background-languages-container"){
+			continue;
+		}
+		if(bgSectionAr[j].id === "background-additional-info-container"){
+			continue;
+		}
+		var claimAr = bgSectionAr[j].getElementsByClassName("section-item");
+		var claimCount = claimAr.length; /*Number of claims on about page*/
+		
+		for(var i=0;i<claimCount;i++){
+			var claim = claimAr[i].getElementsByTagName("h4")[0];
+			scoreClaims(j,i,claim,"Main"); /*TODO fix issue in icon positions of about page*/
+		}
+	}
+}
 
 function scoreClaims(secIndex, arrIndex, claim, classOffset, isOffset){
 	//console.log(".. .. scoring claims on time line" + claim.innerHTML);
@@ -202,7 +201,7 @@ function scoreClaims(secIndex, arrIndex, claim, classOffset, isOffset){
 	var claimId = hashId(claim.getAttribute("data-html"));
 	
 	try{
-	$.post(fbstrings.sidServer+"/rate/facebook/getRating",{
+	$.post(fbstrings.sidServer+"/rate/linkedin/getRating",{
 		targetid : vieweeId,
 		claimid : claimId
 	},
@@ -289,7 +288,7 @@ function addEventToSendData(obj,claimId,iconId,iconClass,targetId,myId,claim,rat
 		notie.alert(4, 'Adding rating to siD system', 2);
 		claimData = claim.getAttribute("data-html");
 
-		$.post(fbstrings.sidServer+"/rate/facebook/addRating",{
+		$.post(fbstrings.sidServer+"/rate/linkedin/addRating",{
 			myid: myId,
 			targetid: targetId,
 			claimid: claimId,
@@ -303,7 +302,7 @@ function addEventToSendData(obj,claimId,iconId,iconClass,targetId,myId,claim,rat
 			}else{
 				notie.alert(1, 'Rating added successfully!', 3);
 				
-				$.post(fbstrings.sidServer+"/rate/facebook/getRating",{
+				$.post(fbstrings.sidServer+"/rate/linkedin/getRating",{
 					targetid : targetId,
 					claimid : claimId
 				},function(data){
