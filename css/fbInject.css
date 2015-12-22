@@ -191,16 +191,16 @@ div.Overview{
 
 a.myButton {
 	background-color:#f6f6f6;
-	display:inline-block;
 	width:200px;
 	height:40px;
+	display:inline-block;
 	cursor:pointer;
 	color:#666666;
 	font-family:Arial;
-	font-size:15px;
+	font-size:14px;
 	font-weight:bold;
 	text-align:center;
-	padding:6px 24px;
+	padding:2px 24px;
 	text-decoration:none;
 	border:1px solid #ffffff;
 }

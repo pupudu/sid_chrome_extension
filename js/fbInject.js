@@ -65,15 +65,18 @@ function identify(){
 		if(selectedTab === "About") {
 			var subsection = document.getElementsByClassName(fbstrings.subSection)[0];
 			if(subsection.innerText === "Work and Education"){
-				manipulateAboutWork();		/*if an fb about work page, and haven't modified before, then add sid elements*/
+				//manipulateAboutWork();		/*if an fb about work page, and haven't modified before, then add sid elements*/
+				manipulateAbout(fbstrings.workClaim,"Work");
 			}
 									/**TODO add similar functionality to places lived, Basic info, family, and life events*/
 									
 			else if(subsection.innerText === "Life Events"){
-				manipulateLifeEvents();		/*if an fb about work page, and haven't modified before, then add sid elements*/
+				//manipulateLifeEvents();		/*if an fb about work page, and haven't modified before, then add sid elements*/
+				manipulateAbout(fbstrings.lifeEventClaim,"Events");
 			}
 			else if(subsection.innerText === "Overview"){
-				manipulateOverview();
+				//manipulateOverview();
+				manipulateAbout(fbstrings.lifeEventClaim,"Overview");
 			}
 			
 		}else if (selectedTab === "Timeline"){
@@ -153,36 +156,13 @@ function addIconToFriendProf(profID, friendStr){
 	}
 }
 
-function manipulateAboutWork(){
-	console.log(".. .. updating about work page");
-	var claimAr = document.getElementsByClassName(fbstrings.workClaim);
+function manipulateAbout(claimType,style){
+	var claimAr = document.getElementsByClassName(claimType);
 	var claimCount = claimAr.length; /*Number of claims on about page*/
 	
 	for(var i=0;i<claimCount;i++){
 		var claim = claimAr[i];
-		scoreClaims(i,claim,"Work"); /*TODO fix issue in icon positions of about page*/
-	}
-}
-
-function manipulateLifeEvents(){
-	console.log(".. .. updating life events");
-	var claimAr = document.getElementsByClassName(fbstrings.lifeEventClaim);
-	var claimCount = claimAr.length; /*Number of claims on about page*/
-	
-	for(var i=0;i<claimCount;i++){
-		var claim = claimAr[i];
-		scoreClaims(i,claim,"Events"); /*TODO fix issue in icon positions of about page*/
-	}
-}
-
-function manipulateOverview(){
-	console.log(".. .. updating overview");
-	var claimAr = document.getElementsByClassName(fbstrings.lifeEventClaim);
-	var claimCount = claimAr.length; /*Number of claims on about page*/
-	
-	for(var i=0;i<claimCount;i++){
-		var claim = claimAr[i];
-		scoreClaims(i,claim,"Overview"); /*TODO fix issue in icon positions of about page*/
+		scoreClaims(i,claim,style); /*TODO fix issue in icon positions of about page*/
 	}
 }
 
