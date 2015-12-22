@@ -96,6 +96,11 @@ function inject(tabId,obj,tab){
 	else if(tab.url.search("https://www.linkedin.com")===0){
 		//alert("status "+obj.status+ " url "+count+" "+ tab.url);
 		chrome.tabs.executeScript(tab.id,{
+			file:'js/configs.js'	//Run this script if navigated to a fb origined page
+		},function(){
+			//Do Nothing
+		});
+		chrome.tabs.executeScript(tab.id,{
 			file:'js/jquery-1.11.3.min.js'	//Run this script if navigated to a linkedin origined page
 		},function(){
 			//Do Nothing

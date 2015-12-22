@@ -28,6 +28,6 @@ var fbstrings = {
 	chartHolder:'canvas-holder'
 }
 
-var fbSkipStrings = ["Your friend since","Followed by","friends","Friends on","family members","Feeling"];
+var fbSkipStrings = ["Your friend since","Followed by","friends","Friends on","family members","Feeling","Played"];
 
 var fbNonSkipStrings = ["Works","Lives in","From","Born on","Studies","Studied", "In a relationship"];

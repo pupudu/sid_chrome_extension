@@ -241,7 +241,6 @@ function scoreClaims(secIndex, arrIndex, claim, classOffset, isOffset){
 	/*Avoid adding icons again if already added*/
 	if(claim.getElementsByClassName("rateIconContainer").length === 0){
 		rateIcon.className = "rateIconContainer "+ classOffset;
-		//rateIcon.offsetTop = "-20px";
 		rateIcon.innerHTML = "<img id = '" + iconID + "' class = '" + iconClass + classOffset + "' >";
 		claim.appendChild(rateIcon);
 	}
