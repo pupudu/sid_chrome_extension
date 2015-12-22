@@ -33,32 +33,36 @@ document.addEventListener('DOMContentLoaded', function() {
 						
 						console.log(data);
 						if(data.linked===true){
-							if(data.fbid===undefined){
+							if(data.fbid===undefined || data.fbid === ""){
 								if(data.fbappid!==undefined){
-									$.get("https://www.facebook.com/"+data.fbappid,function(data){
-										//console.log(data)
-										var str;
-										var profID;
-										var strObj;
-										var node=document.createElement("DIV");
-										node.innerHTML=data;
-										try{
-											var fbid = node.getElementsByTagName("meta")[4].getAttribute("content").substring(13);
-											$.post("https://sid.projects.mrt.ac.lk:9000/rate/facebook/setID",
-											{
-												email: usr.value,	
-												uid: fbid		
-											},
-											function(data, status){
-												alert(JSON.stringify(data))
-											});	
-										}catch(e){
-											console.error(e);
-											console.log(node);
-										}
-										console.log(profID);
-										window.open('main.html','_self');
-									});
+									try{
+										$.get("https://www.facebook.com/"+data.fbappid,function(data){
+											//console.log(data)
+											var str;
+											var profID;
+											var strObj;
+											var node=document.createElement("DIV");
+											node.innerHTML=data;
+											try{
+												var fbid = node.getElementsByTagName("meta")[4].getAttribute("content").substring(13);
+												$.post("https://sid.projects.mrt.ac.lk:9000/rate/facebook/setID",
+												{
+													email: usr.value,	
+													uid: fbid		
+												},
+												function(data, status){
+													alert(JSON.stringify(data))
+												});	
+											}catch(e){
+												console.error(e);
+											}
+											console.log(profID);
+											window.open('main.html','_self');
+										});
+									}catch(e){
+										console.error(e);
+										return;
+									}
 								}else{
 									//TODO : Handle issue
 									window.open('main.html','_self');
