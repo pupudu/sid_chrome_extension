@@ -59,7 +59,7 @@ function identify(){
 		var selectedTab = document.getElementsByClassName(fbstrings.selectedTab)[0].innerText;
 		console.log(".. .. selected tab is: " + selectedTab);
 		
-		updateProfPic();
+		updateProfPic(false);
 		addSidAnalyticsMenu();
 		
 		if(selectedTab === "About") {
@@ -87,8 +87,8 @@ function identify(){
 }
 
 /** Appends sid-rating state over fb profile picture*/
-function updateProfPic(){
-	if(document.getElementById(fbstrings.sidSign)!==null){
+function updateProfPic(manual){
+	if(document.getElementById(fbstrings.sidSign)!==null && !manual){
 		if(document.getElementById(fbstrings.sidSign).src.length>10){
 			console.log(".. .. Profile pic already updated");
 			return;
@@ -391,6 +391,7 @@ function addEventToSendData(obj,claimId,iconId,iconClass,targetId,myId,claim,rat
 			}else{
 				setTimeout(function(){
 					notie.alert(1, 'Rating added successfully!', 3);
+					updateProfPic(true);
 				},1000)
 				$.post(fbstrings.sidServer+"/rate/facebook/getRating",{
 					targetid : targetId,
