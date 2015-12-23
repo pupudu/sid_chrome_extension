@@ -121,9 +121,10 @@ function updFrndsProfInTimeLine(){
 	/**updating friends profile pics*/
 	var timelineRecent = document.getElementById(fbstrings.timelineRecent);
 	var friendAr = timelineRecent.getElementsByClassName(fbstrings.friendProfiles);
-
+	var altAr = document.getElementsByClassName("_3s6w");
+	
 	for(var i=0;i<friendAr.length;i++){
-		var profID = extractFriendId(friendAr[i]);
+		var profID = extractFriendId(friendAr[i],altAr[i]);
 		var friendStr = "friend"+i;
 		var icon = document.createElement("DIV");
 		
@@ -499,7 +500,7 @@ function extractId(userType){
 }
 
 /**Returns user id of a person in timeline friendlist as a string*/
-function extractFriendId(node){
+function extractFriendId(node,alt){
 	var str;
 	var profId;
 	var strObj;
@@ -509,12 +510,18 @@ function extractFriendId(node){
 	}catch(e1){
 		//console.error(".. .. Synchronization Issue. Page will be reloded");
 		try{
-			str = node.parentNode.getAttribute("data-gt");
-			strObj = JSON.parse(str);
-			profId = strObj.engagement.eng_tid;
-		}catch(e2){
-			console.error(e1);
-			console.error(e2);
+			str = alt.firstChild.getAttribute("data-hovercard");
+			profId = getQueryVariable("id",str);
+		}catch(e3){
+			try{
+				str = node.parentNode.getAttribute("data-gt");
+				strObj = JSON.parse(str);
+				profId = strObj.engagement.eng_tid;
+			}catch(e2){
+				console.error(e1);
+				console.error(e2);
+				console.error(e3);
+			}
 		}
 	}
 	return profId;
