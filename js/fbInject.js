@@ -385,10 +385,13 @@ function addEventToSendData(obj,claimId,iconId,iconClass,targetId,myId,claim,rat
 		function(data){
 			console.log(data);
 			if(data.success !== true){
-				notie.alert(3, 'An unexpected error occured! Please Try Again', 3);
+				setTimeout(function(){
+					notie.alert(3, 'An unexpected error occured! Please Try Again', 3);
+				},1000)
 			}else{
-				notie.alert(1, 'Rating added successfully!', 3);
-				
+				setTimeout(function(){
+					notie.alert(1, 'Rating added successfully!', 3);
+				},1000)
 				$.post(fbstrings.sidServer+"/rate/facebook/getRating",{
 					targetid : targetId,
 					claimid : claimId
