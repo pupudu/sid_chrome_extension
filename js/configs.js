@@ -6,7 +6,7 @@ var fbstrings = {
 	selectedTab:'_6-6 _6-7',
 	subSection:'_5pws _50f8  _50f4 _50f7',
 	photoContainer:'photoContainer',
-	friendProfiles:'_s0 friendPhoto _rv img',
+	friendProfiles:'_s0 _rv img',
 	workClaim:'_50f5 _50f7',
 	lifeEventClaim:'_c24 _50f4',
 	timelineClaimContainer:'_1zw6 _md0 _5vb9',

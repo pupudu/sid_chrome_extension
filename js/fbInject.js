@@ -501,16 +501,23 @@ function extractId(userType){
 /**Returns user id of a person in timeline friendlist as a string*/
 function extractFriendId(node){
 	var str;
-	var profID;
+	var profId;
 	var strObj;
 	try{
-		str = node.parentNode.getAttribute("data-gt");
-		strObj = JSON.parse(str);
-		profID = strObj.engagement.eng_tid;
-	}catch(e){
-		console.error(".. .. Synchronization Issue. Page will be reloded");
+		str = node.parentNode.getAtrribute("data-hovercard");
+		profId = getQueryVariable("id",str);
+	}catch(e1){
+		//console.error(".. .. Synchronization Issue. Page will be reloded");
+		try{
+			str = node.parentNode.getAttribute("data-gt");
+			strObj = JSON.parse(str);
+			profId = strObj.engagement.eng_tid;
+		}catch(e2){
+			console.error(e1);
+			console.error(e2);
+		}
 	}
-	return profID;
+	return profId;
 }
 
 
@@ -582,7 +589,18 @@ function drawPieChart(chartData,chartConfigs,parent){
 	}
 }
 
-
+function getQueryVariable(variable,string) {
+    var qId = string.indexOf("?");
+    var query = string.substring(qId+1);
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) == variable) {
+            return decodeURIComponent(pair[1]);
+        }
+    }
+    return null;
+}
 
 
 
