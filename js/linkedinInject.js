@@ -279,7 +279,7 @@ function popUpOnIconByID(claim,iconId,iconClass,classOffset,yes,no,notSure){ //T
 	var node = document.createElement("DIV");  
 	var claimId = hashId(claim.getAttribute("data-html"));
 	var targetId = vieweeId;
-	var myId = 1111111;
+	var myId = myId;
 	
 	classOffset = classOffset+"_d";
 	if(claim.getElementsByClassName(iconClass+classOffset).length > 0){
@@ -341,7 +341,7 @@ function addEventToSendData(obj,claimId,iconId,iconClass,targetId,myId,claim,rat
 			rating: rate
 		},
 		function(data){
-			//console.log(data);
+			console.log(data);
 			if(data !== "OK"){
 				notie.alert(3, 'An unexpected error occured! Please Try Again', 3);
 			}else{

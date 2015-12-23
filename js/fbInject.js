@@ -384,7 +384,7 @@ function addEventToSendData(obj,claimId,iconId,iconClass,targetId,myId,claim,rat
 		},
 		function(data){
 			console.log(data);
-			if(data !== "OK"){
+			if(data.success !== true){
 				notie.alert(3, 'An unexpected error occured! Please Try Again', 3);
 			}else{
 				notie.alert(1, 'Rating added successfully!', 3);
@@ -393,6 +393,7 @@ function addEventToSendData(obj,claimId,iconId,iconClass,targetId,myId,claim,rat
 					targetid : targetId,
 					claimid : claimId
 				},function(data){
+					console.log(data);
 					var chartData = {};
 					chartData.yesCount = data.yes;
 					chartData.noCount = data.no;
