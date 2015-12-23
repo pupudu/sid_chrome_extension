@@ -13,10 +13,24 @@ function getVieweeId(){
 function getMyId(){
 	chrome.storage.sync.get("email",function(items){
 		var email = items.email;
-		$.post("https://sid.projects.mrt.ac.lk:9000/rate/linkedin/getId",{email:email},function(data){
-			return data.id;
+		$.post("https://sid.projects.mrt.ac.lk:9000/rate/linkedin/getUrl",{email:email},function(data){
+			var url = data.url;
+			return getQueryVariable("id",url);
 		});
 	});
+}
+
+function getQueryVariable(variable,string) {
+    var qId = string.indexOf("?");
+    var query = string.substring(qId+1);
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) == variable) {
+            return decodeURIComponent(pair[1]);
+        }
+    }
+    return null;
 }
 
 /** Appends sid-rating state over fb profile picture*/
