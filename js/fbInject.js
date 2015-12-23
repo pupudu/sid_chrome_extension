@@ -246,7 +246,7 @@ function scoreClaims(arrIndex, claim, classOffset){
 	}
 	/*Avoid adding icons again if already added*/
 	if(claim.getAttribute("data-html")===null){
-		var html = claim.innerHTML.replace(/web./,"www.");
+		var html = claim.innerHTML.replace(/web./g,"www.");
 		claim.setAttribute("data-html",html);
 	}
 	if(claim.getElementsByClassName(fbstrings.rateIconContainer).length === 0){
@@ -388,10 +388,12 @@ function addEventToSendData(obj,claimId,iconId,iconClass,targetId,myId,claim,rat
 			if(data.success !== true){
 				setTimeout(function(){
 					notie.alert(3, 'An unexpected error occured! Please Try Again', 3);
+					console.log("An unexpected error occured! Please Try Again")
 				},1000)
 			}else{
 				setTimeout(function(){
 					notie.alert(1, 'Rating added successfully!', 3);
+					console.log("Rating added successfully");
 					updateProfPic(true);
 				},1000)
 				$.post(fbstrings.sidServer+"/rate/facebook/getRating",{
