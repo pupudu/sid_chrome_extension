@@ -557,7 +557,8 @@ function drawPieChart(chartData,chartConfigs,parent){
 	var verified =chartData.yesCount;
 	var rejected =chartData.noCount;
 	var uncertain=chartData.notSureCount;
-
+	var total = verified + rejected + uncertain;
+	
 	var pieData = [
 		{
 			value: rejected,
@@ -584,15 +585,22 @@ function drawPieChart(chartData,chartConfigs,parent){
 	chartHolder.innerHTML = '<canvas class='+chartConfigs.type+'_chart'+'></canvas>';
 
 	var ctx = parent.getElementsByClassName(chartConfigs.type+'_chart')[0].getContext("2d");
-	try{
-		var myPie;
-		myPie = new Chart(ctx).Pie(pieData,{
-			animation: chartConfigs.animation,
-			animationEasing: "easeInOutQuart"
-			//add more chart configs here as needed
-		});
-	}catch(err){
-		console.log(err);
+	if(total>0){
+		try{
+			var myPie;
+			myPie = new Chart(ctx).Pie(pieData,{
+				animation: chartConfigs.animation,
+				animationEasing: "easeInOutQuart"
+				//add more chart configs here as needed
+			});
+		}catch(err){
+			console.log(err);
+		}
+	}else{
+		var imgUrl = chrome.extension.getURL("resources/images/notRatedInfo.png");
+		base_image = new Image();
+		base_image.src = imgUrl;
+		ctx.drawImage(base_image,0,0,300,150);
 	}
 }
 
