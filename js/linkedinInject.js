@@ -1,9 +1,29 @@
 var vieweeId = getVieweeId();
-var myId = getMyId();
+var myId;
+getMyId();
+var checkCounter = 0;
+check();
 
-updateProfPic();
-addSidAnalyticsMenu();
-manipulateProfile();
+function check(){
+	checkCounter++;
+	if(checkCounter > 10){
+		alert("Error getting linked ID. Make sure that you have connected your linkedin profile using the sid Website and try again.(This message will be shown 3 times)");
+		return;
+	}
+	setTimeout(function(){
+		if(myId===undefined){
+			check();
+		}else{
+			manipulate();
+		}
+	},500);
+}
+
+function manipulate(){
+	updateProfPic();
+	addSidAnalyticsMenu();
+	manipulateProfile();
+}
 
 /** Returs the id of the profile being viewed*/
 function getVieweeId(){
@@ -15,7 +35,8 @@ function getMyId(){
 		var email = items.email;
 		$.post("https://sid.projects.mrt.ac.lk:9000/rate/linkedin/getUrl",{email:email},function(data){
 			var url = data.url;
-			return getQueryVariable("id",url);
+			var id = getQueryVariable("id",url);
+			myId = id;
 		});
 	});
 }
@@ -105,7 +126,7 @@ function commitDropdownChart(profId,node){
 		targetid : profId
 	},
 	function(rating /*,status*/){
-		console.log(rating);
+		//console.log(rating);
 		var chartData = {};
 		chartData.yesCount = rating.yes;
 		chartData.noCount = rating.no;
@@ -123,14 +144,14 @@ function commitDropdownChart(profId,node){
 
 function addChartListener(chartData,chartConfigs,parent){
 	var sidDropdown = parent.getElementsByClassName(chartConfigs.base)[0];
-	console.log(chartConfigs.base+".............."+sidDropdown);
+	//console.log(chartConfigs.base+".............."+sidDropdown);
 	sidDropdown.addEventListener('mouseover', function() {
 		drawPieChart(chartData,chartConfigs,parent);
 	});
 }
 
 function drawPieChart(chartData,chartConfigs,parent){
-	console.log("drawing chart" + chartData.yesCount);
+	//console.log("drawing chart" + chartData.yesCount);
 	var verified =chartData.yesCount;
 	var rejected =chartData.noCount;
 	var uncertain=chartData.notSureCount;
@@ -230,14 +251,14 @@ function scoreClaims(secIndex, arrIndex, claim, classOffset, isOffset){
 		claimid : claimId
 	},
 	function(data /*,status*/){
-		console.log(JSON.stringify(data));
+		//console.log(JSON.stringify(data));
 		claimScore = data.claimScore;
 		var imgURL = chrome.extension.getURL("resources/icons/"+iconClass+claimScore+".png");
 		var icon = document.getElementById(iconID);
 		if(icon!==null){
 			icon.src = imgURL;
 			popUpOnIconByID(claim,iconID,iconClass,classOffset,data.yes,data.no,data.notSure);
-			console.log(data.yes+" "+data.no+" "+data.notSure);
+			//console.log(data.yes+" "+data.no+" "+data.notSure);
 		}
 		else{
 			console.log("info .. .. .. Icons already added");
@@ -320,7 +341,7 @@ function addEventToSendData(obj,claimId,iconId,iconClass,targetId,myId,claim,rat
 			rating: rate
 		},
 		function(data){
-			console.log(data);
+			//console.log(data);
 			if(data !== "OK"){
 				notie.alert(3, 'An unexpected error occured! Please Try Again', 3);
 			}else{
