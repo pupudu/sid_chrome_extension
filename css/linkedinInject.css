@@ -159,12 +159,15 @@ img.dropHeader{
 
 a.verA{
 	width:inherit;
+	height:15px;
 }
 a.neuA{
 	width:inherit;
+	height:15px;
 }
 a.refA{
 	width:inherit;
+	height:15px;
 }
 
 div.popupChart{
@@ -178,12 +181,12 @@ div.popupChart{
 
 
 canvas.mini_chart{
-	width: 100px;
-	height: 100px;
-	min-width: 100px;
-	min-height: 100px;
-	margin-top:5px;
-	margin-left:5px;
+	width: inherit;
+	height: inherit;
+	min-width: 99px;
+	min-height: 99px;
+	margin-top:0px;
+	margin-left:0px;
 }
 
 li.listElement{

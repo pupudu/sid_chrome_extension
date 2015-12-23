@@ -20,6 +20,7 @@ function check(){
 }
 
 function manipulate(){
+	console.log(myId);
 	updateProfPic();
 	addSidAnalyticsMenu();
 	manipulateProfile();
@@ -33,6 +34,7 @@ function getVieweeId(){
 function getMyId(){
 	chrome.storage.sync.get("email",function(items){
 		var email = items.email;
+		//console.log(email);
 		$.post("https://sid.projects.mrt.ac.lk:9000/rate/linkedin/getUrl",{email:email},function(data){
 			var url = data.url;
 			var id = getQueryVariable("id",url);
@@ -136,6 +138,7 @@ function commitDropdownChart(profId,node){
 		chartConfigs.animation = true;
 		chartConfigs.type = "drop";
 		chartConfigs.base = "chartBase";
+		chartConfigs.border = "#333333";
 		
 		addChartListener(chartData,chartConfigs,node);
 	});
@@ -143,6 +146,7 @@ function commitDropdownChart(profId,node){
 
 
 function addChartListener(chartData,chartConfigs,parent){
+	console.log(parent);
 	var sidDropdown = parent.getElementsByClassName(chartConfigs.base)[0];
 	//console.log(chartConfigs.base+".............."+sidDropdown);
 	sidDropdown.addEventListener('mouseover', function() {
@@ -155,7 +159,8 @@ function drawPieChart(chartData,chartConfigs,parent){
 	var verified =chartData.yesCount;
 	var rejected =chartData.noCount;
 	var uncertain=chartData.notSureCount;
-
+	var total = verified + rejected + uncertain;
+	
 	var pieData = [
 		{
 			value: rejected,
@@ -182,16 +187,23 @@ function drawPieChart(chartData,chartConfigs,parent){
 	chartHolder.innerHTML = '<canvas class='+chartConfigs.type+'_chart'+'></canvas>';
 
 	var ctx = parent.getElementsByClassName(chartConfigs.type+'_chart')[0].getContext("2d");
-	try{
-		var myPie;
-		myPie = new Chart(ctx).Pie(pieData,{
-			animation: chartConfigs.animation,
-			animationEasing: "easeInOutQuart",
-			segmentStrokeColor : "#333333"
-			//add more chart configs here as needed
-		});
-	}catch(err){
-		console.log(err);
+	if(total>0){
+		try{
+			var myPie;
+			myPie = new Chart(ctx).Pie(pieData,{
+				animation: chartConfigs.animation,
+				animationEasing: "easeInOutQuart",
+				segmentStrokeColor : chartConfigs.border
+				//add more chart configs here as needed
+			});
+		}catch(err){
+			console.log(err);
+		}
+	}else{
+		var imgUrl = chrome.extension.getURL("resources/images/notRatedInfo.png");
+		base_image = new Image();
+		base_image.src = imgUrl;
+		ctx.drawImage(base_image,0,0,300,150);
 	}
 }
 
@@ -279,7 +291,6 @@ function popUpOnIconByID(claim,iconId,iconClass,classOffset,yes,no,notSure){ //T
 	var node = document.createElement("DIV");  
 	var claimId = hashId(claim.getAttribute("data-html"));
 	var targetId = vieweeId;
-	var myId = myId;
 	
 	classOffset = classOffset+"_d";
 	if(claim.getElementsByClassName(iconClass+classOffset).length > 0){
@@ -322,6 +333,7 @@ function popUpOnIconByID(claim,iconId,iconClass,classOffset,yes,no,notSure){ //T
 		chartConfigs.animation = false;
 		chartConfigs.type = "mini";
 		chartConfigs.base = "popupbase"
+		chartConfigs.border = "#ffffff";
 		
 		addChartListener(chartData,chartConfigs,claim);
 	});
@@ -332,7 +344,8 @@ function addEventToSendData(obj,claimId,iconId,iconClass,targetId,myId,claim,rat
 	obj.addEventListener("click",function(){
 		notie.alert(4, 'Adding rating to siD system', 2);
 		claimData = claim.getAttribute("data-html");
-
+		
+		//console.log(myId+" "+targetId+" "+claimId+" "+claimData+" "+rate);
 		$.post(fbstrings.sidServer+"/rate/linkedin/addRating",{
 			myid: myId,
 			targetid: targetId,
@@ -342,11 +355,16 @@ function addEventToSendData(obj,claimId,iconId,iconClass,targetId,myId,claim,rat
 		},
 		function(data){
 			console.log(data);
-			if(data !== "OK"){
-				notie.alert(3, 'An unexpected error occured! Please Try Again', 3);
+			if(data.success !== true){
+				setTimeout(function(){
+					notie.alert(3, 'An unexpected error occured! Please Try Again', 3);
+					console.log("An unexpected error occured! Please Try Again")
+				},1000)
 			}else{
-				notie.alert(1, 'Rating added successfully!', 3);
-				
+				setTimeout(function(){
+					notie.alert(1, 'Rating added successfully!', 3);
+					console.log("Rating added successfully!")
+				},1000)
 				$.post(fbstrings.sidServer+"/rate/linkedin/getRating",{
 					targetid : targetId,
 					claimid : claimId
@@ -360,6 +378,7 @@ function addEventToSendData(obj,claimId,iconId,iconClass,targetId,myId,claim,rat
 					chartConfigs.animation = true;
 					chartConfigs.type = "mini";
 					chartConfigs.base = "popupbase"
+					chartConfigs.border = "#ffffff";
 					
 					var imgURL = chrome.extension.getURL("resources/icons/"+iconClass+data.claimScore+".png");
 					document.getElementById(iconId).src=imgURL;
@@ -368,7 +387,7 @@ function addEventToSendData(obj,claimId,iconId,iconClass,targetId,myId,claim,rat
 				});
 				
 				var dropdown = document.getElementsByClassName("sid_dropdown")[0];
-				commitDropdownChart(targetId,dropdown);
+				commitDropdownChart(targetId,document);
 			}
 		});
 	});

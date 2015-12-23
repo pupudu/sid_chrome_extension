@@ -592,7 +592,8 @@ function drawPieChart(chartData,chartConfigs,parent){
 			var myPie;
 			myPie = new Chart(ctx).Pie(pieData,{
 				animation: chartConfigs.animation,
-				animationEasing: "easeInOutQuart"
+				animationEasing: "easeInOutQuart",
+				segmentStrokeColor : "#ffffff"
 				//add more chart configs here as needed
 			});
 		}catch(err){
