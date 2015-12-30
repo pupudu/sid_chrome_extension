@@ -1,5 +1,6 @@
 var fbstrings = {
 	sidServer:"https://sid.projects.mrt.ac.lk:9000",
+	//sidServer:"https://localhost:9000",
 	fbTimelineHeadline:'fbTimelineHeadline',
 	sidSign:'verif',
 	profileName:'fb-timeline-cover-name',

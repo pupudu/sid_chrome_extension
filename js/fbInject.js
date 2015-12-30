@@ -234,7 +234,9 @@ function commitDropdownChart(profId,node){
 
 function scoreClaims(arrIndex, claim, classOffset){
 	//console.log(".. .. scoring claims on time line" + claim.innerHTML);
-	var profID = extract_TargetId();
+	//var profID = extract_TargetId();
+	var targetId = extractId(1);
+	var myId = extractId(0);
 	var rateIcon = document.createElement("DIV");
 	var iconID = 'claimR'+classOffset+arrIndex;
 	var iconClass = 'claim';
@@ -266,8 +268,9 @@ function scoreClaims(arrIndex, claim, classOffset){
 	//console.log(claim.getAttribute("data-html")+" "+profID+" "+claimId);
 	try{
 	$.post(fbstrings.sidServer+"/rate/facebook/getRating",{
-		targetid : profID,
-		claimid : claimId
+		targetid : targetId,
+		claimid : claimId,
+		myid : myId
 	},
 	function(data /*,status*/){
 		//console.log(JSON.stringify(data));
@@ -276,7 +279,7 @@ function scoreClaims(arrIndex, claim, classOffset){
 		var icon = document.getElementById(iconID);
 		if(icon!==null){
 			icon.src = imgURL;
-			popUpOnIconByID(claim,iconID,iconClass,classOffset,data.yes,data.no,data.notSure);
+			popUpOnIconByID(claim,iconID,iconClass,classOffset,data.yes,data.no,data.notSure,data.myrating);
 			//console.log(data.yes+" "+data.no+" "+data.notSure);
 		}
 		else{
@@ -289,12 +292,12 @@ function scoreClaims(arrIndex, claim, classOffset){
 		var icon = document.getElementById(iconID);
 		if(icon!==null){
 			icon.src = imgURL;
-			popUpOnIconByID(claim,iconID,iconClass,classOffset,1,1,1);
+			popUpOnIconByID(claim,iconID,iconClass,classOffset,1,1,1,undefined);
 		}
 	}
 }
 
-function popUpOnIconByID(claim,iconId,iconClass,classOffset,yes,no,notSure){ //TODO
+function popUpOnIconByID(claim,iconId,iconClass,classOffset,yes,no,notSure,myRating){ //TODO
 
 	//console.log(claim);
 	
@@ -321,14 +324,35 @@ function popUpOnIconByID(claim,iconId,iconClass,classOffset,yes,no,notSure){ //T
 		var refuted = node.getElementsByClassName(fbstrings.popRefutedIcon);
 		var popupBase = node.getElementsByClassName(fbstrings.popupbase);
 		
-		var verImgUrl = chrome.extension.getURL("resources/icons/claimT.png");
-		var neuImgUrl = chrome.extension.getURL("resources/icons/claimC.png");
-		var refImgUrl = chrome.extension.getURL("resources/icons/claimR.png");
+		var R = "R";
+		var C = "C";
+		var T = "T";
+		
+		switch(myRating){
+			case -1:
+				R = R + "_my";
+				break;
+			case 0:
+				C = C + "_my";
+				break;
+			case 1:
+				T = T + "_my";
+				break;
+			default:
+				console.error("Unexpected my rating value" + myRating);
+				break;
+		}
+		
+		var verImgUrl = chrome.extension.getURL("resources/icons/claim"+T+".png");
+		var neuImgUrl = chrome.extension.getURL("resources/icons/claim"+C+".png");
+		var refImgUrl = chrome.extension.getURL("resources/icons/claim"+R+".png");
+		
 		var baseImgUrl = chrome.extension.getURL("resources/icons/popupBase.png");
 		
 		verified[0].src = verImgUrl;
 		neutral[0].src = neuImgUrl;
 		refuted[0].src = refImgUrl;
+		
 		popupBase[0].src = baseImgUrl;
 		//clearIconsIfSkip(iconId);
 		
@@ -343,7 +367,6 @@ function popUpOnIconByID(claim,iconId,iconClass,classOffset,yes,no,notSure){ //T
 		addEventToSendData(neuLink,claimId,iconId,iconClass,targetId,myId,claim,0);
 		
 		console.log("try");
-		var profId = extract_TargetId();
 		//console.log(data.yes+" "+data.no+" "+data.notSure)
 		
 		var chartData = {};
@@ -399,9 +422,10 @@ function addEventToSendData(obj,claimId,iconId,iconClass,targetId,myId,claim,rat
 				},1000)
 				$.post(fbstrings.sidServer+"/rate/facebook/getRating",{
 					targetid : targetId,
+					myid: myId,
 					claimid : claimId
 				},function(data){
-					//console.log(data);
+					console.log(data);
 					var chartData = {};
 					chartData.yesCount = data.yes;
 					chartData.noCount = data.no;

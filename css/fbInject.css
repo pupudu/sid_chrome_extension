@@ -89,7 +89,7 @@ li.listElement{
 
 img.popup{
 	height: 30px;
-    width: 30px;
+	padding-top: 2.5px;
 }
 
 img.claimWork{
