@@ -2,7 +2,9 @@ var vieweeId = getVieweeId();
 var myId;
 getMyId();
 var checkCounter = 0;
-check();
+if(document.getElementsByClassName("preview-profile button-primary").length===0){
+	check();
+}
 
 function check(){
 	checkCounter++;
@@ -277,6 +279,7 @@ function scoreClaims(secIndex, arrIndex, claim, classOffset, isOffset){
 		}
 	});
 	}catch(e){
+		console.error(e);
 		var imgURL = chrome.extension.getURL("resources/icons/"+iconClass+"N.png");
 		var icon = document.getElementById(iconID);
 		if(icon!==null){

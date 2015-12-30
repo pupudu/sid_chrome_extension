@@ -108,6 +108,7 @@ function updateProfPic(manual){
 	},
 	function(data/*, status*/){
 		//alert(JSON.stringify(data))
+		console.log(data);
 		imgURL = chrome.extension.getURL("resources/icons/prof" + data.ratingLevel + ".png");
 		if(document.getElementById(fbstrings.sidSign) !== null){
 			document.getElementById(fbstrings.sidSign).src = imgURL;
@@ -216,7 +217,7 @@ function commitDropdownChart(profId,node){
 		targetid : profId
 	},
 	function(rating /*,status*/){
-		console.log(rating);
+		//console.log(rating);
 		var chartData = {};
 		chartData.yesCount = rating.yes;
 		chartData.noCount = rating.no;
@@ -269,14 +270,14 @@ function scoreClaims(arrIndex, claim, classOffset){
 		claimid : claimId
 	},
 	function(data /*,status*/){
-		console.log(JSON.stringify(data));
+		//console.log(JSON.stringify(data));
 		claimScore = data.claimScore;
 		var imgURL = chrome.extension.getURL("resources/icons/"+iconClass+claimScore+".png");
 		var icon = document.getElementById(iconID);
 		if(icon!==null){
 			icon.src = imgURL;
 			popUpOnIconByID(claim,iconID,iconClass,classOffset,data.yes,data.no,data.notSure);
-			console.log(data.yes+" "+data.no+" "+data.notSure);
+			//console.log(data.yes+" "+data.no+" "+data.notSure);
 		}
 		else{
 			console.log("info .. .. .. Icons already added");
@@ -384,7 +385,7 @@ function addEventToSendData(obj,claimId,iconId,iconClass,targetId,myId,claim,rat
 			rating: rate
 		},
 		function(data){
-			console.log(data);
+			//console.log(data);
 			if(data.success !== true){
 				setTimeout(function(){
 					notie.alert(3, 'An unexpected error occured! Please Try Again', 3);
@@ -400,7 +401,7 @@ function addEventToSendData(obj,claimId,iconId,iconClass,targetId,myId,claim,rat
 					targetid : targetId,
 					claimid : claimId
 				},function(data){
-					console.log(data);
+					//console.log(data);
 					var chartData = {};
 					chartData.yesCount = data.yes;
 					chartData.noCount = data.no;
