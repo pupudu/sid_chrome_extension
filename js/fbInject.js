@@ -319,41 +319,7 @@ function popUpOnIconByID(claim,iconId,iconClass,classOffset,yes,no,notSure,myRat
 		node.className=iconClass+classOffset;
 		document.getElementById(iconId).parentNode.appendChild(node);
 		
-		var verified = node.getElementsByClassName(fbstrings.popVerifiedIcon);
-		var neutral = node.getElementsByClassName(fbstrings.popNeutralIcon);
-		var refuted = node.getElementsByClassName(fbstrings.popRefutedIcon);
-		var popupBase = node.getElementsByClassName(fbstrings.popupbase);
-		
-		var R = "R";
-		var C = "C";
-		var T = "T";
-		
-		switch(myRating){
-			case -1:
-				R = R + "_my";
-				break;
-			case 0:
-				C = C + "_my";
-				break;
-			case 1:
-				T = T + "_my";
-				break;
-			default:
-				console.error("Unexpected my rating value" + myRating);
-				break;
-		}
-		
-		var verImgUrl = chrome.extension.getURL("resources/icons/claim"+T+".png");
-		var neuImgUrl = chrome.extension.getURL("resources/icons/claim"+C+".png");
-		var refImgUrl = chrome.extension.getURL("resources/icons/claim"+R+".png");
-		
-		var baseImgUrl = chrome.extension.getURL("resources/icons/popupBase.png");
-		
-		verified[0].src = verImgUrl;
-		neutral[0].src = neuImgUrl;
-		refuted[0].src = refImgUrl;
-		
-		popupBase[0].src = baseImgUrl;
+		processRatepopup(node,myRating);
 		//clearIconsIfSkip(iconId);
 		
 		//console.log(claim);
@@ -362,9 +328,9 @@ function popUpOnIconByID(claim,iconId,iconClass,classOffset,yes,no,notSure,myRat
 		var refLink = claim.getElementsByClassName(fbstrings.btnRefutedIcon)[0];
 		var neuLink = claim.getElementsByClassName(fbstrings.btnNeutralIcon)[0];
 		
-		addEventToSendData(verLink,claimId,iconId,iconClass,targetId,myId,claim,1);
-		addEventToSendData(refLink,claimId,iconId,iconClass,targetId,myId,claim,-1);
-		addEventToSendData(neuLink,claimId,iconId,iconClass,targetId,myId,claim,0);
+		addEventToSendData(node,verLink,claimId,iconId,iconClass,targetId,myId,claim,1);
+		addEventToSendData(node,refLink,claimId,iconId,iconClass,targetId,myId,claim,-1);
+		addEventToSendData(node,neuLink,claimId,iconId,iconClass,targetId,myId,claim,0);
 		
 		console.log("try");
 		//console.log(data.yes+" "+data.no+" "+data.notSure)
@@ -383,7 +349,45 @@ function popUpOnIconByID(claim,iconId,iconClass,classOffset,yes,no,notSure,myRat
 	});
 }
 
-function addEventToSendData(obj,claimId,iconId,iconClass,targetId,myId,claim,rate){
+function processRatepopup(node,myRating){
+	var verified = node.getElementsByClassName(fbstrings.popVerifiedIcon);
+	var neutral = node.getElementsByClassName(fbstrings.popNeutralIcon);
+	var refuted = node.getElementsByClassName(fbstrings.popRefutedIcon);
+	var popupBase = node.getElementsByClassName(fbstrings.popupbase);
+	
+	var R = "R";
+	var C = "C";
+	var T = "T";
+	
+	switch(myRating){
+		case -1:
+			R = R + "_my";
+			break;
+		case 0:
+			C = C + "_my";
+			break;
+		case 1:
+			T = T + "_my";
+			break;
+		default:
+			console.error("Unexpected my rating value" + myRating);
+			break;
+	}
+	
+	var verImgUrl = chrome.extension.getURL("resources/icons/claim"+T+".png");
+	var neuImgUrl = chrome.extension.getURL("resources/icons/claim"+C+".png");
+	var refImgUrl = chrome.extension.getURL("resources/icons/claim"+R+".png");
+	
+	var baseImgUrl = chrome.extension.getURL("resources/icons/popupBase.png");
+	
+	verified[0].src = verImgUrl;
+	neutral[0].src = neuImgUrl;
+	refuted[0].src = refImgUrl;
+	
+	popupBase[0].src = baseImgUrl;
+}
+
+function addEventToSendData(node,obj,claimId,iconId,iconClass,targetId,myId,claim,rate){
 	//console.log(".............................................................adding  event");
 	
 	
@@ -426,6 +430,7 @@ function addEventToSendData(obj,claimId,iconId,iconClass,targetId,myId,claim,rat
 					claimid : claimId
 				},function(data){
 					console.log(data);
+					processRatepopup(node,data.myrating);
 					var chartData = {};
 					chartData.yesCount = data.yes;
 					chartData.noCount = data.no;
