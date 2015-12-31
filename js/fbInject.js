@@ -2,6 +2,10 @@
 //TODO - Realtime update icons when rated a claim
 console.log(fbstrings.dodan);
 
+if(document.getElementsByClassName("ego_section").length>0){
+	document.getElementsByClassName("ego_section")[0].remove();
+}
+
 var timeLineCName = document.getElementById(fbstrings.profileName);		//element to identify fb profile
 var timeLineHLine = document.getElementById(fbstrings.fbTimelineHeadline);			//element to identify fb page
 
@@ -19,19 +23,17 @@ function identify(){
 		
 		if(selectedTab === "About") {
 			var subsection = document.getElementsByClassName(fbstrings.subSection)[0];
-			if(subsection.innerText === "Work and Education"){
-				//manipulateAboutWork();		/*if an fb about work page, and haven't modified before, then add sid elements*/
-				manipulateAbout(fbstrings.workClaim,"Work");
+		if(!subsection || subsection.innerText === "Overview"){
+				//manipulateOverview();
+				manipulateAbout(fbstrings.lifeEventClaim,"Overview");
 			}
-									/**TODO add similar functionality to places lived, Basic info, family, and life events*/
-									
 			else if(subsection.innerText === "Life Events"){
 				//manipulateLifeEvents();		/*if an fb about work page, and haven't modified before, then add sid elements*/
 				manipulateAbout(fbstrings.lifeEventClaim,"Events");
 			}
-			else if(subsection.innerText === "Overview"){
-				//manipulateOverview();
-				manipulateAbout(fbstrings.lifeEventClaim,"Overview");
+			else if(subsection.innerText === "Work and Education"){
+				//manipulateAboutWork();		/*if an fb about work page, and haven't modified before, then add sid elements*/
+				manipulateAbout(fbstrings.workClaim,"Work");
 			}
 			
 		}else if (selectedTab === "Timeline"){
@@ -132,17 +134,6 @@ function manipulateTimeLine(){
 		var claim = claimContainerAr[i].getElementsByClassName(fbstrings.timelineClaim)[0];
 		scoreClaims(i,claim,"");
 	}
-}
-
-/*need separate implementation for firefox*/
-function addSidAnalyticsMenu(){
-	setTimeout(function(){
-		if(document.getElementById(fbstrings.sidDropdown) === null){
-			$.get(chrome.extension.getURL("html/sidAnalytics.html"), function(data) {
-				processAnalyticsHTML(data);
-			});
-		}
-	},1000);
 }
 
 function processAnalyticsHTML(data){
@@ -277,26 +268,6 @@ function scoreClaims(arrIndex, claim, classOffset){
 	}
 }
 
-/*needs a separate implementation for firefox*/
-function popUpOnIconByID(popupData){ 
-
-	var node = document.createElement("DIV");  
-	
-	popupData.classOffset = popupData.classOffset+"_d";
-	if(popupData.claim.getElementsByClassName(popupData.iconClass+popupData.classOffset).length > 0){
-		return;
-	}
-
-	$.get(chrome.extension.getURL("html/ratePopup.html"), function(data) {
-		node.innerHTML = data;
-		node.className=popupData.iconClass+popupData.classOffset;
-		document.getElementById(popupData.iconId).parentNode.appendChild(node);
-		
-		processRatepopup(node,popupData.myRating);
-		configureListners(node,popupData);
-	});
-}
-
 function processRatepopup(node,myRating){
 	var verified = node.getElementsByClassName(fbstrings.popVerifiedIcon);
 	var neutral = node.getElementsByClassName(fbstrings.popNeutralIcon);
@@ -428,7 +399,7 @@ function clearIconIfSkipUsingString(item){
 	//console.log(item);
 	var skipStringAr = fbSkipStrings;
 	var nonSkipStringAr = fbNonSkipStrings;
-	var text = item.outerText;
+	var text = item.textContent;
 	if(text.length <= 2){
 		text = item.outerHTML.toString();
 	}
@@ -530,6 +501,9 @@ function addChartListener(chartData,chartConfigs,parent){
 	var sidDropdown = parent.getElementsByClassName(chartConfigs.base)[0];
 	console.log(chartConfigs.base+".............."+sidDropdown);
 	sidDropdown.addEventListener('mouseover', function() {
+		if(document.getElementsByClassName("ego_section").length>0){
+			document.getElementsByClassName("ego_section")[0].remove();
+		}
 		drawPieChart(chartData,chartConfigs,parent);
 	});
 }
@@ -600,6 +574,38 @@ function getQueryVariable(variable,string) {
     return null;
 }
 
+/*need separate implementation for firefox*/
+function addSidAnalyticsMenu(){
+	setTimeout(function(){
+		if(document.getElementById(fbstrings.sidDropdown) === null){
+			$.get(chrome.extension.getURL("html/sidAnalytics.html"), function(data) {
+				processAnalyticsHTML(data);
+			});
+		}
+	},1000);
+}
+
+/*needs a separate implementation for firefox*/
+function popUpOnIconByID(popupData){ 
+
+	var node = document.createElement("DIV");  
+	
+	popupData.classOffset = popupData.classOffset+"_d";
+	if(popupData.claim.getElementsByClassName(popupData.iconClass+popupData.classOffset).length > 0){
+		return;
+	}
+
+	$.get(chrome.extension.getURL("html/ratePopup.html"), function(data) {
+		node.innerHTML = data;
+		node.className=popupData.iconClass+popupData.classOffset;
+		document.getElementById(popupData.iconId).parentNode.appendChild(node);
+		
+		processRatepopup(node,popupData.myRating);
+		configureListners(node,popupData);
+	});
+}
+
+/*need separate implementation for firefox*/
 function getURL(type,item){
 	//return chrome.extension.getURL(url);
 	if(type === "image"){
