@@ -1,5 +1,5 @@
 /* globals chrome,Chart,getCookie,fbstrings,notie: false */
-//TODO - Realtime update icons when rated a claim
+
 console.log(fbstrings.dodan);
 
 if(document.getElementsByClassName("ego_section").length>0){
@@ -15,31 +15,34 @@ identify();
 function identify(){
 	console.log(".. Identifying Web Page");
 	if(timeLineCName!==null && timeLineHLine!==null){
-		var selectedTab = document.getElementsByClassName(fbstrings.selectedTab)[0].innerText;
+		var selectedTab = document.getElementsByClassName(fbstrings.selectedTab)[0].innerHTML;
 		console.log(".. .. selected tab is: " + selectedTab);
 		
 		updateProfPic(false);
 		addSidAnalyticsMenu();
 		
-		if(selectedTab === "About") {
-			var subsection = document.getElementsByClassName(fbstrings.subSection)[0];
-		if(!subsection || subsection.innerText === "Overview"){
+		if(selectedTab.indexOf("About") === 0) {
+			var subsection = document.getElementsByClassName(fbstrings.subSection)[0].innerHTML;
+			if(subsection.indexOf("Work and Education") ===0 ){
+				//manipulateAboutWork();		
+				manipulateAbout(fbstrings.workClaim,"Work");
+			}				
+			else if(subsection.indexOf("Life Events") ===0 ){
+				//manipulateLifeEvents();		
+				manipulateAbout(fbstrings.lifeEventClaim,"Events");
+			}
+			else if(subsection.indexOf("Overview") ===0 ){
 				//manipulateOverview();
 				manipulateAbout(fbstrings.lifeEventClaim,"Overview");
 			}
-			else if(subsection.innerText === "Life Events"){
-				//manipulateLifeEvents();		/*if an fb about work page, and haven't modified before, then add sid elements*/
-				manipulateAbout(fbstrings.lifeEventClaim,"Events");
-			}
-			else if(subsection.innerText === "Work and Education"){
-				//manipulateAboutWork();		/*if an fb about work page, and haven't modified before, then add sid elements*/
-				manipulateAbout(fbstrings.workClaim,"Work");
-			}
 			
-		}else if (selectedTab === "Timeline"){
-			manipulateTimeLine();	/*if an fb profile timeline, and haven't modified before, then add sid elements*/
+		}else if (selectedTab.indexOf("Timeline") === 0){
+			console.log("selectedTab: "+ selectedTab);
+			manipulateTimeLine();	
 			updFrndsProfInTimeLine();
 		}
+	}else{
+		console.log("timeline if condition false")
 	}
 }
 
@@ -63,8 +66,7 @@ function updateProfPic(manual){
 	{
 		targetid: profID	
 	},
-	function(data/*, status*/){
-		//alert(JSON.stringify(data))
+	function(data){
 		console.log(data);
 		imgURL = getURL("prof",data.ratingLevel);
 		if(document.getElementById(fbstrings.sidSign) !== null){
@@ -108,7 +110,6 @@ function addIconToFriendProf(profID, friendStr){
 			document.getElementById(friendStr).src = imgURL;
 		});
 	}catch(e){
-		//console.error(e);
 		var imgURL = getURL("prof","N");
 		document.getElementById(friendStr).src = imgURL;
 	}
@@ -116,18 +117,17 @@ function addIconToFriendProf(profID, friendStr){
 
 function manipulateAbout(claimType,style){
 	var claimAr = document.getElementsByClassName(claimType);
-	var claimCount = claimAr.length; /*Number of claims on about page*/
+	var claimCount = claimAr.length; //Number of claims on about page
 	
 	for(var i=0;i<claimCount;i++){
 		var claim = claimAr[i];
-		scoreClaims(i,claim,style); /*TODO fix issue in icon positions of about page*/
+		scoreClaims(i,claim,style); 
 	}
 }
 
 function manipulateTimeLine(){
 	var claimContainerAr = document.getElementsByClassName(fbstrings.timelineClaimContainer);
-	var claimCount = claimContainerAr.length; /*Number of claims on timeline*/
-	//console.log(".. .. updating fb time line" + claimAr.length);
+	var claimCount = claimContainerAr.length; //Number of claims on timeline
 	
 	/**Scoring claim summary*/
 	for(var i=0;i<claimCount;i++){
@@ -186,8 +186,7 @@ function commitDropdownChart(profId,node){
 }
 
 function scoreClaims(arrIndex, claim, classOffset){
-	//console.log(".. .. scoring claims on time line" + claim.innerHTML);
-	//var profID = extract_TargetId();
+
 	var targetId = extractId(1);
 	var myId = extractId(0);
 	var rateIcon = document.createElement("DIV");
@@ -200,6 +199,7 @@ function scoreClaims(arrIndex, claim, classOffset){
 			return;
 		}
 	}
+	
 	/*Avoid adding icons again if already added*/
 	if(claim.getAttribute("data-html")===null){
 		var html = claim.innerHTML.replace(/web./g,"www.");
@@ -247,7 +247,7 @@ function scoreClaims(arrIndex, claim, classOffset){
 		}
 	});
 	}catch(e){
-		//console.error(e);
+		
 		var imgURL = getURL(iconClass,"N");
 		var icon = document.getElementById(iconId);
 		if(icon!==null){
@@ -291,22 +291,19 @@ function processRatepopup(node,myRating){
 			//console.error("claim not rated by me");
 			break;
 		default:
-			console.error("Unexpected my rating value" + myRating);
+			//console.error("Unexpected my rating value" + myRating);
 			break;
 	}
 	
 	var verImgUrl = getURL("claim",T);
 	var neuImgUrl = getURL("claim",C);
 	var refImgUrl = getURL("claim",R);
-	
 	var baseImgUrl = getURL("image","popupBase");
 	
 	verified[0].src = verImgUrl;
 	neutral[0].src = neuImgUrl;
 	refuted[0].src = refImgUrl;
-	
 	popupBase[0].src = baseImgUrl;
-	
 }
 
 function configureListners(node,popupData){
@@ -347,7 +344,7 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 			rating: rate
 		},
 		function(data){
-			//console.log(data);
+			
 			if(data.success !== true){
 				setTimeout(function(){
 					notie.alert(3, 'An unexpected error occured! Please Try Again', 3);
@@ -396,7 +393,7 @@ function clearIconsIfSkip(item){
 }
 
 function clearIconIfSkipUsingString(item){
-	//console.log(item);
+	
 	var skipStringAr = fbSkipStrings;
 	var nonSkipStringAr = fbNonSkipStrings;
 	var text = item.textContent;
@@ -424,8 +421,10 @@ function clearIconIfSkipUsingString(item){
 }
 
 function clearEmptyIcons(item){
-	if(item.parentNode.parentNode.firstChild.firstChild.nodeName === "BUTTON"){
-		return true;
+	if(item.parentNode.parentNode.firstChild.firstChild){
+		if(item.parentNode.parentNode.firstChild.firstChild.nodeName === "BUTTON"){
+			return true;
+		}
 	}
 	return false;
 }
@@ -461,7 +460,6 @@ function extractFriendId(node,alt){
 		str = node.parentNode.getAtrribute("data-hovercard");
 		profId = getQueryVariable("id",str);
 	}catch(e1){
-		//console.error(".. .. Synchronization Issue. Page will be reloded");
 		try{
 			str = alt.firstChild.getAttribute("data-hovercard");
 			profId = getQueryVariable("id",str);
@@ -480,7 +478,6 @@ function extractFriendId(node,alt){
 	return profId;
 }
 
-
 /**Generate an Id given an string*/
 function hashIds(str){
     var hash = 0;
@@ -493,7 +490,6 @@ function hashIds(str){
         hash = ((hash<<5)-hash)+character;
         hash = hash & hash; // Convert to 32bit integer
     }
-	//console.log(hash +" "+ str);
     return hash;
 }
 
@@ -573,55 +569,6 @@ function getQueryVariable(variable,string) {
     }
     return null;
 }
-
-/*need separate implementation for firefox*/
-function addSidAnalyticsMenu(){
-	setTimeout(function(){
-		if(document.getElementById(fbstrings.sidDropdown) === null){
-			$.get(chrome.extension.getURL("html/sidAnalytics.html"), function(data) {
-				processAnalyticsHTML(data);
-			});
-		}
-	},1000);
-}
-
-/*needs a separate implementation for firefox*/
-function popUpOnIconByID(popupData){ 
-
-	var node = document.createElement("DIV");  
-	
-	popupData.classOffset = popupData.classOffset+"_d";
-	if(popupData.claim.getElementsByClassName(popupData.iconClass+popupData.classOffset).length > 0){
-		return;
-	}
-
-	$.get(chrome.extension.getURL("html/ratePopup.html"), function(data) {
-		node.innerHTML = data;
-		node.className=popupData.iconClass+popupData.classOffset;
-		document.getElementById(popupData.iconId).parentNode.appendChild(node);
-		
-		processRatepopup(node,popupData.myRating);
-		configureListners(node,popupData);
-	});
-}
-
-/*need separate implementation for firefox*/
-function getURL(type,item){
-	//return chrome.extension.getURL(url);
-	if(type === "image"){
-		return chrome.extension.getURL("resources/images/"+item+".png");
-	}else{
-		return chrome.extension.getURL("resources/icons/"+type+item+".png");
-	}
-}
-
-
-
-
-
-
-
-
 
 
 
