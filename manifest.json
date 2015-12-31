@@ -22,7 +22,7 @@
 	"resources/icons/profT.png" , "resources/icons/profR.png" , "resources/icons/profC.png" ,  "resources/icons/profN.png" , 
 	"resources/icons/prof_li_T.png" , "resources/icons/prof_li_R.png" , "resources/icons/prof_li_C.png" , "resources/icons/prof_li_N.png" ,
 	"resources/icons/ringT.png", "resources/icons/ringR.png", "resources/icons/ringC.png", "resources/icons/ringN.png",
-	"resources/icons/popupBase.png",
+	"resources/images/popupBase.png",
 	"resources/images/notRatedInfo.png",
 	"resources/images/analytics_header.png","resources/images/legend.png",
 	"html/sidAnalytics.html", "html/sidAnalytics_li.html", "html/ratePopup.html"

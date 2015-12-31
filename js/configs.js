@@ -26,7 +26,8 @@ var fbstrings = {
 	timelineMain:'pagelet_timeline_main_column',
 	sidDropdown:'sidDropdown',
 	analyticsChart:'myChart',
-	chartHolder:'canvas-holder'
+	chartHolder:'canvas-holder',
+	myPicHeader:'_s0 _2dpc _rw img'
 }
 
 var fbSkipStrings = ["Your friend since","Followed by","friends","Friends on","family members","Feeling","Played"];
