@@ -81,6 +81,11 @@ function inject(tabId,obj,tab){
 			//Do Nothing
 		});
 		chrome.tabs.executeScript(tab.id,{
+			file:'js/hash.js'	//Run this script if navigated to a fb origined page
+		},function(){
+			//Do Nothing
+		});
+		chrome.tabs.executeScript(tab.id,{
 			file:'js/fbBrowserSpecifics.js',	//Run this script if navigated to a fb origined page
 			runAt: "document_end"
 		},function(){
@@ -103,6 +108,11 @@ function inject(tabId,obj,tab){
 		//alert("status "+obj.status+ " url "+count+" "+ tab.url);
 		chrome.tabs.executeScript(tab.id,{
 			file:'js/configs.js'	//Run this script if navigated to a fb origined page
+		},function(){
+			//Do Nothing
+		});
+		chrome.tabs.executeScript(tab.id,{
+			file:'js/hash.js'	//Run this script if navigated to a fb origined page
 		},function(){
 			//Do Nothing
 		});
