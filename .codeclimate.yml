@@ -49,3 +49,4 @@ ratings:
 
 exclude_paths:
 - "js/Chart.min.js"
+- "js/hash.js"
