@@ -13,7 +13,7 @@ function check(){
 		return;
 	}
 	setTimeout(function(){
-		if(myId===undefined){
+		if(!myId){
 			check();
 		}else{
 			manipulate();
@@ -37,7 +37,7 @@ function getMyId(){
 	chrome.storage.sync.get("email",function(items){
 		var email = items.email;
 		//console.log(email);
-		$.post("https://sid.projects.mrt.ac.lk:9000/rate/linkedin/getUrl",{email:email},function(data){
+		$.post(commonstrings.sidServer+"/rate/linkedin/getUrl",{email:email},function(data){
 			var url = data.url;
 			var id = getQueryVariable("id",url);
 			myId = id;
@@ -66,7 +66,7 @@ function updateProfPic(){
 			return;
 		}
 	}
-	var profPic = document.getElementsByClassName("profile-picture")[0];
+	var profPic = document.getElementsByClassName(listrings.profPic)[0];
 	var icon = document.createElement("DIV");
 	var accType="free";
 
@@ -76,7 +76,7 @@ function updateProfPic(){
 	icon.innerHTML = "<img id ='verif' class = 'profIcon "+accType+"'>";
 	profPic.appendChild(icon);
 	
-	$.post("https://sid.projects.mrt.ac.lk:9000/rate/linkedin/getOverallProfileRating",
+	$.post(commonstrings.sidServer+"/rate/linkedin/getOverallProfileRating",
 	{
 		targetid: vieweeId	
 	},
@@ -85,7 +85,7 @@ function updateProfPic(){
 			data.rating = "N";
 			console.error("Overall Profile Rating undefined, replaced with N");
 		}
-		var imgURL = chrome.extension.getURL("resources/icons/prof_li_" + data.rating + ".png");
+		var imgURL = getURL("prof_li_",data.rating);
 		if(document.getElementById('verif') !== null){
 			document.getElementById('verif').src = imgURL;
 		}
@@ -93,7 +93,7 @@ function updateProfPic(){
 	});
 }
 
-/**Adds the sid anaytics dropdown menu to linked in menu bar*/
+/**Adds the sid anaytics dropdown menu to linked in menu bar
 function addSidAnalyticsMenu(){
 	if(document.getElementById("sidDropdown") === null){
 		
@@ -123,14 +123,41 @@ function addSidAnalyticsMenu(){
 		});
 		document.getElementsByClassName("nav main-nav nav-bar")[0].appendChild(node);
 	}
+}*/
+
+function processAnalyticsHTML(data){
+	console.log(".. .. .. adding sid analytics pop up menu");
+	var node = document.createElement("DIV");  
+	document.getElementsByClassName(listrings.mainNavBar)[0].appendChild(node);
+	node.outerHTML = data;
+	
+	var headerURL = getURL("image","analytics_header");
+	var legendURL = getURL("image","legend");
+	
+	document.getElementById("analytics_header").src = headerURL;
+	document.getElementById("analytics_legend").src = legendURL;
+	
+	commitDropdownChart(vieweeId,document);
+	
+	try{
+		$.post(commonstrings.sidServer+"/rate/linkedin/getFbURL",{
+			uid : vieweeId
+		},
+		function(data){
+			document.getElementById("li_nav").href=data.url;
+		});
+	}catch(e){
+		document.getElementById("li_nav").addEventListener('click',function(){
+			notie.alert(3, 'Facebook profile not connected', 3);
+		});
+	}
 }
 
 function commitDropdownChart(profId,node){
-	$.post("https://sid.projects.mrt.ac.lk:9000/rate/linkedin/getAllRatingsCount",{
+	$.post(commonstrings.sidServer+"/rate/linkedin/getAllRatingsCount",{
 		targetid : profId
 	},
-	function(rating /*,status*/){
-		//console.log(rating);
+	function(rating){
 		var chartData = {};
 		chartData.yesCount = rating.yes;
 		chartData.noCount = rating.no;
@@ -202,7 +229,7 @@ function drawPieChart(chartData,chartConfigs,parent){
 			console.log(err);
 		}
 	}else{
-		var imgUrl = chrome.extension.getURL("resources/images/notRatedInfo.png");
+		var imgUrl = getURL("image","notRatedInfo");
 		base_image = new Image();
 		base_image.src = imgUrl;
 		ctx.drawImage(base_image,0,0,300,150);
@@ -219,11 +246,11 @@ function manipulateProfile(){
 			continue;
 		}
 		var claimAr = bgSectionAr[j].getElementsByClassName("section-item");
-		var claimCount = claimAr.length; /*Number of claims on about page*/
+		var claimCount = claimAr.length; 
 		
 		for(var i=0;i<claimCount;i++){
 			var claim = claimAr[i].getElementsByTagName("h4")[0];
-			scoreClaims(j,i,claim,"Main"); /*TODO fix issue in icon positions of about page*/
+			scoreClaims(j,i,claim,"Main"); 
 		}
 	}
 }
@@ -234,7 +261,7 @@ function scoreClaims(secIndex, arrIndex, claim, classOffset, isOffset){
 	arrIndex = 100*secIndex + arrIndex;
 
 	var rateIcon = document.createElement("DIV");
-	var iconID = 'claimR'+classOffset+arrIndex;
+	var iconId = 'claimR'+classOffset+arrIndex;
 	var iconClass = 'claim';
 	var claimScore = 'T';
 	
@@ -245,50 +272,72 @@ function scoreClaims(secIndex, arrIndex, claim, classOffset, isOffset){
 	}
 	/*Avoid adding icons again if already added*/
 	if(claim.getAttribute("data-html")===null){
-		var html = claim.innerHTML.replace(/web./,"www.");
+		var html = claim.innerHTML.replace(/web./g,"www.");
 		claim.setAttribute("data-html",html);
 	}
-	if(claim.getElementsByClassName(fbstrings.rateIconContainer).length === 0){
+	if(claim.getElementsByClassName(commonstrings.rateIconContainer).length === 0){
 		rateIcon.className = "rateIconContainer "+ classOffset;
-		rateIcon.innerHTML = "<img id = '" + iconID + "' class = '" + iconClass + classOffset + "' >";
+		rateIcon.innerHTML = "<img id = '" + iconId + "' class = '" + iconClass + classOffset + "' >";
 		claim.appendChild(rateIcon);
 	}
-	if(claim.getElementsByClassName(fbstrings.rateIconContainer)[0].childElementCount>1){
+	if(claim.getElementsByClassName(commonstrings.rateIconContainer)[0].childElementCount>1){
 		return;
 	}
 	
-	var claimId = hashId(claim.getAttribute("data-html"));
+	var claimId = hex_md5(claim.getAttribute("data-html"));
 	
 	try{
-	$.post(fbstrings.sidServer+"/rate/linkedin/getRating",{
+	$.post(commonstrings.sidServer+"/rate/linkedin/getRating",{
 		targetid : vieweeId,
-		claimid : claimId
+		claimid : claimId,
+		myid : myId
 	},
-	function(data /*,status*/){
-		//console.log(JSON.stringify(data));
+	function(data){
+		
 		claimScore = data.claimScore;
-		var imgURL = chrome.extension.getURL("resources/icons/"+iconClass+claimScore+".png");
-		var icon = document.getElementById(iconID);
+		var imgURL = getURL(iconClass,claimScore);
+		var icon = document.getElementById(iconId);
 		if(icon!==null){
 			icon.src = imgURL;
-			popUpOnIconByID(claim,iconID,iconClass,classOffset,data.yes,data.no,data.notSure);
-			//console.log(data.yes+" "+data.no+" "+data.notSure);
+			
+			var popupData={};
+			popupData.claim = claim;
+			popupData.iconId = iconId;
+			popupData.iconClass = iconClass;
+			popupData.classOffset = classOffset;
+			popupData.yes = data.yes;
+			popupData.no = data.no;
+			popupData.notSure = data.notSure;
+			popupData.myRating = data.myrating;
+			
+			popUpOnIconByID(popupData);
 		}
 		else{
 			console.log("info .. .. .. Icons already added");
 		}
 	});
 	}catch(e){
-		console.error(e);
-		var imgURL = chrome.extension.getURL("resources/icons/"+iconClass+"N.png");
-		var icon = document.getElementById(iconID);
+		
+		var imgURL = getURL(iconClass,"N");
+		var icon = document.getElementById(iconId);
 		if(icon!==null){
 			icon.src = imgURL;
-			popUpOnIconByID(claim,iconID,iconClass,classOffset,1,1,1);
+			
+			var popupData={};
+			popupData.claim = claim;
+			popupData.iconId = iconId;
+			popupData.iconClass = iconClass;
+			popupData.classOffset = classOffset;
+			popupData.yes = 1;
+			popupData.no = 1;
+			popupData.notSure = 1;
+			popupData.myRating = -10;
+			
+			popUpOnIconByID(popupData);
 		}
 	}
 }
-
+/*
 function popUpOnIconByID(claim,iconId,iconClass,classOffset,yes,no,notSure){ //TODO
 
 	var node = document.createElement("DIV");  
@@ -312,7 +361,7 @@ function popUpOnIconByID(claim,iconId,iconClass,classOffset,yes,no,notSure){ //T
 		var verImgUrl = chrome.extension.getURL("resources/icons/claimT.png");
 		var neuImgUrl = chrome.extension.getURL("resources/icons/claimC.png");
 		var refImgUrl = chrome.extension.getURL("resources/icons/claimR.png");
-		var baseImgUrl = chrome.extension.getURL("resources/icons/popupBase.png");
+		var baseImgUrl = chrome.extension.getURL("resources/images/popupBase.png");
 		
 		verified[0].src = verImgUrl;
 		neutral[0].src = neuImgUrl;
@@ -340,8 +389,67 @@ function popUpOnIconByID(claim,iconId,iconClass,classOffset,yes,no,notSure){ //T
 		
 		addChartListener(chartData,chartConfigs,claim);
 	});
+}*/
+
+
+function processRatepopup(node,myRating){
+	var verified = node.getElementsByClassName(commonstrings.popVerifiedIcon);
+	var neutral = node.getElementsByClassName(commonstrings.popNeutralIcon);
+	var refuted = node.getElementsByClassName(commonstrings.popRefutedIcon);
+	var popupBase = node.getElementsByClassName(commonstrings.popupbase);
+	
+	var R = "R";
+	var C = "C";
+	var T = "T";
+	switch(myRating){
+		case -1:
+			R = R + "_my";
+			break;
+		case 0:
+			C = C + "_my";
+			break;
+		case 1:
+			T = T + "_my";
+			break;
+		case -10:
+			//console.error("claim not rated by me");
+			break;
+		default:
+			//console.error("Unexpected my rating value" + myRating);
+			break;
+	}
+	
+	var verImgUrl = getURL("claim",T);
+	var neuImgUrl = getURL("claim",C);
+	var refImgUrl = getURL("claim",R);
+	var baseImgUrl = getURL("image","popupBase");
+	
+	verified[0].src = verImgUrl;
+	neutral[0].src = neuImgUrl;
+	refuted[0].src = refImgUrl;
+	popupBase[0].src = baseImgUrl;
 }
 
+function configureListners(node,popupData){
+	
+	addEventToSendData(node,commonstrings.btnVerifiedIcon,popupData,1);
+	addEventToSendData(node,commonstrings.btnRefutedIcon,popupData,-1);
+	addEventToSendData(node,commonstrings.btnNeutralIcon,popupData,0);
+	
+	var chartData = {};
+	chartData.yesCount = popupData.yes;
+	chartData.noCount = popupData.no;
+	chartData.notSureCount = popupData.notSure;
+	
+	var chartConfigs = {};
+	chartConfigs.animation = false;
+	chartConfigs.type = "mini";
+	chartConfigs.base = "popupbase";
+	chartConfigs.border = "#ffffff";
+	
+	addChartListener(chartData,chartConfigs,popupData.claim);
+}
+/*
 function addEventToSendData(obj,claimId,iconId,iconClass,targetId,myId,claim,rate){
 
 	obj.addEventListener("click",function(){
@@ -387,6 +495,68 @@ function addEventToSendData(obj,claimId,iconId,iconClass,targetId,myId,claim,rat
 					document.getElementById(iconId).src=imgURL;
 					drawPieChart(chartData,chartConfigs,claim);
 					addChartListener(chartData,chartConfigs,claim);
+				});
+				
+				var dropdown = document.getElementsByClassName("sid_dropdown")[0];
+				commitDropdownChart(targetId,document);
+			}
+		});
+	});
+}*/
+
+
+function addEventToSendData(node,menuItemName,popupData,rate){
+	
+	var claimId = hex_md5(popupData.claim.getAttribute("data-html"));
+	var menuItem =  popupData.claim.getElementsByClassName(menuItemName)[0];
+	var targetId = vieweeId;
+	
+	menuItem.addEventListener("click",function(){
+
+		notie.alert(4, 'Adding rating to siD system', 2);
+		claimData = popupData.claim.getAttribute("data-html");
+		$.post(commonstrings.sidServer+"/rate/linkedin/addRating",{
+			myid: myId,
+			targetid: targetId,
+			claimid: claimId,
+			claim: claimData,
+			rating: rate
+		},
+		function(data){
+			
+			if(data.success !== true){
+				setTimeout(function(){
+					notie.alert(3, 'An unexpected error occured! Please Try Again', 3);
+					console.log("An unexpected error occured! Please Try Again")
+				},1000)
+			}else{
+				setTimeout(function(){
+					notie.alert(1, 'Rating added successfully!', 3);
+					console.log("Rating added successfully");
+					updateProfPic(true);
+				},1000)
+				$.post(commonstrings.sidServer+"/rate/linkedin/getRating",{
+					targetid : targetId,
+					myid: myId,
+					claimid : claimId
+				},function(data){
+					console.log(data);
+					processRatepopup(node,data.myrating);
+					var chartData = {};
+					chartData.yesCount = data.yes;
+					chartData.noCount = data.no;
+					chartData.notSureCount = data.notSure;
+					
+					var chartConfigs = {};
+					chartConfigs.animation = true;
+					chartConfigs.type = "mini";
+					chartConfigs.base = "popupbase";
+					chartConfigs.border = "#ffffff";
+					
+					var imgURL = getURL(popupData.iconClass,data.claimScore);
+					document.getElementById(popupData.iconId).src=imgURL;
+					drawPieChart(chartData,chartConfigs,popupData.claim);
+					addChartListener(chartData,chartConfigs,popupData.claim);
 				});
 				
 				var dropdown = document.getElementsByClassName("sid_dropdown")[0];

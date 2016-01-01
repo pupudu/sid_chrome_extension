@@ -65,7 +65,7 @@ function updateProfPic(manual){
 	icon.innerHTML = "<img id ="+fbstrings.sidSign+" class = 'profIcon'>";
 	profPic.appendChild(icon);
 	
-	$.post(fbstrings.sidServer+"/rate/facebook/getOverallProfileRating",
+	$.post(commonstrings.sidServer+"/rate/facebook/getOverallProfileRating",
 	{
 		targetid: profID	
 	},
@@ -104,7 +104,7 @@ function updFrndsProfInTimeLine(){
 
 function addIconToFriendProf(profID, friendStr){
 	try{
-		$.post(fbstrings.sidServer+"/rate/facebook/getOverallProfileRating",
+		$.post(commonstrings.sidServer+"/rate/facebook/getOverallProfileRating",
 		{
 			targetid: profID	
 		},
@@ -155,7 +155,7 @@ function processAnalyticsHTML(data){
 	commitDropdownChart(profId,node);
 	
 	try{
-		$.post(fbstrings.sidServer+"/test/getLinkedinURL",{
+		$.post(commonstrings.sidServer+"/test/getLinkedinURL",{
 			uid : profID
 		},
 		function(data){
@@ -169,7 +169,7 @@ function processAnalyticsHTML(data){
 }
 
 function commitDropdownChart(profId,node){
-	$.post(fbstrings.sidServer+"/rate/facebook/getAllRatingsCount",{
+	$.post(commonstrings.sidServer+"/rate/facebook/getAllRatingsCount",{
 		targetid : profId
 	},
 	function(rating /*,status*/){
@@ -208,19 +208,19 @@ function scoreClaims(arrIndex, claim, classOffset){
 		var html = claim.innerHTML.replace(/web./g,"www.");
 		claim.setAttribute("data-html",html);
 	}
-	if(claim.getElementsByClassName(fbstrings.rateIconContainer).length === 0){
+	if(claim.getElementsByClassName(commonstrings.rateIconContainer).length === 0){
 		rateIcon.className = "rateIconContainer "+ classOffset;
 		rateIcon.innerHTML = "<img id = '" + iconId + "' class = '" + iconClass + classOffset + "' >";
 		claim.appendChild(rateIcon);
 	}
-	if(claim.getElementsByClassName(fbstrings.rateIconContainer)[0].childElementCount>1){
+	if(claim.getElementsByClassName(commonstrings.rateIconContainer)[0].childElementCount>1){
 		return;
 	}
 	
 	var claimId = hex_md5(claim.getAttribute("data-html"));
 	
 	try{
-	$.post(fbstrings.sidServer+"/rate/facebook/getRating",{
+	$.post(commonstrings.sidServer+"/rate/facebook/getRating",{
 		targetid : targetId,
 		claimid : claimId,
 		myid : myId
@@ -272,10 +272,10 @@ function scoreClaims(arrIndex, claim, classOffset){
 }
 
 function processRatepopup(node,myRating){
-	var verified = node.getElementsByClassName(fbstrings.popVerifiedIcon);
-	var neutral = node.getElementsByClassName(fbstrings.popNeutralIcon);
-	var refuted = node.getElementsByClassName(fbstrings.popRefutedIcon);
-	var popupBase = node.getElementsByClassName(fbstrings.popupbase);
+	var verified = node.getElementsByClassName(commonstrings.popVerifiedIcon);
+	var neutral = node.getElementsByClassName(commonstrings.popNeutralIcon);
+	var refuted = node.getElementsByClassName(commonstrings.popRefutedIcon);
+	var popupBase = node.getElementsByClassName(commonstrings.popupbase);
 	
 	var R = "R";
 	var C = "C";
@@ -311,9 +311,9 @@ function processRatepopup(node,myRating){
 
 function configureListners(node,popupData){
 	
-	addEventToSendData(node,fbstrings.btnVerifiedIcon,popupData,1);
-	addEventToSendData(node,fbstrings.btnRefutedIcon,popupData,-1);
-	addEventToSendData(node,fbstrings.btnNeutralIcon,popupData,0);
+	addEventToSendData(node,commonstrings.btnVerifiedIcon,popupData,1);
+	addEventToSendData(node,commonstrings.btnRefutedIcon,popupData,-1);
+	addEventToSendData(node,commonstrings.btnNeutralIcon,popupData,0);
 	
 	var chartData = {};
 	chartData.yesCount = popupData.yes;
@@ -339,7 +339,7 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 
 		notie.alert(4, 'Adding rating to siD system', 2);
 		claimData = popupData.claim.getAttribute("data-html");
-		$.post(fbstrings.sidServer+"/rate/facebook/addRating",{
+		$.post(commonstrings.sidServer+"/rate/facebook/addRating",{
 			myid: myId,
 			targetid: targetId,
 			claimid: claimId,
@@ -359,7 +359,7 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 					console.log("Rating added successfully");
 					updateProfPic(true);
 				},1000)
-				$.post(fbstrings.sidServer+"/rate/facebook/getRating",{
+				$.post(commonstrings.sidServer+"/rate/facebook/getRating",{
 					targetid : targetId,
 					myid: myId,
 					claimid : claimId

@@ -117,6 +117,12 @@ function inject(tabId,obj,tab){
 			//Do Nothing
 		});
 		chrome.tabs.executeScript(tab.id,{
+			file:'js/liBrowserSpecifics.js',	//Run this script if navigated to a fb origined page
+			runAt: "document_end"
+		},function(){
+			//Do Nothing
+		});
+		chrome.tabs.executeScript(tab.id,{
 			file:'js/jquery-1.11.3.min.js'	//Run this script if navigated to a linkedin origined page
 		},function(){
 			//Do Nothing
