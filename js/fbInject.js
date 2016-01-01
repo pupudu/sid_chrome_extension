@@ -1,4 +1,4 @@
-/* globals chrome,Chart,getCookie,fbstrings,notie: false */
+/* globals chrome,Chart,getCookie,fbstrings,commonstrings,notie,fbSkipStrings,fbNonSkipStrings,getURL,hex_md5,popUpOnIconByID: false */
 
 console.log(fbstrings.dodan);
 
@@ -45,7 +45,7 @@ function identify(){
 			updFrndsProfInTimeLine();
 		}
 	}else{
-		console.log("timeline if condition false")
+		console.log("timeline if condition false");
 	}
 }
 
@@ -156,7 +156,7 @@ function processAnalyticsHTML(data){
 	
 	try{
 		$.post(commonstrings.sidServer+"/test/getLinkedinURL",{
-			uid : profID
+			uid : profId
 		},
 		function(data){
 			document.getElementById("li_nav").href=data.url;
@@ -323,7 +323,7 @@ function configureListners(node,popupData){
 	var chartConfigs = {};
 	chartConfigs.animation = false;
 	chartConfigs.type = "mini";
-	chartConfigs.base = "popupbase"
+	chartConfigs.base = "popupbase";
 	
 	addChartListener(chartData,chartConfigs,popupData.claim);
 }
@@ -338,7 +338,7 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 	menuItem.addEventListener("click",function(){
 
 		notie.alert(4, 'Adding rating to siD system', 2);
-		claimData = popupData.claim.getAttribute("data-html");
+		var claimData = popupData.claim.getAttribute("data-html");
 		$.post(commonstrings.sidServer+"/rate/facebook/addRating",{
 			myid: myId,
 			targetid: targetId,
@@ -351,14 +351,14 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 			if(data.success !== true){
 				setTimeout(function(){
 					notie.alert(3, 'An unexpected error occured! Please Try Again', 3);
-					console.log("An unexpected error occured! Please Try Again")
-				},1000)
+					console.log("An unexpected error occured! Please Try Again");
+				},1000);
 			}else{
 				setTimeout(function(){
 					notie.alert(1, 'Rating added successfully!', 3);
 					console.log("Rating added successfully");
 					updateProfPic(true);
-				},1000)
+				},1000);
 				$.post(commonstrings.sidServer+"/rate/facebook/getRating",{
 					targetid : targetId,
 					myid: myId,
@@ -374,7 +374,7 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 					var chartConfigs = {};
 					chartConfigs.animation = true;
 					chartConfigs.type = "mini";
-					chartConfigs.base = "popupbase"
+					chartConfigs.base = "popupbase";
 					
 					var imgURL = getURL(popupData.iconClass,data.claimScore);
 					document.getElementById(popupData.iconId).src=imgURL;
@@ -481,7 +481,7 @@ function extractFriendId(node,alt){
 	return profId;
 }
 
-/**Generate an Id given an string*/
+/**Generate an Id given an string
 function hashIds(str){
     var hash = 0;
     if (str.length <= 2){ 
@@ -494,7 +494,7 @@ function hashIds(str){
         hash = hash & hash; // Convert to 32bit integer
     }
     return hash;
-}
+}*/
 
 function addChartListener(chartData,chartConfigs,parent){
 	var sidDropdown = parent.getElementsByClassName(chartConfigs.base)[0];
@@ -554,7 +554,7 @@ function drawPieChart(chartData,chartConfigs,parent){
 		}
 	}else{
 		var imgUrl = getURL("image","notRatedInfo");
-		base_image = new Image();
+		var base_image = new Image();
 		base_image.src = imgUrl;
 		ctx.drawImage(base_image,0,0,300,150);
 	}
