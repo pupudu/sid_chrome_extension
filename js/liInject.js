@@ -1,9 +1,13 @@
-var vieweeId = getVieweeId();
-var myId;
-getMyId();
 var checkCounter = 0;
-if(document.getElementsByClassName("preview-profile button-primary").length===0){
-	check();
+var vieweeId;
+var myId;
+
+function startScript(){
+	vieweeId = getVieweeId();
+	getMyId();
+	if(document.getElementsByClassName("preview-profile button-primary").length===0){
+		check();
+	}
 }
 
 function check(){
@@ -33,17 +37,6 @@ function getVieweeId(){
 	return document.getElementsByClassName("profile-overview-content")[0].firstChild.id.replace("member-","");
 }
 
-function getMyId(){
-	chrome.storage.sync.get("email",function(items){
-		var email = items.email;
-		//console.log(email);
-		$.post(commonstrings.sidServer+"/rate/linkedin/getUrl",{email:email},function(data){
-			var url = data.url;
-			var id = getQueryVariable("id",url);
-			myId = id;
-		});
-	});
-}
 
 function getQueryVariable(variable,string) {
     var qId = string.indexOf("?");

@@ -1,4 +1,4 @@
-/* globals chrome,Chart,getCookie,fbstrings,commonstrings,notie,fbSkipStrings,fbNonSkipStrings,getURL,hex_md5,popUpOnIconByID: false */
+/* globals Chart,fbstrings,commonstrings,notie,fbSkipStrings,addSidAnalyticsMenu,fbNonSkipStrings,getURL,hex_md5,popUpOnIconByID: false */
 
 console.log(fbstrings.dodan);
 
@@ -566,7 +566,7 @@ function getQueryVariable(variable,string) {
     var vars = query.split('&');
     for (var i = 0; i < vars.length; i++) {
         var pair = vars[i].split('=');
-        if (decodeURIComponent(pair[0]) == variable) {
+        if (decodeURIComponent(pair[0]) === variable) {
             return decodeURIComponent(pair[1]);
         }
     }

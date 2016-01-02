@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				displayError("Please fill your details");
 				return;
 			}
-			$.post(fbstrings.sidServer+"/authenticate",
+			$.post(commonstrings.sidServer+"/authenticate",
 			{
 				username: usr.value,	//get value from input text field
 				password: pwd.value		//get value from input text field
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
 											node.innerHTML=data;
 											try{
 												var fbid = node.getElementsByTagName("meta")[4].getAttribute("content").substring(13);
-												$.post(fbstrings.sidServer+"/rate/facebook/setID",
+												$.post(commonstrings.sidServer+"/rate/facebook/setID",
 												{
 													email: usr.value,	
 													uid: fbid		

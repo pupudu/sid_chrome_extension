@@ -1,3 +1,5 @@
+startScript();
+
 /*need separate implementation for firefox and chrome*/
 function getURL(type,item){
 	//return chrome.extension.getURL(url);
@@ -36,5 +38,17 @@ function popUpOnIconByID(popupData){
 		
 		processRatepopup(node,popupData.myRating);
 		configureListners(node,popupData);
+	});
+}
+
+function getMyId(){
+	chrome.storage.sync.get("email",function(items){
+		var email = items.email;
+		//console.log(email);
+		$.post(commonstrings.sidServer+"/rate/linkedin/getUrl",{email:email},function(data){
+			var url = data.url;
+			var id = getQueryVariable("id",url);
+			myId = id;
+		});
 	});
 }
