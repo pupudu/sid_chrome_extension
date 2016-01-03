@@ -145,18 +145,19 @@ function processAnalyticsHTML(data){
 	node.innerHTML = data;
 	document.getElementsByClassName(fbstrings.fbMenubar)[0].appendChild(node);
 	
-	var profId = extractId(1);
+	var targetId = extractId(1);
+	var myId = extractId(0);
 	var headerURL = getURL("image","analytics_header");
 	var legendURL = getURL("image","legend");
 	
 	document.getElementById("analytics_header").src = headerURL;
 	document.getElementById("analytics_legend").src = legendURL;
 	
-	commitDropdownChart(profId,node);
+	commitDropdownChart(extractId,node);
 	
 	try{
 		$.post(commonstrings.sidServer+"/test/getLinkedinURL",{
-			uid : profId
+			uid : extractId
 		},
 		function(data){
 			document.getElementById("li_nav").href=data.url;
@@ -165,6 +166,36 @@ function processAnalyticsHTML(data){
 		document.getElementById("li_nav").addEventListener('click',function(){
 			notie.alert(3, 'Linked In profile not connected', 3);
 		});
+	}
+	try{
+		$.post(commonstrings.sidServer+"/rate/facebook/getComments",{
+			targetid : "tid",
+			myid: myId
+		},
+		function(data){
+			var content="";
+			for(i=0;i<data.comments.length;i++){
+				content = content+"Comment "+i+": "+data.comments[i].comment+"<br>";
+			}
+			var btn = document.getElementById("view-comment-btn");
+			var options = {
+				title: "sid Comments",
+				content: content,
+				buttons: [
+					{
+						label: "Close",
+						half: false
+					}
+				],
+				autoload: false
+			}
+			btn.addEventListener('click', function(){
+				var modal = new ZMODAL(options);
+				modal.open();
+			});
+		});
+	}catch(e){
+		
 	}
 }
 

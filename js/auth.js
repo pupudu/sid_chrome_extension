@@ -3,6 +3,7 @@
 /* globals chrome,getCookie,setCookie,injectCookie: false */
 
 if(getCookie("sidSession")==="true"){	/*TODO Manipulate Cookies with a better approach*/
+	chrome.runtime.sendMessage("inject");
 	window.open('main.html','_self');
 }
 
@@ -55,49 +56,27 @@ document.addEventListener('DOMContentLoaded', function() {
 													uid: fbid		
 												},
 												function(data, status){
-													alert(JSON.stringify(data))
+													alert(JSON.stringify(data));
+													chrome.runtime.sendMessage("inject");
 												});	
 											}catch(e){
 												console.error(e);
 											}
-											console.log(profID);
-											window.open('main.html','_self');
 										});
 									}catch(e){
 										console.error(e);
-										return;
 									}
 								}else{
-									//TODO : Handle issue
-									window.open('main.html','_self');
+									console.log("error");
 								}
 							}else{
+								chrome.runtime.sendMessage("inject");
 								window.open('main.html','_self');
 							}
 						}else{
 							//TODO: Handle issue
-							window.open('main.html','_self');
+							console.log("account not linked");
 						}
-						//alert(JSON.stringify(data))
-						//chrome.tabs.query({url:"https://*.facebook.com/*"}, function (tabAr){
-							//for(var i=0;tabAr.length;i++){
-								/*chrome.tabs.executeScript(tabAr[i].id,{
-									file:'js/jquery-1.11.3.min.js'	//Inject script on sign in 
-								},function(){});
-								chrome.tabs.executeScript(tabAr[i].id,{
-									file:'js/configs.js'	//Inject script on sign in 
-								},function(){});
-								chrome.tabs.executeScript(tabAr[i].id,{
-									file:'js/cookie.js'	//Inject script on sign in
-								},function(){});
-								chrome.tabs.executeScript(tabAr[i].id,{
-									file:'js/fbInject.js',	//Inject script on sign in
-									runAt: "document_end"
-								},function(){});
-								*/
-								//TODO Load these from separate js file
-							//}
-						//});
 						
 					}else{
 						displayError("Invalid Username or Password");

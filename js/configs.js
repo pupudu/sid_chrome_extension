@@ -1,6 +1,4 @@
 var fbstrings = {
-	sidServer:"https://sid.projects.mrt.ac.lk:9000",
-	//sidServer:"https://localhost:9000",
 	fbTimelineHeadline:'fbTimelineHeadline',
 	sidSign:'verif',
 	profileName:'fb-timeline-cover-name',
@@ -27,15 +25,14 @@ var fbSkipStrings = ["Your friend since","Followed by","friends","Friends on","f
 var fbNonSkipStrings = ["Works","Lives in","From","Born on","Studies","Studied", "In a relationship"];
 
 var listrings = {
-	sidServer:"https://sid.projects.mrt.ac.lk:9000",
 	profPic:"profile-picture",
 	mainNavBar:"nav main-nav nav-bar"
 	
 }
 
 var commonstrings = {
-	sidServer:"https://sid.projects.mrt.ac.lk:9000",
-	//sidServer:"https://localhost:9000",
+	//sidServer:"https://sid.projects.mrt.ac.lk:9000",
+	sidServer:"https://localhost:9000",
 	rateIconContainer:'rateIconContainer',
 	btnVerifiedIcon:'verA',
 	btnRefutedIcon:'refA',

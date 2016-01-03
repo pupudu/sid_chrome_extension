@@ -1,3 +1,4 @@
+
 /*need separate implementation for firefox and chrome*/
 function addSidAnalyticsMenu(){
 	setTimeout(function(){

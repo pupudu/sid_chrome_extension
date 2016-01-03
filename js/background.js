@@ -19,8 +19,16 @@ chrome.runtime.onMessage.addListener(function (message,sender){
 		}
 	}else if(message === "login check"){
 		
-	}else if(message === "reinject"){
-		
+	}else if(message === "inject"){
+		console.log("inject request");
+		chrome.tabs.query({url:"https://*.facebook.com/*"},function(tabAr){
+			console.log(tabAr);
+			var i;
+			for(i=0;i<tabAr.length;i++){
+				//console.log(tabAr[i].url);
+				inject(tabAr[i]);
+			}
+		})
 	}
 	
 });
@@ -37,22 +45,20 @@ chrome.tabs.onUpdated.addListener(function (tabId,obj,tab){
 	if(obj.status === "complete"){	//inject script only after update is complete
 		setTimeout(function(){ 
 			//alert("trying");
-			inject(tabId,obj,tab);
+			inject(tab);
 		}, 500);	//delay was added to allow elements to load before the content script is injected
 		
 		setTimeout(function(){
-			inject(tabId,obj,tab);
+			inject(tab);
 		}, 2500);	//retry in 2.5 seconds as backup
 		
 		setTimeout(function(){
-			inject(tabId,obj,tab);
+			inject(tab);
 		}, 5000);	//retry in 5 seconds as backup
-		
-		
 	}
 });
 
-function inject(tabId,obj,tab){
+function inject(tab){
 	if(tab.url.search("https://www.facebook.com")===0 || tab.url.search("https://web.facebook.com")===0){
 		//alert("status "+obj.status+ " url "+count+" "+ tab.url);
 		chrome.tabs.executeScript(tab.id,{
@@ -86,6 +92,11 @@ function inject(tabId,obj,tab){
 			//Do Nothing
 		});
 		chrome.tabs.executeScript(tab.id,{
+			file:'js/z-modal.js'	//Run this script if navigated to a fb origined page
+		},function(){
+			//Do Nothing
+		});
+		chrome.tabs.executeScript(tab.id,{
 			file:'js/fbBrowserSpecifics.js',	//Run this script if navigated to a fb origined page
 			runAt: "document_end"
 		},function(){
@@ -99,6 +110,12 @@ function inject(tabId,obj,tab){
 		});
 		chrome.tabs.insertCSS(tab.id,{
 			file:'css/fbInject.css',	//Run this script if navigated to a linkedin origined page
+			runAt: "document_end"
+		},function(){
+			//Do Nothing
+		});
+		chrome.tabs.insertCSS(tab.id,{
+			file:'css/z-modal.css',	//Run this script if navigated to a linkedin origined page
 			runAt: "document_end"
 		},function(){
 			//Do Nothing
