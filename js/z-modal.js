@@ -97,6 +97,7 @@
     // the box content
     var content = document.createElement("div");
     content.className="z-modal-content";
+	content.id = "commentContent";
     content.innerHTML = theContent;
     // the box footer
     var footer = document.createElement("div");
@@ -132,9 +133,20 @@
 					comment: comment
 				},
 				function(res){
-					console.log(res);
-					processCommentPopup(targetId,myId);
-					notie.alert(1, 'Comment added successfully!', 3);
+					$.post(commonstrings.sidServer+"/rate/facebook/getComments",{
+						targetid : targetId,
+						myid: myId
+					},
+					function(data){
+						var theContent="";
+						for(i=0;i<data.comments.length;i++){
+							theContent = theContent+"Comment "+i+": "+data.comments[i].comment+"<br>";
+						}
+						processCommentPopup(targetId,myId);
+						var currentContent = document.getElementById("commentContent");
+						currentContent.innerHTML = theContent;
+						notie.alert(1, 'Comment added successfully!', 3);
+					});
 				});
 			});
 		}

@@ -205,12 +205,21 @@ function processCommentPopup(targetId,myId){
 			],
 			autoload: false
 		}
+		
+		var new_element = btn.cloneNode(true);
+		btn.parentNode.replaceChild(new_element, btn);
+		
+		btn = document.getElementById("view-comment-btn");
+		
 		btn.addEventListener('click', function(){
 			var modal = new ZMODAL(options);
 			modal.open();
 		});
+		
 	});
 }
+
+
 
 function commitDropdownChart(profId,node){
 	$.post(commonstrings.sidServer+"/rate/facebook/getAllRatingsCount",{
