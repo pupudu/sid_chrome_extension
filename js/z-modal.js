@@ -121,15 +121,32 @@
 		}
 		if(theBtn.func === "addComment"){
 			btn.addEventListener("click",function(){
-				alert(document.getElementById("commentIn").value);
+				var comment = document.getElementById("commentIn").value;
+				var targetId = extractId(1);
+				var myId = extractId(0);
+				var commentId = hex_md5(comment);
+				$.post(commonstrings.sidServer+"/rate/facebook/addComment",{
+					targetid : targetId,
+					myid: myId,
+					commentid: commentId,
+					comment: comment
+				},
+				function(res){
+					console.log(res);
+					processCommentPopup(targetId,myId);
+					notie.alert(1, 'Comment added successfully!', 3);
+				});
 			});
 		}
         footer.appendChild(btn);
       })(i);
     }
 
-	var input = document.createElement("input");
+	var input = document.createElement("textarea");
 	input.id = "commentIn";
+	input.style.left = "5%";
+	input.style.width = "90%";
+	input.style.position = "relative";
     // populate the box
     box.appendChild(header);
     box.appendChild(content);

@@ -168,44 +168,48 @@ function processAnalyticsHTML(data){
 		});
 	}
 	try{
-		$.post(commonstrings.sidServer+"/rate/facebook/getComments",{
-			targetid : "tid",
-			myid: myId
-		},
-		function(data){
-			var content="";
-			for(i=0;i<data.comments.length;i++){
-				content = content+"Comment "+i+": "+data.comments[i].comment+"<br>";
-			}
-			var btn = document.getElementById("view-comment-btn");
-			var options = {
-				title: "sid Comments",
-				content: content,
-				input:true,
-				buttons: [
-					{
-						label: "Close",
-						id:"closeModal",
-						func:"close",
-						half: true
-					},
-					{
-						label: "Add Comment",
-						id:"addCommentBtn",
-						func:"addComment",
-						half: true
-					}
-				],
-				autoload: false
-			}
-			btn.addEventListener('click', function(){
-				var modal = new ZMODAL(options);
-				modal.open();
-			});
-		});
+		processCommentPopup(targetId,myId);
 	}catch(e){
-		
+		console.error(e);
 	}
+}
+
+function processCommentPopup(targetId,myId){
+	$.post(commonstrings.sidServer+"/rate/facebook/getComments",{
+		targetid : targetId,
+		myid: myId
+	},
+	function(data){
+		var content="";
+		for(i=0;i<data.comments.length;i++){
+			content = content+"Comment "+i+": "+data.comments[i].comment+"<br>";
+		}
+		var btn = document.getElementById("view-comment-btn");
+		var options = {
+			title: "sid Comments",
+			content: content,
+			input:true,
+			buttons: [
+				{
+					label: "Close",
+					id:"closeModal",
+					func:"close",
+					half: true
+				},
+				{
+					label: "Add Comment",
+					id:"addCommentBtn",
+					func:"addComment",
+					half: true
+				}
+			],
+			autoload: false
+		}
+		btn.addEventListener('click', function(){
+			var modal = new ZMODAL(options);
+			modal.open();
+		});
+	});
 }
 
 function commitDropdownChart(profId,node){
