@@ -181,10 +181,19 @@ function processAnalyticsHTML(data){
 			var options = {
 				title: "sid Comments",
 				content: content,
+				input:true,
 				buttons: [
 					{
 						label: "Close",
-						half: false
+						id:"closeModal",
+						func:"close",
+						half: true
+					},
+					{
+						label: "Add Comment",
+						id:"addCommentBtn",
+						func:"addComment",
+						half: true
 					}
 				],
 				autoload: false

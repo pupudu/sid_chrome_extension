@@ -109,20 +109,33 @@
         var btn = document.createElement("div");
         btn.className = "z-modal-btn";
         btn.innerHTML = theBtn.label;
+		btn.id = theBtn.id;
         if(theBtn.half === true){
           btn.className += " z-modal-btn-half";
         }
         // listeners
-        __initListener(btn, "click", function(){
-          _this.close.call(_this, _this.options.buttons[i].callback);
-        })
+		if(theBtn.func === "close"){
+			__initListener(btn, "click", function(){
+			  _this.close.call(_this, _this.options.buttons[i].callback);
+			})
+		}
+		if(theBtn.func === "addComment"){
+			btn.addEventListener("click",function(){
+				alert(document.getElementById("commentIn").value);
+			});
+		}
         footer.appendChild(btn);
       })(i);
     }
 
+	var input = document.createElement("input");
+	input.id = "commentIn";
     // populate the box
     box.appendChild(header);
     box.appendChild(content);
+	if(this.options.input === true){
+		box.appendChild(input);
+	}
     box.appendChild(footer);
 
     // add the modal to the dom ! finally!
