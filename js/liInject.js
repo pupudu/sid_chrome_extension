@@ -12,8 +12,8 @@ function startScript(){
 
 function check(){
 	checkCounter++;
-	if(checkCounter > 10){
-		alert("Error getting linked ID. Make sure that you have connected your linkedin profile using the sid Website and try again.(This message will be shown 3 times)");
+	if(checkCounter > 20){
+		console.log("Error getting linked ID. Make sure that you have connected your linkedin profile using the sid Website and try again.(This message will be shown 3 times)");
 		return;
 	}
 	setTimeout(function(){

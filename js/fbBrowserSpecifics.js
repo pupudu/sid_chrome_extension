@@ -10,6 +10,16 @@ function addSidAnalyticsMenu(){
 	},1000);
 }
 
+function addCommentSection(){
+	setTimeout(function(){
+		if(document.getElementById("viewAllComments") === null){
+			$.get(chrome.extension.getURL("html/comment.html"), function(data) {
+				processCommentsHTML(data);
+			});
+		}
+	},1000);
+}
+
 /*needs a separate implementations for firefox and chrome*/
 function popUpOnIconByID(popupData){ 
 

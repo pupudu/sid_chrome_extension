@@ -23,6 +23,7 @@ function identify(){
 		
 		updateProfPic(false);
 		addSidAnalyticsMenu();
+		addCommentSection();
 		
 		if(selectedTab.indexOf("About") === 0) {
 			var subsection = document.getElementsByClassName(fbstrings.subSection)[0].innerHTML;
@@ -153,11 +154,11 @@ function processAnalyticsHTML(data){
 	document.getElementById("analytics_header").src = headerURL;
 	document.getElementById("analytics_legend").src = legendURL;
 	
-	commitDropdownChart(extractId,node);
+	commitDropdownChart(targetId,node);
 	
 	try{
 		$.post(commonstrings.sidServer+"/test/getLinkedinURL",{
-			uid : extractId
+			uid : targetId
 		},
 		function(data){
 			document.getElementById("li_nav").href=data.url;
@@ -172,6 +173,32 @@ function processAnalyticsHTML(data){
 	}catch(e){
 		console.error(e);
 	}
+}
+
+function processCommentsHTML(html){
+	
+	var targetId = extractId(1);
+	var myId = extractId(0);
+	var comment;
+	
+	$.post(commonstrings.sidServer+"/rate/facebook/getComments",{
+		targetid : targetId,
+		myid: myId
+	},
+	function(data){
+		comment = data.comments[data.comments.length-1].comment;
+		console.log("comment is: "+ comment);
+		
+		/*var node = document.createElement("DIV");  
+		node.outerHTML = data;*/
+		var timeline = document.getElementsByClassName("fbTimelineCapsule clearfix")[0];
+		timeline.innerHTML = html + timeline.innerHTML;
+		document.getElementById("selectedComment").textContent = comment;
+		
+		document.getElementById("sidCommentCloseButton").addEventListener("click",function(){
+			document.getElementById("viewAllComments").remove();
+		});
+	});
 }
 
 function processCommentPopup(targetId,myId){
