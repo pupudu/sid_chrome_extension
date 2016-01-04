@@ -225,3 +225,10 @@ a.refA{
 	width:inherit;
 	color:#666666;
 }
+
+p.sidComment{
+	position:absolute; 
+	top: 0px;
+	font-size: 18px;
+    left: 120px;
+}

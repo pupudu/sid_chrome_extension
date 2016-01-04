@@ -193,11 +193,13 @@ function processCommentsHTML(html){
 		node.outerHTML = data;*/
 		var timeline = document.getElementsByClassName("fbTimelineCapsule clearfix")[0];
 		timeline.innerHTML = html + timeline.innerHTML;
-		document.getElementById("selectedComment").textContent = comment;
+		document.getElementById("sidComment").innerText = comment;
 		
 		document.getElementById("sidCommentCloseButton").addEventListener("click",function(){
 			document.getElementById("viewAllComments").remove();
 		});
+		
+		document.getElementById("commentIcon").src = getURL("image","comment");
 		
 		processCommentPopup(targetId,myId,"viewAllComments");
 		
@@ -217,7 +219,6 @@ function processCommentPopup(targetId,myId,btnOptional){
 		}
 		var btn = document.getElementById("view-comment-btn");
 		if(btnOptional){
-			console.log("not optional");
 			btn = document.getElementById(btnOptional);
 		}
 		var options = {
@@ -246,7 +247,6 @@ function processCommentPopup(targetId,myId,btnOptional){
 		
 		btn = document.getElementById("view-comment-btn");
 		if(btnOptional){
-			console.log("not optional");
 			btn = document.getElementById(btnOptional);
 		}
 		btn.addEventListener('click', function(){

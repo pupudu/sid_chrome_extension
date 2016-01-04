@@ -24,7 +24,7 @@
 	"resources/icons/ringT.png", "resources/icons/ringR.png", "resources/icons/ringC.png", "resources/icons/ringN.png",
 	"resources/images/popupBase.png",
 	"resources/images/notRatedInfo.png",
-	"resources/images/analytics_header.png","resources/images/legend.png",
+	"resources/images/analytics_header.png","resources/images/legend.png","resources/images/comment.png",
 	"html/sidAnalytics.html", "html/sidAnalytics_li.html", "html/ratePopup.html", "html/comment.html"
   ],
   "content_scripts":[
