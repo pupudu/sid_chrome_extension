@@ -198,10 +198,14 @@ function processCommentsHTML(html){
 		document.getElementById("sidCommentCloseButton").addEventListener("click",function(){
 			document.getElementById("viewAllComments").remove();
 		});
+		
+		processCommentPopup(targetId,myId,"viewAllComments");
+		
 	});
 }
 
-function processCommentPopup(targetId,myId){
+function processCommentPopup(targetId,myId,btnOptional){
+	console.log("vieweing comments");
 	$.post(commonstrings.sidServer+"/rate/facebook/getComments",{
 		targetid : targetId,
 		myid: myId
@@ -212,6 +216,10 @@ function processCommentPopup(targetId,myId){
 			content = content+"Comment "+i+": "+data.comments[i].comment+"<br>";
 		}
 		var btn = document.getElementById("view-comment-btn");
+		if(btnOptional){
+			console.log("not optional");
+			btn = document.getElementById(btnOptional);
+		}
 		var options = {
 			title: "sid Comments",
 			content: content,
@@ -237,7 +245,10 @@ function processCommentPopup(targetId,myId){
 		btn.parentNode.replaceChild(new_element, btn);
 		
 		btn = document.getElementById("view-comment-btn");
-		
+		if(btnOptional){
+			console.log("not optional");
+			btn = document.getElementById(btnOptional);
+		}
 		btn.addEventListener('click', function(){
 			var modal = new ZMODAL(options);
 			modal.open();
