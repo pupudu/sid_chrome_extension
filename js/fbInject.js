@@ -186,7 +186,11 @@ function processCommentsHTML(html){
 		myid: myId
 	},
 	function(data){
-		comment = data.comments[data.comments.length-1].comment;
+		if(data.comments[data.comments.length-1]){
+			comment = data.comments[data.comments.length-1].comment;
+		}else{
+			comment = "No comments available yet. Click here and add yours..."
+		}
 		console.log("comment is: "+ comment);
 		
 		/*var node = document.createElement("DIV");  
