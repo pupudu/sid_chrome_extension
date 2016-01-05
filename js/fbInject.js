@@ -193,7 +193,6 @@ function processCommentsHTML(html){
 	});
 	
 	processCommentPopup(targetId,myId,"selectedComment");
-	
 }
 
 function processCommentPopup(targetId,myId,btnOptional){
@@ -266,7 +265,6 @@ function processCommentPopup(targetId,myId,btnOptional){
 		});
 	});
 }
-
 
 
 function commitDropdownChart(profId,node){
@@ -600,6 +598,7 @@ function hashIds(str){
 function addChartListener(chartData,chartConfigs,parent){
 	var sidDropdown = parent.getElementsByClassName(chartConfigs.base)[0];
 	console.log(chartConfigs.base+".............."+sidDropdown);
+	drawPieChart(chartData,chartConfigs,parent);
 	sidDropdown.addEventListener('mouseover', function() {
 		if(document.getElementsByClassName("ego_section").length>0){
 			document.getElementsByClassName("ego_section")[0].remove();
