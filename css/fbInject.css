@@ -228,7 +228,16 @@ a.refA{
 
 p.sidComment{
 	position:absolute; 
-	top: 0px;
 	font-size: 18px;
-    left: 120px;
+	left: 0px;
+    padding-left: 120px;
+	height: 35px;
+	width: 700px;
+    top: -18px;
+    padding-top: 16px;
+}
+
+a.commentClose{
+	top: 3px;
+    left: 2px;
 }

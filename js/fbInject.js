@@ -179,35 +179,21 @@ function processCommentsHTML(html){
 	
 	var targetId = extractId(1);
 	var myId = extractId(0);
-	var comment;
+	var timeline = document.getElementsByClassName("fbTimelineCapsule clearfix")[0];
+	var firstChild = timeline.firstChild;
+	var node = document.createElement("div");
 	
-	$.post(commonstrings.sidServer+"/rate/facebook/getComments",{
-		targetid : targetId,
-		myid: myId
-	},
-	function(data){
-		if(data.comments[data.comments.length-1]){
-			comment = data.comments[data.comments.length-1].comment;
-		}else{
-			comment = "No comments available yet. Click here and add yours..."
-		}
-		console.log("comment is: "+ comment);
-		
-		/*var node = document.createElement("DIV");  
-		node.outerHTML = data;*/
-		var timeline = document.getElementsByClassName("fbTimelineCapsule clearfix")[0];
-		timeline.innerHTML = html + timeline.innerHTML;
-		document.getElementById("sidComment").innerText = comment;
-		
-		document.getElementById("sidCommentCloseButton").addEventListener("click",function(){
-			document.getElementById("viewAllComments").remove();
-		});
-		
-		document.getElementById("commentIcon").src = getURL("image","comment");
-		
-		processCommentPopup(targetId,myId,"viewAllComments");
-		
+	timeline.insertBefore(node,firstChild);
+	node.outerHTML = html;
+	
+	document.getElementById("commentIcon").src = getURL("image","comment");
+	
+	document.getElementById("sidCommentCloseButton").addEventListener("click",function(){
+		document.getElementById("viewAllComments").remove();
 	});
+	
+	processCommentPopup(targetId,myId,"selectedComment");
+	
 }
 
 function processCommentPopup(targetId,myId,btnOptional){
@@ -217,47 +203,67 @@ function processCommentPopup(targetId,myId,btnOptional){
 		myid: myId
 	},
 	function(data){
-		var content="";
-		for(i=0;i<data.comments.length;i++){
-			content = content+"Comment "+i+": "+data.comments[i].comment+"<br>";
+		if(document.getElementById("sidComment")){
+			var comment;
+			if(data.comments[data.comments.length -1]){
+				comment = data.comments[data.comments.length -1].comment;
+			}else{
+				comment = "No comments available yet. Click here and add yours...";
+			}
+			if(comment.length > 72){
+				comment = comment.substring(0,70) + " (...)";
+			}
+			document.getElementById("sidComment").innerText = comment;
 		}
-		var btn = document.getElementById("view-comment-btn");
-		if(btnOptional){
-			btn = document.getElementById(btnOptional);
-		}
-		var options = {
-			title: "sid Comments",
-			content: content,
-			input:true,
-			buttons: [
-				{
-					label: "Close",
-					id:"closeModal",
-					func:"close",
-					half: true
-				},
-				{
-					label: "Add Comment",
-					id:"addCommentBtn",
-					func:"addComment",
-					half: true
-				}
-			],
-			autoload: false
-		}
-		
-		var new_element = btn.cloneNode(true);
-		btn.parentNode.replaceChild(new_element, btn);
-		
-		btn = document.getElementById("view-comment-btn");
-		if(btnOptional){
-			btn = document.getElementById(btnOptional);
-		}
-		btn.addEventListener('click', function(){
+	});
+	
+	var options = {
+		title: "sid Comments",
+		content: "No comments available yet. Click here and add yours...",
+		input:true,
+		buttons: [
+			{
+				label: "Close",
+				id:"closeModal",
+				func:"close",
+				half: true
+			},
+			{
+				label: "Add Comment",
+				id:"addCommentBtn",
+				func:"addComment",
+				half: true
+			}
+		],
+		autoload: false
+	}
+	var btn = document.getElementById("view-comment-btn");
+	if(btnOptional){
+		btn = document.getElementById(btnOptional);
+	}
+	
+	var new_element = btn.cloneNode(true);
+	btn.parentNode.replaceChild(new_element, btn);
+	
+	btn = document.getElementById("view-comment-btn");
+	if(btnOptional){
+		btn = document.getElementById(btnOptional);
+	}
+	
+	btn.addEventListener('click', function(){
+		$.post(commonstrings.sidServer+"/rate/facebook/getComments",{
+			targetid : targetId,
+			myid: myId
+		},
+		function(data){
+			var content="";
+			for(i=0;i<data.comments.length;i++){
+				content = content+"Comment "+i+": "+data.comments[i].comment+"<br>";
+			}
+			options.content = content;
 			var modal = new ZMODAL(options);
 			modal.open();
 		});
-		
 	});
 }
 
