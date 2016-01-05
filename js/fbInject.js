@@ -639,7 +639,11 @@ function drawPieChart(chartData,chartConfigs,parent){
 	chartHolder.firstChild.remove();
 	chartHolder.innerHTML = '<canvas class='+chartConfigs.type+'_chart'+'></canvas>';
 
-	var ctx = parent.getElementsByClassName(chartConfigs.type+'_chart')[0].getContext("2d");
+	try{
+		var ctx = parent.getElementsByClassName(chartConfigs.type+'_chart')[0].getContext("2d");
+	}catch(err){
+		console.log("sid error: "+err);
+	}
 	if(total>0){
 		try{
 			var myPie;
@@ -650,13 +654,17 @@ function drawPieChart(chartData,chartConfigs,parent){
 				//add more chart configs here as needed
 			});
 		}catch(err){
-			console.log(err);
+			console.log("sid error: "+err);
 		}
 	}else{
-		var imgUrl = getURL("image","notRatedInfo");
-		var base_image = new Image();
-		base_image.src = imgUrl;
-		ctx.drawImage(base_image,0,0,300,150);
+		try{
+			var imgUrl = getURL("image","notRatedInfo");
+			var base_image = new Image();
+			base_image.src = imgUrl;
+			ctx.drawImage(base_image,0,0,300,150);
+		}catch(err){
+			console.log("sid error: "+err);
+		}
 	}
 }
 
