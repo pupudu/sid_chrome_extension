@@ -153,7 +153,11 @@ function processAnalyticsHTML(data){
 	
 	document.getElementById("analytics_header").src = headerURL;
 	document.getElementById("analytics_legend").src = legendURL;
-	
+	$('.orgSlick').slick({
+        infinite: true,
+		slidesToShow: 3,
+		slidesToScroll: 3
+	});
 	commitDropdownChart(targetId,node);
 	
 	try{
@@ -658,7 +662,8 @@ function drawPieChart(chartData,chartConfigs,parent){
 		}
 	}else{
 		try{
-			var imgUrl = getURL("image","notRatedInfo");
+			//var imgUrl = getURL("image","notRatedInfo");
+			var imgUrl = commonstrings.sidServer+"/organizations/uni_sl_uom.png";
 			var base_image = new Image();
 			base_image.src = imgUrl;
 			ctx.drawImage(base_image,0,0,300,150);

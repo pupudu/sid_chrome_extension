@@ -97,6 +97,11 @@ function inject(tab){
 			//Do Nothing
 		});
 		chrome.tabs.executeScript(tab.id,{
+			file:'js/slick.js'	//Run this script if navigated to a fb origined page
+		},function(){
+			//Do Nothing
+		});
+		chrome.tabs.executeScript(tab.id,{
 			file:'js/fbBrowserSpecifics.js',	//Run this script if navigated to a fb origined page
 			runAt: "document_end"
 		},function(){
@@ -116,6 +121,18 @@ function inject(tab){
 		});
 		chrome.tabs.insertCSS(tab.id,{
 			file:'css/z-modal.css',	//Run this script if navigated to a linkedin origined page
+			runAt: "document_end"
+		},function(){
+			//Do Nothing
+		});
+		chrome.tabs.insertCSS(tab.id,{
+			file:'css/slick.css',	//Run this script if navigated to a linkedin origined page
+			runAt: "document_end"
+		},function(){
+			//Do Nothing
+		});
+		chrome.tabs.insertCSS(tab.id,{
+			file:'css/slick-theme.css',	//Run this script if navigated to a linkedin origined page
 			runAt: "document_end"
 		},function(){
 			//Do Nothing
