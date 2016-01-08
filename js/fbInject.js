@@ -152,7 +152,7 @@ function processAnalyticsHTML(data){
 	var legendURL = getURL("image","legend");
 	
 	document.getElementById("analytics_header").src = headerURL;
-	//document.getElementById("analytics_legend").src = legendURL;
+	document.getElementById("analytics_legend").src = legendURL;
 	$.post(commonstrings.sidServer+"/rate/facebook/getMyOrganizations",{
 		myid : targetId
 	},
