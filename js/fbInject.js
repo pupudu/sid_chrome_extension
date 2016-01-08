@@ -152,12 +152,28 @@ function processAnalyticsHTML(data){
 	var legendURL = getURL("image","legend");
 	
 	document.getElementById("analytics_header").src = headerURL;
-	document.getElementById("analytics_legend").src = legendURL;
-	$('.orgSlick').slick({
-        infinite: true,
-		slidesToShow: 3,
-		slidesToScroll: 3
+	//document.getElementById("analytics_legend").src = legendURL;
+	$.post(commonstrings.sidServer+"/rate/facebook/getMyOrganizations",{
+		myid : targetId
+	},
+	function(data){
+		var organizations = data.organizations;
+		//console.log(data);
+		organizations.forEach(function(org){
+			var orgNode = document.createElement("DIV");
+			//orgNode.style.background-color = #125699;
+			orgNode.textContent = org;
+			document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
+			console.log(org)
+		});
+		$('.orgSlick').slick({
+			infinite: true,
+			slidesToShow: 4,
+			slidesToScroll: 1,
+			autoplay: true
+		});
 	});
+	
 	commitDropdownChart(targetId,node);
 	
 	try{

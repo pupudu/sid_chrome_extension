@@ -242,3 +242,12 @@ a.commentClose{
 	top: 3px;
     left: 2px;
 }
+
+div.orgSlick{
+	position: absolute;
+	background-color:#dddddd;
+    top: 50px;
+    left: 25px;
+    height: 50px;
+    width: 200px;
+}
