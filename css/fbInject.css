@@ -192,17 +192,19 @@ div.Overview{
 a.myButton {
 	background-color:#f6f6f6;
 	width:200px;
-	height:40px;
-	display:inline-block;
 	cursor:pointer;
 	color:#666666;
 	font-family:Arial;
 	font-size:14px;
 	font-weight:bold;
-	text-align:center;
 	padding:2px 24px;
 	text-decoration:none;
 	border:1px solid #ffffff;
+	height: 30px;
+    vertical-align: bottom;
+    text-align: -webkit-center;
+    line-height: 30px;
+    display: block;
 }
 .myButton:hover {
 	background-color:#ededed;
@@ -216,17 +218,14 @@ a.myButton {
 a.verA{
 	width:inherit;
 	color:#666666;
-	padding-left: 35px;
 }
 a.neuA{
 	width:inherit;
 	color:#666666;
-	padding-left: 35px;
 }
 a.refA{
 	width:inherit;
 	color:#666666;
-	padding-left: 35px;
 }
 
 p.sidComment{
@@ -251,24 +250,19 @@ div.orgSlick{
 	background-color:#dddddd;
     top: 50px;
     left: 25px;
-    height: 50px;
-    width: 200px;
-}
-
-div.carousElement{
-	background-color:#719015;
-	height: 50px;
-	width: 50px;
+	border: 1px solid #999999;
+    height: 52px;
+    width: 202px;
 }
 
 img.carousElement{
-	background-color:#719015;
+	background-color:#eeeefe;
 	height: 50px;
 	width: 50px;
 }
 
 img.carousElementMan{
-	background-color:#719015;
+	background-color:#eeeefe;
 	height: 50px;
 	width: 50px;
 	position:relative;
