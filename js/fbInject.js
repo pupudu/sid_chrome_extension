@@ -170,7 +170,6 @@ function processAnalyticsHTML(data){
 			});
 		}else{
 			organizations.forEach(function(org){
-				console.log(org);
 				var orgNode = document.createElement("img");
 				orgNode.className = "carousElement";
 				orgNode.src = commonstrings.sidServer+"/organizations/"+org+".png";
@@ -414,12 +413,21 @@ function processRatepopup(node,myRating){
 	switch(myRating){
 		case -1:
 			R = R + "_my";
+			node.getElementsByClassName("refA")[0].textContent = "I Rejected";
+			node.getElementsByClassName("verA")[0].textContent = "I Approve";
+			node.getElementsByClassName("neuA")[0].textContent = "No Idea";
 			break;
 		case 0:
 			C = C + "_my";
+			node.getElementsByClassName("refA")[0].textContent = "I Reject";
+			node.getElementsByClassName("verA")[0].textContent = "I Approve";
+			node.getElementsByClassName("neuA")[0].textContent = "No Idea";
 			break;
 		case 1:
 			T = T + "_my";
+			node.getElementsByClassName("refA")[0].textContent = "I Reject";
+			node.getElementsByClassName("verA")[0].textContent = "I Approved";
+			node.getElementsByClassName("neuA")[0].textContent = "No Idea";
 			break;
 		case -10:
 			//console.error("claim not rated by me");
@@ -657,13 +665,13 @@ function drawPieChart(chartData,chartConfigs,parent){
 			value: verified,
 			color: "#46BF7D",
 			highlight: "#5AD391",
-			label: "Verified"
+			label: "Approved"
 		},
 		{
 			value: uncertain,
 			color: "#FDB45C",
 			highlight: "#FFC870",
-			label: "Uncertain"
+			label: "Not Sure"
 		}
 	];
 	

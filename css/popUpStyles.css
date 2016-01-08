@@ -54,7 +54,7 @@
 /*borders*/
 #cssmenu > ul li a {
   display: inline-block;
-  padding: 10px 22px;
+  padding: 10px 35px;
 }
 /*show without hover
 #cssmenu > ul > li.active,

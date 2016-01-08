@@ -216,14 +216,17 @@ a.myButton {
 a.verA{
 	width:inherit;
 	color:#666666;
+	padding-left: 35px;
 }
 a.neuA{
 	width:inherit;
 	color:#666666;
+	padding-left: 35px;
 }
 a.refA{
 	width:inherit;
 	color:#666666;
+	padding-left: 35px;
 }
 
 p.sidComment{
