@@ -158,20 +158,32 @@ function processAnalyticsHTML(data){
 	},
 	function(data){
 		var organizations = data.organizations;
-		//console.log(data);
-		organizations.forEach(function(org){
-			var orgNode = document.createElement("DIV");
-			//orgNode.style.background-color = #125699;
-			orgNode.textContent = org;
-			document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
-			console.log(org)
-		});
-		$('.orgSlick').slick({
-			infinite: true,
-			slidesToShow: 4,
-			slidesToScroll: 1,
-			autoplay: true
-		});
+		var suppCount = organizations.length;
+		if(suppCount<4){
+			organizations.forEach(function(org){
+				console.log(org);
+				var orgNode = document.createElement("img");
+				orgNode.style.left = 25*(4-suppCount) + "px";
+				orgNode.className = "carousElementMan";
+				orgNode.src = commonstrings.sidServer+"/organizations/"+org+".png";
+				document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
+			});
+		}else{
+			organizations.forEach(function(org){
+				console.log(org);
+				var orgNode = document.createElement("img");
+				orgNode.className = "carousElement";
+				orgNode.src = commonstrings.sidServer+"/organizations/"+org+".png";
+				document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
+			});
+			$('.orgSlick').slick({
+				infinite: true,
+				slidesToShow: 2,
+				slidesToScroll: 1,
+				autoplay: true,
+				centerMode:true
+			});
+		}
 	});
 	
 	commitDropdownChart(targetId,node);
@@ -678,8 +690,8 @@ function drawPieChart(chartData,chartConfigs,parent){
 		}
 	}else{
 		try{
-			//var imgUrl = getURL("image","notRatedInfo");
-			var imgUrl = commonstrings.sidServer+"/organizations/uni_sl_uom.png";
+			var imgUrl = getURL("image","notRatedInfo");
+			//var imgUrl = commonstrings.sidServer+"/organizations/uni_sl_uom.png";
 			var base_image = new Image();
 			base_image.src = imgUrl;
 			ctx.drawImage(base_image,0,0,300,150);

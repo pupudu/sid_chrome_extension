@@ -251,3 +251,23 @@ div.orgSlick{
     height: 50px;
     width: 200px;
 }
+
+div.carousElement{
+	background-color:#719015;
+	height: 50px;
+	width: 50px;
+}
+
+img.carousElement{
+	background-color:#719015;
+	height: 50px;
+	width: 50px;
+}
+
+img.carousElementMan{
+	background-color:#719015;
+	height: 50px;
+	width: 50px;
+	position:relative;
+	left:6px;
+}
