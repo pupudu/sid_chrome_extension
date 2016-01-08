@@ -235,6 +235,7 @@ p.sidComment{
 	width: 700px;
     top: -18px;
     padding-top: 16px;
+	cursor:pointer;
 }
 
 a.commentClose{
