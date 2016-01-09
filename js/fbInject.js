@@ -194,6 +194,14 @@ function processAnalyticsHTML(data){
 				autoplay: true,
 				centerMode:true
 			});
+			var rArrow = document.createElement("img");
+			var lArrow = document.createElement("img");
+			rArrow.className = "slickArrowR";
+			lArrow.className = "slickArrowL";
+			rArrow.src = getURL("image","right");
+			lArrow.src = getURL("image","left");
+			document.getElementsByClassName("slick-next")[0].appendChild(rArrow);
+			document.getElementsByClassName("slick-prev")[0].appendChild(lArrow);
 		}
 	});
 	
