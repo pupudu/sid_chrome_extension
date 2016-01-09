@@ -177,6 +177,9 @@ function processAnalyticsHTML(data){
 				orgNode.style.left = 25*(4-suppCount) + "px";
 				orgNode.className = "carousElementMan";
 				orgNode.src = commonstrings.sidServer+"/organizations/"+org+".png";
+				orgNode.addEventListener('click',function(){
+					window.open(commonstrings.sidServer+"/organizations/"+org);
+				});
 				document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
 			});
 		}else{
@@ -185,6 +188,9 @@ function processAnalyticsHTML(data){
 				orgNode.className = "carousElement";
 				orgNode.src = commonstrings.sidServer+"/organizations/"+org+".png";
 				document.getElementsByClassName("orgSlick")[0].className += " orgSlickAct";
+				orgNode.addEventListener('click',function(){
+					window.open(commonstrings.sidServer+"/organizations/"+org);
+				});
 				document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
 			});
 			$('.orgSlick').slick({
@@ -208,7 +214,7 @@ function processAnalyticsHTML(data){
 	commitDropdownChart(targetId,node);
 	
 	try{
-		$.post(commonstrings.sidServer+"/test/getLinkedinURL",{
+		$.post(commonstrings.sidServer+"/facebook/rate/getLinkedinURL",{
 			uid : targetId
 		},
 		function(data){
