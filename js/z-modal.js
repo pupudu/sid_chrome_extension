@@ -145,6 +145,7 @@
 						processCommentPopup(targetId,myId);
 						var currentContent = document.getElementById("commentContent");
 						currentContent.innerHTML = theContent;
+						document.getElementById("addCommentBtn").innerText = "Update Comment";
 						notie.alert(1, 'Comment added successfully!', 3);
 					});
 				});

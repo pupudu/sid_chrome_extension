@@ -313,8 +313,12 @@ function processCommentPopup(targetId,myId,btnOptional){
 		},
 		function(data){
 			var content="";
+			//console.log(data);
 			for(i=0;i<data.comments.length;i++){
 				content = content+"Comment "+i+": "+data.comments[i].comment+"<br>";
+				if(data.comments[i].mysid === myId){
+					options.buttons[1].label = "Update Comment";
+				}
 			}
 			options.content = content;
 			var modal = new ZMODAL(options);
