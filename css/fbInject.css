@@ -251,8 +251,8 @@ div.orgSlick{
     top: 80px;
     left: 25px;
 	border: 1px solid #999999;
-    height: 52px;
-    width: 202px;
+    height: 50px;
+    width: 200px;
 }
 
 img.carousElement{
@@ -267,6 +267,16 @@ img.carousElementMan{
 	width: 50px;
 	position:relative;
 	left:6px;
+}
+
+div.orgSlickAct{
+	height: 52px;
+    width: 202px;
+}
+
+img.emptyCarousal{
+	height: 50px;
+    width: 200px;
 }
 
 div.sidSpace1{

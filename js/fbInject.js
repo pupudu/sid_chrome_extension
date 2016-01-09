@@ -157,11 +157,22 @@ function processAnalyticsHTML(data){
 		myid : targetId
 	},
 	function(data){
-		var organizations = data.organizations;
-		var suppCount = organizations.length;
-		if(suppCount<4){
+		var organizations;
+		var suppCount = 0;
+		if(data){
+			organizations = data.organizations;
+		}
+		if(organizations){
+			suppCount = organizations.length;
+		}
+
+		if(suppCount === 0){
+			var orgNode = document.createElement("img");
+			orgNode.className = "emptyCarousal";
+			orgNode.src = getURL("image","notMember");
+			document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
+		}else if(suppCount<4){
 			organizations.forEach(function(org){
-				console.log(org);
 				var orgNode = document.createElement("img");
 				orgNode.style.left = 25*(4-suppCount) + "px";
 				orgNode.className = "carousElementMan";
@@ -173,6 +184,7 @@ function processAnalyticsHTML(data){
 				var orgNode = document.createElement("img");
 				orgNode.className = "carousElement";
 				orgNode.src = commonstrings.sidServer+"/organizations/"+org+".png";
+				document.getElementsByClassName("orgSlick")[0].className += " orgSlickAct";
 				document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
 			});
 			$('.orgSlick').slick({
