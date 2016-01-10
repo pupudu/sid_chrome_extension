@@ -30,6 +30,26 @@ chrome.runtime.onMessage.addListener(function (message,sender){
 			}
 		})
 	}
+	else if(message.request === "notie"){
+		console.log(JSON.stringify(message));
+		var type=1;
+		if(message.type === "success"){
+			type = 1;
+		}else if(message.type === "fail"){
+			type = 3;
+		}else{
+			type = 4;
+		}
+		chrome.tabs.executeScript({
+			file:"js/notie.js"
+		},function(){});
+		chrome.tabs.executeScript({
+			code:"notie.alert("+type+", '"+message.message+"', 3);"
+		},function(){});
+	}
+	else{
+		alert(message);
+	}
 	
 });
 
