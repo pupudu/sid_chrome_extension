@@ -302,3 +302,26 @@ img.slickArrowL{
     left: 1px;
     width: 20px;
 }
+
+::-webkit-input-placeholder { /* Safari, Chrome and Opera */
+  color: #444;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+  color: #444;
+}
+
+::-moz-placeholder { /* Firefox 19+ */
+  color: #444;
+}
+
+input.comment{
+	left: 5%;
+    width: 90%;
+    position: relative;
+    word-wrap: break-word;
+    word-break: break-word;
+    height: 30px;
+	margin-bottom: 4px;
+	padding-left: 5px;
+}

@@ -123,6 +123,10 @@
 		if(theBtn.func === "addComment"){
 			btn.addEventListener("click",function(){
 				var comment = document.getElementById("commentIn").value;
+				if(comment === ""){
+					notie.alert(3, 'Write Something to add as a review', 3);
+					return;
+				}
 				var targetId = extractId(1);
 				var myId = extractId(0);
 				var commentId = hex_md5(comment);
@@ -155,11 +159,10 @@
       })(i);
     }
 
-	var input = document.createElement("textarea");
+	var input = document.createElement("input");
 	input.id = "commentIn";
-	input.style.left = "5%";
-	input.style.width = "90%";
-	input.style.position = "relative";
+	input.className = "comment";
+	input.placeholder = " Type your Profile view in this box. You can add only one review about a person";
     // populate the box
     box.appendChild(header);
     box.appendChild(content);
