@@ -17,6 +17,20 @@ chrome.runtime.onMessage.addListener(function (message,sender){
 				code:"notie.alert(3, 'Sid could not load. Please login again', 4);"
 			},function(){});
 		}
+	}else if(message === "connectFb"){
+		chrome.tabs.create({
+			url:"http://sid.projects.mrt.ac.lk"
+		},function(tab){
+			chrome.tabs.executeScript(tab.id,{
+				file:"js/jquery-1.11.3.min.js"
+			},function(){});
+			chrome.tabs.executeScript(tab.id,{
+				file:"js/notie.js"
+			},function(){});
+			chrome.tabs.executeScript(tab.id,{
+				file:"js/linkAction.js"
+			},function(){});
+		});
 	}else if(message === "login check"){
 		
 	}else if(message === "inject"){
@@ -35,18 +49,12 @@ chrome.runtime.onMessage.addListener(function (message,sender){
 		var type=1;
 		if(message.type === "confirm"){
 			chrome.tabs.executeScript({
-				file:'js/jquery-1.11.3.min.js'	//Run this script if navigated to a fb origined page
-			},function(){
-				//Do Nothing
-			});
-			chrome.tabs.executeScript({
 				file:"js/notie.js"
 			},function(){
 				chrome.tabs.executeScript({
 					file:"js/linkfb.js"
 				},function(){});
 			});
-			
 			return;
 		}
 		if(message.type === "success"){
