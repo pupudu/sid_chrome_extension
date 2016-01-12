@@ -5,7 +5,7 @@ This script runs as a backround script. To stop, change the manifest.json
 /* globals chrome: false */
 //count = 0;
 
-chrome.runtime.onMessage.addListener(function (message,sender){
+chrome.runtime.onMessage.addListener(function (message,sender,sendResponse){
 	console.log(sender);
 	if(message === "wake up"){
 		console.log("Background page woke up from content script");
@@ -17,42 +17,38 @@ chrome.runtime.onMessage.addListener(function (message,sender){
 				code:"notie.alert(3, 'Sid could not load. Please login again', 4);"
 			},function(){});
 		}
-	}else if(message === "connectFb"){
-		chrome.tabs.create({
-			url:"http://sid.projects.mrt.ac.lk"
-		},function(tab){
-			chrome.tabs.executeScript(tab.id,{
-				file:"js/jquery-1.11.3.min.js"
-			},function(){});
-			chrome.tabs.executeScript(tab.id,{
-				file:"js/notie.js"
-			},function(){});
-			chrome.tabs.executeScript(tab.id,{
-				file:"js/linkAction.js"
-			},function(){});
-		});
 	}else if(message === "login check"){
 		
 	}else if(message === "inject"){
-		console.log("inject request");
 		chrome.tabs.query({url:"https://*.facebook.com/*"},function(tabAr){
-			console.log(tabAr);
-			var i;
-			for(i=0;i<tabAr.length;i++){
-				//console.log(tabAr[i].url);
+			for(var i=0;i<tabAr.length;i++){
 				inject(tabAr[i]);
 			}
-		})
-	}
-	else if(message.request === "notie"){
+		});
+	}else if(message.request === "connectFb"){
+		$.post("http://sid.projects.mrt.ac.lk/login",{
+			email: message.email,
+			password:message.password
+		},function(data){
+			$.get("http://sid.projects.mrt.ac.lk/connect/facebook",function(data){
+				chrome.tabs.executeScript({
+					code:"notie.alert(1, 'Account Linked Successfully', 3);"
+				},function(){});
+				setCookie("sidSession","true",3);
+			});
+		});
+	}else if(message.request === "notie"){
 		console.log(JSON.stringify(message));
 		var type=1;
 		if(message.type === "confirm"){
 			chrome.tabs.executeScript({
 				file:"js/notie.js"
 			},function(){
+				var code = "notie.confirm('"+message.message+"', 'Take me there', 'No', function() {\
+								chrome.runtime.sendMessage({request:'connectFb',email:'"+message.email+"',password:'"+message.password+"'});\
+							});";
 				chrome.tabs.executeScript({
-					file:"js/linkfb.js"
+					code:code
 				},function(){});
 			});
 			return;
@@ -72,7 +68,7 @@ chrome.runtime.onMessage.addListener(function (message,sender){
 		},function(){});
 	}
 	else{
-		alert(message);
+		//alert(JSON.stringify(message));
 	}
 	
 });

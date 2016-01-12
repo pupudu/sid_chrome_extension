@@ -5,7 +5,17 @@
 if(getCookie("sidSession")==="true"){	/*TODO Manipulate Cookies with a better approach*/
 	chrome.runtime.sendMessage("inject");
 	window.open('main.html','_self');
-}
+}/*else{
+	console.log("check otherwise");
+	chrome.runtime.sendMessage("logincheck",function(response){
+		alert("Response: "+JSON.stringify(response));
+		if(response.status === "true"){
+			//setCookie("sidSession","true",3);
+			chrome.runtime.sendMessage("inject");
+			window.open('main.html','_self');
+		}
+	});
+}*/
 
 document.addEventListener('DOMContentLoaded', function() {
 	try{
@@ -87,7 +97,13 @@ document.addEventListener('DOMContentLoaded', function() {
 							}
 						}else{
 							//TODO: Handle issue
-							chrome.runtime.sendMessage({request:"notie",type:"confirm",message:"Account not linked. Would you like to link it now?"});
+							chrome.runtime.sendMessage({
+								request:"notie",
+								type:"confirm",
+								message:"Account not linked. Would you like to link it now?",
+								email:usr.value,
+								password:pwd.value
+							});
 							console.log("account not linked");
 						}
 						
