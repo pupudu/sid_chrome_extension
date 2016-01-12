@@ -33,6 +33,22 @@ chrome.runtime.onMessage.addListener(function (message,sender){
 	else if(message.request === "notie"){
 		console.log(JSON.stringify(message));
 		var type=1;
+		if(message.type === "confirm"){
+			chrome.tabs.executeScript({
+				file:'js/jquery-1.11.3.min.js'	//Run this script if navigated to a fb origined page
+			},function(){
+				//Do Nothing
+			});
+			chrome.tabs.executeScript({
+				file:"js/notie.js"
+			},function(){
+				chrome.tabs.executeScript({
+					file:"js/linkfb.js"
+				},function(){});
+			});
+			
+			return;
+		}
 		if(message.type === "success"){
 			type = 1;
 		}else if(message.type === "fail"){

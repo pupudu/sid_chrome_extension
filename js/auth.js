@@ -2,8 +2,6 @@
 
 /* globals chrome,getCookie,setCookie,injectCookie: false */
 
-
-
 if(getCookie("sidSession")==="true"){	/*TODO Manipulate Cookies with a better approach*/
 	chrome.runtime.sendMessage("inject");
 	window.open('main.html','_self');
@@ -30,8 +28,6 @@ document.addEventListener('DOMContentLoaded', function() {
 				if(status==="success"){
 					if(data.success){
 						console.log("Authentication success");
-						//setCookie("sidSession","true",3);	//expires after 3 days if not logged out
-						//injectCookie("sidSession","true",3); 	//inject to save cookie inside the main browser
 						
 						chrome.storage.sync.set({
 							email: usr.value
@@ -42,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
 								if(data.fbappid!==undefined){
 									chrome.runtime.sendMessage({request:"notie",type:"try",message:"Linking Facebook Account to Sid Account"});
 									try{
-										console.log("try send request");
 										$.ajax({
 											type: 'GET',
 											url: "https://www.facebook.com/"+data.fbappid,
@@ -73,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
 											},
 											error: function(xhr, textStatus, errorThrown){
 												chrome.runtime.sendMessage({request:"notie",type:"fail",message:"Failed to get data using fb App Specific Id"});
-												close();
+												
 											}
 										});
 									}catch(e){
@@ -92,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
 							}
 						}else{
 							//TODO: Handle issue
-							chrome.runtime.sendMessage({request:"notie",type:"fail",message:"Account not linked to a facebook profile"});
+							chrome.runtime.sendMessage({request:"notie",type:"confirm",message:"Account not linked. Would you like to link it now?"});
 							console.log("account not linked");
 						}
 						
@@ -107,7 +102,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 		
 	}catch(e){/*Do nothing*/
-		chrome.runtime.sendMessage({request:"notie",type:"fail",message:"Failed to initialize authentication Process"});
 		console.error(e);
 	}
 	
@@ -119,7 +113,6 @@ document.addEventListener('DOMContentLoaded', function() {
 				chrome.tabs.executeScript(tab.id,{
 				code:'window.open("http://sid.projects.mrt.ac.lk")'
 				},function(){
-					/*Log Navigation*/
 					console.log("Redirect to Sid|Main Web Page");
 				});
 			});
