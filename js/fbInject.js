@@ -320,6 +320,9 @@ function processCommentPopup(targetId,myId,btnOptional){
 					options.buttons[1].label = "Update Comment";
 				}
 			}
+			if(content === ""){
+				content="No comments available yet. Be the first to comment on this profile";
+			}
 			options.content = content;
 			var modal = new ZMODAL(options);
 			modal.open();
