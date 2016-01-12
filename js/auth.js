@@ -2,13 +2,14 @@
 
 /* globals chrome,getCookie,setCookie,injectCookie: false */
 
+
+
 if(getCookie("sidSession")==="true"){	/*TODO Manipulate Cookies with a better approach*/
 	chrome.runtime.sendMessage("inject");
 	window.open('main.html','_self');
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-
 	try{
 		var btnSignin = document.getElementById('btnSignin');		//Sign in button in login page
 		var usr = document.getElementById('usr');	//input text field in login page
@@ -29,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				if(status==="success"){
 					if(data.success){
 						console.log("Authentication success");
-						setCookie("sidSession","true",3);	//expires after 3 days if not logged out
+						//setCookie("sidSession","true",3);	//expires after 3 days if not logged out
 						//injectCookie("sidSession","true",3); 	//inject to save cookie inside the main browser
 						
 						chrome.storage.sync.set({
@@ -41,50 +42,56 @@ document.addEventListener('DOMContentLoaded', function() {
 								if(data.fbappid!==undefined){
 									chrome.runtime.sendMessage({request:"notie",type:"try",message:"Linking Facebook Account to Sid Account"});
 									try{
-										$.get("https://www.facebook.com/"+data.fbappid,function(data){
-											//console.log(data)
-											var str;
-											var profID;
-											var strObj;
-											var node=document.createElement("DIV");
-											node.innerHTML=data;
-											try{
-												var fbid = node.getElementsByTagName("meta")[4].getAttribute("content").substring(13);
-												$.post(commonstrings.sidServer+"/rate/facebook/setID",
-												{
-													email: usr.value,	
-													uid: fbid		
-												},
-												function(data, status){
-													console.log(data);
-													chrome.runtime.sendMessage({request:"notie",type:"success",message:"Account Link and login Success"});
-													chrome.runtime.sendMessage("inject");
-													window.open('main.html','_self');
-												});	
-											}catch(e){
-												setCookie("sidSession","true",-1);
-												chrome.runtime.sendMessage({request:"notie",type:"fail",message:"Account Link Failed"});
-												console.error(e);
+										console.log("try send request");
+										$.ajax({
+											type: 'GET',
+											url: "https://www.facebook.com/"+data.fbappid,
+											success: function(data, textStatus ){
+											    var str;
+												var profID;
+												var strObj;
+												var node=document.createElement("DIV");
+												node.innerHTML=data;
+												try{
+													var fbid = node.getElementsByTagName("meta")[4].getAttribute("content").substring(13);
+													$.post(commonstrings.sidServer+"/rate/facebook/setID",
+													{
+														email: usr.value,	
+														uid: fbid		
+													},
+													function(data, status){
+														//console.log(data);
+														setCookie("sidSession","true",3);
+														chrome.runtime.sendMessage({request:"notie",type:"success",message:"Account Link and login Success"});
+														chrome.runtime.sendMessage("inject");
+														window.open('main.html','_self');
+													});	
+												}catch(e){
+													chrome.runtime.sendMessage({request:"notie",type:"fail",message:"Account Link Failed"});
+													console.log(e);
+												}
+											},
+											error: function(xhr, textStatus, errorThrown){
+												chrome.runtime.sendMessage({request:"notie",type:"fail",message:"Failed to get data using fb App Specific Id"});
+												close();
 											}
 										});
 									}catch(e){
-										setCookie("sidSession","true",-1);
 										chrome.runtime.sendMessage({request:"notie",type:"fail",message:"Failed to get data using fb App Specific Id"});
-										console.error(e);
+										console.log(e);
 									}
 								}else{
-									setCookie("sidSession","true",-1);
 									chrome.runtime.sendMessage({request:"notie",type:"fail",message:"Fb App Id undefined"});
 									console.log("error");
 								}
 							}else{
+								setCookie("sidSession","true",3);
 								chrome.runtime.sendMessage({request:"notie",type:"success",message:"Login Success"});
 								chrome.runtime.sendMessage("inject");
 								window.open('main.html','_self');
 							}
 						}else{
 							//TODO: Handle issue
-							setCookie("sidSession","true",-1);
 							chrome.runtime.sendMessage({request:"notie",type:"fail",message:"Account not linked to a facebook profile"});
 							console.log("account not linked");
 						}
@@ -93,7 +100,6 @@ document.addEventListener('DOMContentLoaded', function() {
 						displayError("Invalid Username or Password");
 					}
 				}else{
-					setCookie("sidSession","true",-1);
 					chrome.runtime.sendMessage({request:"notie",type:"fail",message:"Failed to call authenticate route"});
 					console.log("Error: Post request failed");
 				}
@@ -101,7 +107,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 		
 	}catch(e){/*Do nothing*/
-		setCookie("sidSession","true",-1);
 		chrome.runtime.sendMessage({request:"notie",type:"fail",message:"Failed to initialize authentication Process"});
 		console.error(e);
 	}
