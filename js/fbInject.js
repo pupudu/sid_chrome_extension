@@ -66,21 +66,21 @@ function updateProfPic(manual){
 	icon.innerHTML = "<img id ="+fbstrings.sidSign+" class = 'profIcon'>";
 	profPic.appendChild(icon);
 	
-	/*Testing http instead of https*/
-	attachImage('POST',commonstrings.sidServerHttp+"/rate/facebook/getOverallProfileRating",{targetid: profID});
-	
-	/*$.post(commonstrings.sidServer+"/rate/facebook/getOverallProfileRating",
-	{
-		targetid: profID	
-	},
-	function(data){
-		console.log(data);
-		imgURL = getURL("prof",data.ratingLevel);
-		if(document.getElementById(fbstrings.sidSign) !== null){
-			document.getElementById(fbstrings.sidSign).src = imgURL;
+	$.ajax(commonstrings.sidServer+"/rate/facebook/getOverallProfileRating",{
+		method: 'POST',
+		data: {targetid: profID},
+		success: function(data, textStatus, xhr){
+			//console.log(data);
+			imgURL = getURL("prof",data.ratingLevel);
+			if(document.getElementById(fbstrings.sidSign) !== null){
+				document.getElementById(fbstrings.sidSign).src = imgURL;
+			}
+			$("#"+fbstrings.sidSign).fadeIn(2000);
+		},
+		error: function(xhr,textStatus,error){
+			attachImage('POST',commonstrings.sidServerHttp+"/rate/facebook/getOverallProfileRating",{targetid: profID});
 		}
-		$("#"+fbstrings.sidSign).fadeIn(2000);
-	});*/
+	});
 }
 
 /** Appends sid-rating state over fb profile picture*/

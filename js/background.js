@@ -27,7 +27,7 @@ chrome.runtime.onMessage.addListener(function (message,sender,sendResponse){
 				sendResponse({data: data});
 				return true;
 			},
-			fail: function(data){
+			error: function(data){
 				//console.log("fail called");
 			}
 		});
