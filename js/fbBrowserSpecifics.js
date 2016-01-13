@@ -50,19 +50,14 @@ function getURL(type,item){
 	}
 }
 
-/*For testing http for https*/
-function attachImage(type,url,data){
+/*Try Http call from bd script if https request failed*/
+function getOverallRatingHttp(type,url,data){
 	chrome.runtime.sendMessage({
 		request: "ajax",
 		type: type,
 		url: url,
 		data: data
 	},function(res){
-		var data = res.data;
-		imgURL = getURL("prof",data.ratingLevel);
-		if(document.getElementById(fbstrings.sidSign) !== null){
-			document.getElementById(fbstrings.sidSign).src = imgURL;
-		}
-		$("#"+fbstrings.sidSign).fadeIn(2000);
+		attachImageToProfPic(res.data);
 	});
 }

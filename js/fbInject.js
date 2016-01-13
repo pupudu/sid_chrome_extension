@@ -58,29 +58,31 @@ function updateProfPic(manual){
 			return;
 		}
 	}
-	console.log(".. .. updating profile pic");
-	var profPic = document.getElementsByClassName(fbstrings.photoContainer)[0];
-	var icon = document.createElement("DIV");
-	var imgURL;
 	var profID = extractId(1);
-	icon.innerHTML = "<img id ="+fbstrings.sidSign+" class = 'profIcon'>";
-	profPic.appendChild(icon);
 	
 	$.ajax(commonstrings.sidServer+"/rate/facebook/getOverallProfileRating",{
 		method: 'POST',
 		data: {targetid: profID},
 		success: function(data, textStatus, xhr){
-			//console.log(data);
-			imgURL = getURL("prof",data.ratingLevel);
-			if(document.getElementById(fbstrings.sidSign) !== null){
-				document.getElementById(fbstrings.sidSign).src = imgURL;
-			}
-			$("#"+fbstrings.sidSign).fadeIn(2000);
+			attachImageToProfPic(data);
 		},
 		error: function(xhr,textStatus,error){
-			attachImage('POST',commonstrings.sidServerHttp+"/rate/facebook/getOverallProfileRating",{targetid: profID});
+			getOverallRatingHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getOverallProfileRating",{targetid: profID});
 		}
 	});
+}
+
+function attachImageToProfPic(data){
+	var imgURL = getURL("prof",data.ratingLevel);
+	var icon = document.createElement("DIV");
+	var profPic = document.getElementsByClassName(fbstrings.photoContainer)[0];
+	icon.innerHTML = "<img id ="+fbstrings.sidSign+" class = 'profIcon'>";
+	profPic.appendChild(icon);
+	
+	if(document.getElementById(fbstrings.sidSign) !== null){
+		document.getElementById(fbstrings.sidSign).src = imgURL;
+	}
+	$("#"+fbstrings.sidSign).fadeIn(2000);
 }
 
 /** Appends sid-rating state over fb profile picture*/
