@@ -380,7 +380,7 @@ function scoreClaims(arrIndex, claim, classOffset){
 		return;
 	}
 	
-	var claimId = hex_md5(claim.getAttribute("data-html"));
+	var claimId = hex_md5(claim.getAttribute("data-html").toLowerCase());
 	
 	try{
 	$.post(commonstrings.sidServer+"/rate/facebook/getRating",{
@@ -502,7 +502,7 @@ function configureListners(node,popupData){
 
 function addEventToSendData(node,menuItemName,popupData,rate){
 	
-	var claimId = hex_md5(popupData.claim.getAttribute("data-html"));
+	var claimId = hex_md5(popupData.claim.getAttribute("data-html").toLowerCase());
 	var menuItem =  popupData.claim.getElementsByClassName(menuItemName)[0];
 	var targetId = extractId(1);
 	var myId = extractId(0);

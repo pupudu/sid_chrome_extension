@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
 							chrome.runtime.sendMessage({
 								request:"notie",
 								type:"confirm",
-								message:"Account not linked. Would you like to link it now?",
+								message:"Account not linked. Would you like to link the loggedin fb account with sid?",
 								email:usr.value,
 								password:pwd.value
 							});

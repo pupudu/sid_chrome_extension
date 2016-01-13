@@ -20,7 +20,7 @@ var fbstrings = {
 	myPicHeader:'_s0 _2dpc img'
 }
 
-var fbSkipStrings = ["Your friend since","Followed by","friends","Friends on","family members","Feeling","Played"];
+var fbSkipStrings = ["Your friend since","Followed by","friends","Friends on","family members","Feeling","Played","Today is his","Today is her", "If you know"];
 
 var fbNonSkipStrings = ["Works","Lives in","From","Born on","Studies","Studied", "In a relationship"];
 
