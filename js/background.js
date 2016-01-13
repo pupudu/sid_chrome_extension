@@ -17,6 +17,20 @@ chrome.runtime.onMessage.addListener(function (message,sender,sendResponse){
 				code:"notie.alert(3, 'Sid could not load. Please login again', 4);"
 			},function(){});
 		}
+	}else if(message.request === "ajax"){
+		$.ajax({
+			method: message.type,
+			url: message.url,
+			data: message.data,
+			async: false,
+			success: function(data){
+				sendResponse({data: data});
+				return true;
+			},
+			fail: function(data){
+				//console.log("fail called");
+			}
+		});
 	}else if(message === "login check"){
 		
 	}else if(message === "inject"){
@@ -71,7 +85,6 @@ chrome.runtime.onMessage.addListener(function (message,sender,sendResponse){
 	else{
 		//alert(JSON.stringify(message));
 	}
-	
 });
 
 var count =0;

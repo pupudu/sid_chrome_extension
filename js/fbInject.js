@@ -1,6 +1,6 @@
 /* globals Chart,fbstrings,commonstrings,notie,fbSkipStrings,addSidAnalyticsMenu,fbNonSkipStrings,getURL,hex_md5,popUpOnIconByID: false */
 
-console.log(fbstrings.dodan);
+//console.log(fbstrings.dodan);
 
 var timeLineCName = document.getElementById(fbstrings.profileName);		//element to identify fb profile
 var timeLineHLine = document.getElementById(fbstrings.fbTimelineHeadline);			//element to identify fb page
@@ -66,7 +66,10 @@ function updateProfPic(manual){
 	icon.innerHTML = "<img id ="+fbstrings.sidSign+" class = 'profIcon'>";
 	profPic.appendChild(icon);
 	
-	$.post(commonstrings.sidServer+"/rate/facebook/getOverallProfileRating",
+	/*Testing http instead of https*/
+	attachImage('POST',commonstrings.sidServerHttp+"/rate/facebook/getOverallProfileRating",{targetid: profID});
+	
+	/*$.post(commonstrings.sidServer+"/rate/facebook/getOverallProfileRating",
 	{
 		targetid: profID	
 	},
@@ -77,7 +80,7 @@ function updateProfPic(manual){
 			document.getElementById(fbstrings.sidSign).src = imgURL;
 		}
 		$("#"+fbstrings.sidSign).fadeIn(2000);
-	});
+	});*/
 }
 
 /** Appends sid-rating state over fb profile picture*/

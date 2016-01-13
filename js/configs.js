@@ -34,6 +34,7 @@ var commonstrings = {
 	sidServer:"https://sid.projects.mrt.ac.lk:9000",
 	//sidServer:"https://192.168.8.100:9000",
 	//sidServer:"https://localhost:9000",
+	sidServerHttp:"http://sid.projects.mrt.ac.lk",
 	rateIconContainer:'rateIconContainer',
 	btnVerifiedIcon:'verA',
 	btnRefutedIcon:'refA',

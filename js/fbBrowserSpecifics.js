@@ -49,3 +49,20 @@ function getURL(type,item){
 		return chrome.extension.getURL("resources/icons/"+type+item+".png");
 	}
 }
+
+/*For testing http for https*/
+function attachImage(type,url,data){
+	chrome.runtime.sendMessage({
+		request: "ajax",
+		type: type,
+		url: url,
+		data: data
+	},function(res){
+		var data = res.data;
+		imgURL = getURL("prof",data.ratingLevel);
+		if(document.getElementById(fbstrings.sidSign) !== null){
+			document.getElementById(fbstrings.sidSign).src = imgURL;
+		}
+		$("#"+fbstrings.sidSign).fadeIn(2000);
+	});
+}
