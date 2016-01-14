@@ -58,30 +58,29 @@ function updateProfPic(manual){
 	}
 	var profID = extractId(1);
 	
+	var postExecute = function (data){
+		var imgURL = getURL("prof",data.ratingLevel);
+		var icon = document.createElement("DIV");
+		var profPic = document.getElementsByClassName(fbstrings.photoContainer)[0];
+		icon.innerHTML = "<img id ="+fbstrings.sidSign+" class = 'profIcon'>";
+		profPic.appendChild(icon);
+		
+		if(document.getElementById(fbstrings.sidSign) !== null){
+			document.getElementById(fbstrings.sidSign).src = imgURL;
+		}
+		$("#"+fbstrings.sidSign).fadeIn(2000);
+	}
+	
 	$.ajax(commonstrings.sidServer+"/rate/facebook/getOverallProfileRating",{
 		method: 'POST',
 		data: {targetid: profID},
 		success: function(data, textStatus, xhr){
-			attachImageToProfPic(data);
+			postExecute(data);
 		},
 		error: function(xhr,textStatus,error){
-			ajaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getOverallProfileRating",{targetid: profID},"attachImageToProfPic");
+			ajaxOverHttpFunc('POST',commonstrings.sidServerHttp+"/rate/facebook/getOverallProfileRating",{targetid: profID},"postExecute");
 		}
 	});
-}
-
-/** Appends sid-rating state over fb profile picture*/
-function attachImageToProfPic(data){
-	var imgURL = getURL("prof",data.ratingLevel);
-	var icon = document.createElement("DIV");
-	var profPic = document.getElementsByClassName(fbstrings.photoContainer)[0];
-	icon.innerHTML = "<img id ="+fbstrings.sidSign+" class = 'profIcon'>";
-	profPic.appendChild(icon);
-	
-	if(document.getElementById(fbstrings.sidSign) !== null){
-		document.getElementById(fbstrings.sidSign).src = imgURL;
-	}
-	$("#"+fbstrings.sidSign).fadeIn(2000);
 }
 
 /**updating friends profile pics*/
@@ -162,15 +161,70 @@ function processAnalyticsHTML(html){
 	
 	document.getElementById("analytics_header").src = headerURL;
 	document.getElementById("analytics_legend").src = legendURL;
+	
+	var postExecute = function (data){
+		var organizations;
+		var suppCount = 0;
+		if(data){
+			organizations = data.organizations;
+		}
+		if(organizations){
+			suppCount = organizations.length;
+		}
+
+		if(suppCount === 0){
+			var orgNode = document.createElement("img");
+			orgNode.className = "emptyCarousal";
+			orgNode.src = getURL("image","notMember");
+			document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
+		}else if(suppCount<4){
+			organizations.forEach(function(org){
+				var orgNode = document.createElement("img");
+				orgNode.style.left = 25*(4-suppCount) + "px";
+				orgNode.className = "carousElementMan";
+				orgNode.src = commonstrings.sidServer+"/organizations/"+org+".png";
+				orgNode.addEventListener('click',function(){
+					window.open(commonstrings.sidServer+"/organizations/"+org);
+				});
+				document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
+			});
+		}else{
+			organizations.forEach(function(org){
+				var orgNode = document.createElement("img");
+				orgNode.className = "carousElement";
+				orgNode.src = commonstrings.sidServer+"/organizations/"+org+".png";
+				document.getElementsByClassName("orgSlick")[0].className += " orgSlickAct";
+				orgNode.addEventListener('click',function(){
+					window.open(commonstrings.sidServer+"/organizations/"+org);
+				});
+				document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
+			});
+			$('.orgSlick').slick({
+				infinite: true,
+				slidesToShow: 2,
+				slidesToScroll: 1,
+				autoplay: true,
+				centerMode:true
+			});
+			var rArrow = document.createElement("img");
+			var lArrow = document.createElement("img");
+			rArrow.className = "slickArrowR";
+			lArrow.className = "slickArrowL";
+			rArrow.src = getURL("image","right");
+			lArrow.src = getURL("image","left");
+			document.getElementsByClassName("slick-next")[0].appendChild(rArrow);
+			document.getElementsByClassName("slick-prev")[0].appendChild(lArrow);
+		}
+	}
+	
 	$.ajax(commonstrings.sidServer+"/rate/facebook/getMyOrganizations",{
 		method: 'POST',
 		data: {myid: targetId},
 		success: function(data){
-			data.html = html;
-			addOrganizations(data);
+			postExecute(data);
 		},
 		error: function(xhr,textStatus,error){
-			ajaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getMyOrganizations",{myid: extractId(1)},"addOrganizations");
+			ajaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getMyOrganizations",{myid: targetId},"postExecute");
 		}
 	});
 	commitDropdownChart(targetId,node);
@@ -194,60 +248,7 @@ function processAnalyticsHTML(html){
 	}
 }
 
-function addOrganizations(data){
-	var organizations;
-	var suppCount = 0;
-	if(data){
-		organizations = data.organizations;
-	}
-	if(organizations){
-		suppCount = organizations.length;
-	}
 
-	if(suppCount === 0){
-		var orgNode = document.createElement("img");
-		orgNode.className = "emptyCarousal";
-		orgNode.src = getURL("image","notMember");
-		document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
-	}else if(suppCount<4){
-		organizations.forEach(function(org){
-			var orgNode = document.createElement("img");
-			orgNode.style.left = 25*(4-suppCount) + "px";
-			orgNode.className = "carousElementMan";
-			orgNode.src = commonstrings.sidServer+"/organizations/"+org+".png";
-			orgNode.addEventListener('click',function(){
-				window.open(commonstrings.sidServer+"/organizations/"+org);
-			});
-			document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
-		});
-	}else{
-		organizations.forEach(function(org){
-			var orgNode = document.createElement("img");
-			orgNode.className = "carousElement";
-			orgNode.src = commonstrings.sidServer+"/organizations/"+org+".png";
-			document.getElementsByClassName("orgSlick")[0].className += " orgSlickAct";
-			orgNode.addEventListener('click',function(){
-				window.open(commonstrings.sidServer+"/organizations/"+org);
-			});
-			document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
-		});
-		$('.orgSlick').slick({
-			infinite: true,
-			slidesToShow: 2,
-			slidesToScroll: 1,
-			autoplay: true,
-			centerMode:true
-		});
-		var rArrow = document.createElement("img");
-		var lArrow = document.createElement("img");
-		rArrow.className = "slickArrowR";
-		lArrow.className = "slickArrowL";
-		rArrow.src = getURL("image","right");
-		lArrow.src = getURL("image","left");
-		document.getElementsByClassName("slick-next")[0].appendChild(rArrow);
-		document.getElementsByClassName("slick-prev")[0].appendChild(lArrow);
-	}
-}
 
 function processCommentsHTML(html){
 	
