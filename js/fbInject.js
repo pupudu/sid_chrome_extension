@@ -406,7 +406,7 @@ function scoreClaims(arrIndex, claim, classOffset){
 	
 	var claimId = hex_md5(claim.getAttribute("data-html").toLowerCase());
 	
-	var setPopupData = function (data){
+	var postExecute = function (data){
 		var imgURL = getURL(iconClass,data.claimScore);
 		var icon = document.getElementById(iconId);
 		if(icon!==null){
@@ -430,13 +430,25 @@ function scoreClaims(arrIndex, claim, classOffset){
 	}
 	
 	try{
-		$.post(commonstrings.sidServer+"/rate/facebook/getRating",{
-			targetid : targetId,
-			claimid : claimId,
-			myid : myId
-		},
-		function(data){
-			setPopupData(data);
+		$.ajax(commonstrings.sidServer+"/rate/facebook/getRating",{
+			method: 'POST',
+			data: {
+				targetid : targetId,
+				claimid : claimId,
+				myid : myId
+			},
+			success: function(data){
+				postExecute(data);
+			},
+			error: function(xhr,textStatus,error){
+				ajaxOverHttpFunc('POST',commonstrings.sidServerHttp+"/rate/facebook/getRating",{
+						targetid : targetId,
+						claimid : claimId,
+						myid : myId
+					},
+					postExecute
+				);
+			}
 		});
 	}catch(e){
 		
