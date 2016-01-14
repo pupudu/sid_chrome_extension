@@ -2,9 +2,10 @@
 /*need separate implementation for firefox and chrome*/
 function addSidAnalyticsMenu(){
 	setTimeout(function(){
+		var targetId = extractId(1);
 		if(document.getElementById(fbstrings.sidDropdown) === null){
-			$.get(chrome.extension.getURL("html/sidAnalytics.html"), function(data) {
-				processAnalyticsHTML(data);
+			$.get(chrome.extension.getURL("html/sidAnalytics.html"), function(html) {
+				processAnalyticsHTML(html);
 			});
 		}
 	},1000);
@@ -51,13 +52,14 @@ function getURL(type,item){
 }
 
 /*Try Http call from bd script if https request failed*/
-function getOverallRatingHttp(type,url,data){
+function ajaxOverHttp(type,url,data,callback,preLoad){
 	chrome.runtime.sendMessage({
 		request: "ajax",
 		type: type,
 		url: url,
 		data: data
 	},function(res){
-		attachImageToProfPic(res.data);
+		res.data.preLoad = preLoad;
+		window[callback](res.data);
 	});
 }

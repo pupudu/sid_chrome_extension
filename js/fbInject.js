@@ -1,7 +1,5 @@
 /* globals Chart,fbstrings,commonstrings,notie,fbSkipStrings,addSidAnalyticsMenu,fbNonSkipStrings,getURL,hex_md5,popUpOnIconByID: false */
 
-//console.log(fbstrings.dodan);
-
 var timeLineCName = document.getElementById(fbstrings.profileName);		//element to identify fb profile
 var timeLineHLine = document.getElementById(fbstrings.fbTimelineHeadline);			//element to identify fb page
 
@@ -72,6 +70,7 @@ function updateProfPic(manual){
 	});
 }
 
+/** Appends sid-rating state over fb profile picture*/
 function attachImageToProfPic(data){
 	var imgURL = getURL("prof",data.ratingLevel);
 	var icon = document.createElement("DIV");
@@ -85,9 +84,8 @@ function attachImageToProfPic(data){
 	$("#"+fbstrings.sidSign).fadeIn(2000);
 }
 
-/** Appends sid-rating state over fb profile picture*/
+/**updating friends profile pics*/
 function updFrndsProfInTimeLine(){
-	/**updating friends profile pics*/
 	var timelineRecent = document.getElementById(fbstrings.timelineRecent);
 	var friendAr = timelineRecent.getElementsByClassName(fbstrings.friendProfiles);
 	var altAr = document.getElementsByClassName("_3s6w");
@@ -110,13 +108,16 @@ function updFrndsProfInTimeLine(){
 
 function addIconToFriendProf(profID, friendStr){
 	try{
-		$.post(commonstrings.sidServer+"/rate/facebook/getOverallProfileRating",
-		{
-			targetid: profID	
-		},
-		function(data){
-			var imgURL = getURL("prof",data.ratingLevel);
-			document.getElementById(friendStr).src = imgURL;
+		$.ajax(commonstrings.sidServer+"/rate/facebook/getOverallProfileRating",{
+			method: 'POST',
+			data: {targetid: profID},
+			success: function(data){
+				var imgURL = getURL("prof",data.ratingLevel);
+				document.getElementById(friendStr).src = imgURL;
+			},
+			error: function(xhr,textStatus,error){
+				addIconToFriendProfHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getOverallProfileRating",{targetid: profID});
+			}
 		});
 	}catch(e){
 		var imgURL = getURL("prof","N");
@@ -145,10 +146,10 @@ function manipulateTimeLine(){
 	}
 }
 
-function processAnalyticsHTML(data){
+function processAnalyticsHTML(html){
 	console.log(".. .. .. adding sid analytics pop up menu");
 	var node = document.createElement("DIV");  
-	node.innerHTML = data;
+	node.innerHTML = html;
 	document.getElementsByClassName(fbstrings.fbMenubar)[0].appendChild(node);
 	
 	var targetId = extractId(1);
@@ -158,64 +159,17 @@ function processAnalyticsHTML(data){
 	
 	document.getElementById("analytics_header").src = headerURL;
 	document.getElementById("analytics_legend").src = legendURL;
-	$.post(commonstrings.sidServer+"/rate/facebook/getMyOrganizations",{
-		myid : targetId
-	},
-	function(data){
-		var organizations;
-		var suppCount = 0;
-		if(data){
-			organizations = data.organizations;
-		}
-		if(organizations){
-			suppCount = organizations.length;
-		}
-
-		if(suppCount === 0){
-			var orgNode = document.createElement("img");
-			orgNode.className = "emptyCarousal";
-			orgNode.src = getURL("image","notMember");
-			document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
-		}else if(suppCount<4){
-			organizations.forEach(function(org){
-				var orgNode = document.createElement("img");
-				orgNode.style.left = 25*(4-suppCount) + "px";
-				orgNode.className = "carousElementMan";
-				orgNode.src = commonstrings.sidServer+"/organizations/"+org+".png";
-				orgNode.addEventListener('click',function(){
-					window.open(commonstrings.sidServer+"/organizations/"+org);
-				});
-				document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
-			});
-		}else{
-			organizations.forEach(function(org){
-				var orgNode = document.createElement("img");
-				orgNode.className = "carousElement";
-				orgNode.src = commonstrings.sidServer+"/organizations/"+org+".png";
-				document.getElementsByClassName("orgSlick")[0].className += " orgSlickAct";
-				orgNode.addEventListener('click',function(){
-					window.open(commonstrings.sidServer+"/organizations/"+org);
-				});
-				document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
-			});
-			$('.orgSlick').slick({
-				infinite: true,
-				slidesToShow: 2,
-				slidesToScroll: 1,
-				autoplay: true,
-				centerMode:true
-			});
-			var rArrow = document.createElement("img");
-			var lArrow = document.createElement("img");
-			rArrow.className = "slickArrowR";
-			lArrow.className = "slickArrowL";
-			rArrow.src = getURL("image","right");
-			lArrow.src = getURL("image","left");
-			document.getElementsByClassName("slick-next")[0].appendChild(rArrow);
-			document.getElementsByClassName("slick-prev")[0].appendChild(lArrow);
+	$.ajax(commonstrings.sidServer+"/rate/facebook/getMyOrganizations",{
+		method: 'POST',
+		data: {myid: targetId},
+		success: function(data){
+			data.html = html;
+			addOrganizations(data);
+		},
+		error: function(xhr,textStatus,error){
+			ajaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getMyOrganizations",{myid: extractId(1)},"addOrganizations");
 		}
 	});
-	
 	commitDropdownChart(targetId,node);
 	
 	try{
@@ -234,6 +188,61 @@ function processAnalyticsHTML(data){
 		processCommentPopup(targetId,myId);
 	}catch(e){
 		console.error(e);
+	}
+}
+
+function addOrganizations(data){
+	var organizations;
+	var suppCount = 0;
+	if(data){
+		organizations = data.organizations;
+	}
+	if(organizations){
+		suppCount = organizations.length;
+	}
+
+	if(suppCount === 0){
+		var orgNode = document.createElement("img");
+		orgNode.className = "emptyCarousal";
+		orgNode.src = getURL("image","notMember");
+		document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
+	}else if(suppCount<4){
+		organizations.forEach(function(org){
+			var orgNode = document.createElement("img");
+			orgNode.style.left = 25*(4-suppCount) + "px";
+			orgNode.className = "carousElementMan";
+			orgNode.src = commonstrings.sidServer+"/organizations/"+org+".png";
+			orgNode.addEventListener('click',function(){
+				window.open(commonstrings.sidServer+"/organizations/"+org);
+			});
+			document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
+		});
+	}else{
+		organizations.forEach(function(org){
+			var orgNode = document.createElement("img");
+			orgNode.className = "carousElement";
+			orgNode.src = commonstrings.sidServer+"/organizations/"+org+".png";
+			document.getElementsByClassName("orgSlick")[0].className += " orgSlickAct";
+			orgNode.addEventListener('click',function(){
+				window.open(commonstrings.sidServer+"/organizations/"+org);
+			});
+			document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
+		});
+		$('.orgSlick').slick({
+			infinite: true,
+			slidesToShow: 2,
+			slidesToScroll: 1,
+			autoplay: true,
+			centerMode:true
+		});
+		var rArrow = document.createElement("img");
+		var lArrow = document.createElement("img");
+		rArrow.className = "slickArrowR";
+		lArrow.className = "slickArrowL";
+		rArrow.src = getURL("image","right");
+		lArrow.src = getURL("image","left");
+		document.getElementsByClassName("slick-next")[0].appendChild(rArrow);
+		document.getElementsByClassName("slick-prev")[0].appendChild(lArrow);
 	}
 }
 
@@ -318,7 +327,6 @@ function processCommentPopup(targetId,myId,btnOptional){
 		},
 		function(data){
 			var content="";
-			//console.log(data);
 			for(i=0;i<data.comments.length;i++){
 				content = content+"Comment "+i+": "+data.comments[i].comment+"<br>";
 				if(data.comments[i].mysid === myId){
@@ -337,23 +345,31 @@ function processCommentPopup(targetId,myId,btnOptional){
 
 
 function commitDropdownChart(profId,node){
-	$.post(commonstrings.sidServer+"/rate/facebook/getAllRatingsCount",{
-		targetid : profId
-	},
-	function(rating /*,status*/){
-		//console.log(rating);
-		var chartData = {};
-		chartData.yesCount = rating.yes;
-		chartData.noCount = rating.no;
-		chartData.notSureCount = rating.notSure;
-		
-		var chartConfigs = {};
-		chartConfigs.animation = true;
-		chartConfigs.type = "drop";
-		chartConfigs.base = "_9ry _p";
-		
-		addChartListener(chartData,chartConfigs,node);
+	$.ajax(commonstrings.sidServer+"/rate/facebook/getAllRatingsCount",{
+		method: 'POST',
+		data: {targetid : profId},
+		success: function(data){
+			data.preLoad = node;
+			addDataToChart(data);
+		},
+		error: function(xhr,textStatus,error){
+			ajaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getAllRatingsCount",{targetid : profId},"addDataToChart",node);
+		}
 	});
+}
+
+function addDataToChart(data){
+	var chartData = {};
+	chartData.yesCount = data.yes;
+	chartData.noCount = data.no;
+	chartData.notSureCount = data.notSure;
+	
+	var chartConfigs = {};
+	chartConfigs.animation = true;
+	chartConfigs.type = "drop";
+	chartConfigs.base = "_9ry _p";
+	
+	addChartListener(chartData,chartConfigs,data.preLoad);
 }
 
 function scoreClaims(arrIndex, claim, classOffset){
