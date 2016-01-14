@@ -78,7 +78,7 @@ function updateProfPic(manual){
 			postExecute(data);
 		},
 		error: function(xhr,textStatus,error){
-			ajaxOverHttpFunc('POST',commonstrings.sidServerHttp+"/rate/facebook/getOverallProfileRating",{targetid: profID},"postExecute");
+			ajaxOverHttpFunc('POST',commonstrings.sidServerHttp+"/rate/facebook/getOverallProfileRating",{targetid: profID},postExecute);
 		}
 	});
 }
@@ -224,7 +224,7 @@ function processAnalyticsHTML(html){
 			postExecute(data);
 		},
 		error: function(xhr,textStatus,error){
-			ajaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getMyOrganizations",{myid: targetId},"postExecute");
+			ajaxOverHttpFunc('POST',commonstrings.sidServerHttp+"/rate/facebook/getMyOrganizations",{myid: targetId},postExecute);
 		}
 	});
 	commitDropdownChart(targetId,node);
@@ -377,32 +377,32 @@ function processCommentPopup(targetId,myId,btnOptional){
 
 
 function commitDropdownChart(profId,node){
+	var postExecute = function (data){
+		var chartData = {};
+		chartData.yesCount = data.yes;
+		chartData.noCount = data.no;
+		chartData.notSureCount = data.notSure;
+		
+		var chartConfigs = {};
+		chartConfigs.animation = true;
+		chartConfigs.type = "drop";
+		chartConfigs.base = "_9ry _p";
+		
+		addChartListener(chartData,chartConfigs,node);
+	}
 	$.ajax(commonstrings.sidServer+"/rate/facebook/getAllRatingsCount",{
 		method: 'POST',
 		data: {targetid : profId},
 		success: function(data){
-			data.preLoad = node;
-			addDataToChart(data);
+			postExecute(data);
 		},
 		error: function(xhr,textStatus,error){
-			ajaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getAllRatingsCount",{targetid : profId},"addDataToChart",node);
+			ajaxOverHttpFunc('POST',commonstrings.sidServerHttp+"/rate/facebook/getAllRatingsCount",{targetid : profId},postExecute);
 		}
 	});
 }
 
-function addDataToChart(data){
-	var chartData = {};
-	chartData.yesCount = data.yes;
-	chartData.noCount = data.no;
-	chartData.notSureCount = data.notSure;
-	
-	var chartConfigs = {};
-	chartConfigs.animation = true;
-	chartConfigs.type = "drop";
-	chartConfigs.base = "_9ry _p";
-	
-	addChartListener(chartData,chartConfigs,data.preLoad);
-}
+
 
 function scoreClaims(arrIndex, claim, classOffset){
 

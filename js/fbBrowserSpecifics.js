@@ -52,18 +52,6 @@ function getURL(type,item){
 }
 
 /*Try Http call from bd script if https request failed*/
-function ajaxOverHttp(type,url,data,callback,preLoad){
-	chrome.runtime.sendMessage({
-		request: "ajax",
-		type: type,
-		url: url,
-		data: data
-	},function(res){
-		res.data.preLoad = preLoad;
-		window[callback](res.data);
-	});
-}
-
 function ajaxOverHttpFunc(type,url,data,postExecute){
 	chrome.runtime.sendMessage({
 		request: "ajax",
