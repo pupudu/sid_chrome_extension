@@ -130,18 +130,9 @@
 				var targetId = extractId(1);
 				var myId = extractId(0);
 				var commentId = hex_md5(comment);
-				$.post(commonstrings.sidServer+"/rate/facebook/addComment",{
-					targetid : targetId,
-					myid: myId,
-					commentid: commentId,
-					comment: comment
-				},
-				function(res){
-					$.post(commonstrings.sidServer+"/rate/facebook/getComments",{
-						targetid : targetId,
-						myid: myId
-					},
-					function(data){
+				
+				var postExecute = function(res){
+					var postExecute = function(data){
 						var theContent="";
 						for(i=0;i<data.comments.length;i++){
 							theContent = theContent+"Comment "+i+": "+data.comments[i].comment+"<br>";
@@ -151,7 +142,47 @@
 						currentContent.innerHTML = theContent;
 						document.getElementById("addCommentBtn").innerText = "Update Comment";
 						notie.alert(1, 'Comment added successfully!', 3);
+					}
+					$.ajax(commonstrings.sidServer+"/rate/facebook/getComments",{
+						method:'POST',
+						data: {
+							targetid : targetId,
+							myid: myId
+						},
+						success: function(data){
+							postExecute(data);
+						},
+						error: function(xhr,textStatus,error){
+							ajaxOverHttpFunc('POST',commonstrings.sidServerHttp+"/rate/facebook/getComments",{
+									targetid : targetId,
+									myid: myId
+								},
+								postExecute
+							);
+						}
 					});
+				}
+				$.ajax(commonstrings.sidServer+"/rate/facebook/addComment",{
+					method:'POST',
+					data: {
+						targetid : targetId,
+						myid: myId,
+						commentid: commentId,
+						comment: comment
+					},
+					success: function(data){
+						postExecute(data);
+					},
+					error: function(xhr,textStatus,error){
+						ajaxOverHttpFunc('POST',commonstrings.sidServerHttp+"/rate/facebook/addComment",{
+								targetid : targetId,
+								myid: myId,
+								commentid: commentId,
+								comment: comment
+							},
+							postExecute
+						);
+					}
 				});
 			});
 		}
