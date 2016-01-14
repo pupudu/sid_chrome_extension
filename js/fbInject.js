@@ -65,7 +65,7 @@ function updateProfPic(manual){
 			attachImageToProfPic(data);
 		},
 		error: function(xhr,textStatus,error){
-			getOverallRatingHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getOverallProfileRating",{targetid: profID});
+			ajaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getOverallProfileRating",{targetid: profID},"attachImageToProfPic");
 		}
 	});
 }
@@ -107,16 +107,19 @@ function updFrndsProfInTimeLine(){
 }
 
 function addIconToFriendProf(profID, friendStr){
+	var postExecute = function(data){
+		var imgURL = getURL("prof",data.ratingLevel);
+		document.getElementById(friendStr).src = imgURL;
+	}
 	try{
 		$.ajax(commonstrings.sidServer+"/rate/facebook/getOverallProfileRating",{
 			method: 'POST',
 			data: {targetid: profID},
 			success: function(data){
-				var imgURL = getURL("prof",data.ratingLevel);
-				document.getElementById(friendStr).src = imgURL;
+				postExecute(data);
 			},
 			error: function(xhr,textStatus,error){
-				addIconToFriendProfHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getOverallProfileRating",{targetid: profID});
+				ajaxOverHttpFunc('POST',commonstrings.sidServerHttp+"/rate/facebook/getOverallProfileRating",{targetid: profID},postExecute);
 			}
 		});
 	}catch(e){
@@ -403,16 +406,8 @@ function scoreClaims(arrIndex, claim, classOffset){
 	
 	var claimId = hex_md5(claim.getAttribute("data-html").toLowerCase());
 	
-	try{
-	$.post(commonstrings.sidServer+"/rate/facebook/getRating",{
-		targetid : targetId,
-		claimid : claimId,
-		myid : myId
-	},
-	function(data){
-		
-		claimScore = data.claimScore;
-		var imgURL = getURL(iconClass,claimScore);
+	var setPopupData = function (data){
+		var imgURL = getURL(iconClass,data.claimScore);
 		var icon = document.getElementById(iconId);
 		if(icon!==null){
 			icon.src = imgURL;
@@ -432,7 +427,17 @@ function scoreClaims(arrIndex, claim, classOffset){
 		else{
 			console.log("info .. .. .. Icons already added");
 		}
-	});
+	}
+	
+	try{
+		$.post(commonstrings.sidServer+"/rate/facebook/getRating",{
+			targetid : targetId,
+			claimid : claimId,
+			myid : myId
+		},
+		function(data){
+			setPopupData(data);
+		});
 	}catch(e){
 		
 		var imgURL = getURL(iconClass,"N");

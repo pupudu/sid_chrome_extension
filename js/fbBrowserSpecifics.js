@@ -63,3 +63,14 @@ function ajaxOverHttp(type,url,data,callback,preLoad){
 		window[callback](res.data);
 	});
 }
+
+function ajaxOverHttpFunc(type,url,data,postExecute){
+	chrome.runtime.sendMessage({
+		request: "ajax",
+		type: type,
+		url: url,
+		data: data
+	},function(res){
+		postExecute(res.data);
+	});
+}
