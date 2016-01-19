@@ -78,7 +78,7 @@ function updateProfPic(manual){
 			postExecute(data);
 		},
 		error: function(xhr,textStatus,error){
-			ajaxOverHttpFunc('POST',commonstrings.sidServerHttp+"/rate/facebook/getOverallProfileRating",{targetid: profID},postExecute);
+			sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getOverallProfileRating",{targetid: profID},postExecute);
 		}
 	});
 }
@@ -118,7 +118,7 @@ function addIconToFriendProf(profID, friendStr){
 				postExecute(data);
 			},
 			error: function(xhr,textStatus,error){
-				ajaxOverHttpFunc('POST',commonstrings.sidServerHttp+"/rate/facebook/getOverallProfileRating",{targetid: profID},postExecute);
+				sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getOverallProfileRating",{targetid: profID},postExecute);
 			}
 		});
 	}catch(e){
@@ -224,7 +224,7 @@ function processAnalyticsHTML(html){
 			postExecute(data);
 		},
 		error: function(xhr,textStatus,error){
-			ajaxOverHttpFunc('POST',commonstrings.sidServerHttp+"/rate/facebook/getMyOrganizations",{myid: targetId},postExecute);
+			sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getMyOrganizations",{myid: targetId},postExecute);
 		}
 	});
 	commitDropdownChart(targetId,node);
@@ -296,7 +296,7 @@ function processCommentPopup(targetId,myId,btnOptional){
 			postExecute(data);
 		},
 		error: function(xhr,textStatus,error){
-			ajaxOverHttpFunc('POST',commonstrings.sidServerHttp+"/rate/facebook/getComments",{
+			sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getComments",{
 					targetid : targetId,
 					myid: myId
 				},
@@ -364,7 +364,7 @@ function processCommentPopup(targetId,myId,btnOptional){
 				postExecute(data);
 			},
 			error: function(xhr,textStatus,error){
-				ajaxOverHttpFunc('POST',commonstrings.sidServerHttp+"/rate/facebook/getComments",{
+				sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getComments",{
 						targetid : targetId,
 						myid: myId
 					},
@@ -397,7 +397,7 @@ function commitDropdownChart(profId,node){
 			postExecute(data);
 		},
 		error: function(xhr,textStatus,error){
-			ajaxOverHttpFunc('POST',commonstrings.sidServerHttp+"/rate/facebook/getAllRatingsCount",{targetid : profId},postExecute);
+			sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getAllRatingsCount",{targetid : profId},postExecute);
 		}
 	});
 }
@@ -422,6 +422,8 @@ function scoreClaims(arrIndex, claim, classOffset){
 	/*Avoid adding icons again if already added*/
 	if(claim.getAttribute("data-html")===null){
 		var html = claim.innerHTML.replace(/web./g,"www.");
+		html = html.replace("Also ","");
+		html = html.substr(0,1).toUpperCase() + html.substr(1);
 		claim.setAttribute("data-html",html);
 	}
 	if(claim.getElementsByClassName(commonstrings.rateIconContainer).length === 0){
@@ -470,7 +472,7 @@ function scoreClaims(arrIndex, claim, classOffset){
 				postExecute(data);
 			},
 			error: function(xhr,textStatus,error){
-				ajaxOverHttpFunc('POST',commonstrings.sidServerHttp+"/rate/facebook/getRating",{
+				sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getRating",{
 						targetid : targetId,
 						claimid : claimId,
 						myid : myId
@@ -622,7 +624,7 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 						postExecute(data);
 					},
 					error: function(xhr,textStatus,error){
-						ajaxOverHttpFunc('POST',commonstrings.sidServerHttp+"/rate/facebook/getRating",{
+						sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getRating",{
 								targetid : targetId,
 								myid: myId,
 								claimid : claimId
@@ -650,7 +652,7 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 				postExecute(data);
 			},
 			error: function(xhr,textStatus,error){
-				ajaxOverHttpFunc('POST',commonstrings.sidServerHttp+"/rate/facebook/addRating",{
+				sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/addRating",{
 						myid: myId,
 						targetid: targetId,
 						claimid: claimId,
