@@ -52,7 +52,7 @@ function getURL(type,item){
 }
 
 /*Try Http call from bd script if https request failed*/
-function ajaxOverHttpFunc(type,url,data,postExecute){
+function sendAjaxOverHttp(type,url,data,postExecute){
 	chrome.runtime.sendMessage({
 		request: "ajax",
 		type: type,
