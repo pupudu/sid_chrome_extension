@@ -407,8 +407,6 @@ function commitDropdownChart(profId,node){
 
 function scoreClaims(arrIndex, claim, classOffset){
 
-	var targetId = extractId(1);
-	var myId = extractId(0);
 	var rateIcon = document.createElement("DIV");
 	var iconId = 'claimR'+classOffset+arrIndex;
 	var iconClass = 'claim';
@@ -447,7 +445,14 @@ function scoreClaims(arrIndex, claim, classOffset){
 	popupData.notSure = 1;
 	popupData.myRating = -10;
 	
-			
+	performScoring(popupData,iconId,iconClass,claimId);		
+	
+}
+
+function performScoring(popupData,iconId,iconClass,claimId){
+	var targetId = extractId(1);
+	var myId = extractId(0);
+	
 	var postExecute = function (data){
 		var imgURL = getURL(iconClass,data.claimScore);
 		var icon = document.getElementById(iconId);
