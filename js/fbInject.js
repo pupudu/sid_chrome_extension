@@ -415,14 +415,12 @@ function commitDropdownChart(profId,node){
 function scoreClaims(arrIndex, claim, classOffset){
 
 	var rateIcon = document.createElement("DIV");
-	var iconId = 'claimR'+classOffset+arrIndex;
+	var iconId = 'claim'+classOffset+arrIndex;
 	var iconClass = 'claim';
 
-	//if(classOffset === "" || classOffset === "Overview"){
-		if(clearIconsIfSkip(claim)){
-			return;
-		}
-	//}
+	if(clearIconsIfSkip(claim)){
+		return;
+	}
 	
 	/*Avoid adding icons again if already added*/
 	if(claim.getAttribute("data-html")===null){
@@ -441,14 +439,6 @@ function scoreClaims(arrIndex, claim, classOffset){
 	}
 	
 	var claimId = hex_md5(claim.getAttribute("data-html").toLowerCase());
-	
-	performScoring(iconId,iconClass,claimId,claim,classOffset);		
-	
-}
-
-function performScoring(iconId,iconClass,claimId,claim,classOffset){
-	var targetId = extractId(1);
-	var myId = extractId(0);
 	var popupData={};
 	
 	popupData.claim = claim;
@@ -459,6 +449,14 @@ function performScoring(iconId,iconClass,claimId,claim,classOffset){
 	popupData.no = 1;
 	popupData.notSure = 1;
 	popupData.myRating = -10;
+	
+	performScoring(iconId,iconClass,claimId,popupData);		
+	
+}
+
+function performScoring(iconId,iconClass,claimId,popupData){
+	var targetId = extractId(1);
+	var myId = extractId(0);
 	
 	var postExecute = function (data){
 		var imgURL = getURL(iconClass,data.claimScore);
