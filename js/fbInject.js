@@ -25,20 +25,24 @@ function identify(){
 		addCommentSection();
 		
 		if(selectedTab.indexOf("About") === 0) {
-			var subsection = document.getElementsByClassName(fbstrings.subSection)[0].innerHTML;
-			if(subsection.indexOf("Work and Education") ===0 ){
-				//manipulateAboutWork();		
-				manipulateAbout(fbstrings.workClaim,"Work");
-			}				
-			else if(subsection.indexOf("Life Events") ===0 ){
-				//manipulateLifeEvents();		
-				manipulateAbout(fbstrings.lifeEventClaim,"Events");
+			var subSectionHolder = document.getElementsByClassName(fbstrings.subSection)[0];
+			if(subSectionHolder){
+				var subsection = subSectionHolder.innerHTML;
+				if(subsection.indexOf("Work and Education") ===0 ){
+					//manipulateAboutWork();		
+					manipulateAbout(fbstrings.workClaim,"Work");
+				}				
+				else if(subsection.indexOf("Life Events") ===0 ){
+					//manipulateLifeEvents();		
+					manipulateAbout(fbstrings.lifeEventClaim,"Events");
+				}
+				else if(subsection.indexOf("Overview") ===0 ){
+					//manipulateOverview();
+					manipulateAbout(fbstrings.lifeEventClaim,"Overview");
+				}
+			}else{
+				console.log("Unable to access About subsection");
 			}
-			else if(subsection.indexOf("Overview") ===0 ){
-				//manipulateOverview();
-				manipulateAbout(fbstrings.lifeEventClaim,"Overview");
-			}
-			
 		}else if (selectedTab.indexOf("Timeline") === 0){
 			console.log("selectedTab: "+ selectedTab);
 			manipulateTimeLine();	
@@ -256,6 +260,9 @@ function processCommentsHTML(html){
 	var targetId = extractId(1);
 	var myId = extractId(0);
 	var timeline = document.getElementsByClassName("fbTimelineCapsule clearfix")[0];
+	if(!timeline){
+		return;
+	}
 	var firstChild = timeline.firstChild;
 	var node = document.createElement("div");
 	
@@ -411,11 +418,11 @@ function scoreClaims(arrIndex, claim, classOffset){
 	var iconId = 'claimR'+classOffset+arrIndex;
 	var iconClass = 'claim';
 
-	if(classOffset === "" || classOffset === "Overview"){
+	//if(classOffset === "" || classOffset === "Overview"){
 		if(clearIconsIfSkip(claim)){
 			return;
 		}
-	}
+	//}
 	
 	/*Avoid adding icons again if already added*/
 	if(claim.getAttribute("data-html")===null){
