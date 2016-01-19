@@ -50,3 +50,6 @@ ratings:
 exclude_paths:
 - "js/Chart.min.js"
 - "js/hash.js"
+- "js/slick.js"
+- "js/z-modal.js"
+- "js/notie.js"
