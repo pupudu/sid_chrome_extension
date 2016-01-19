@@ -1,4 +1,5 @@
-/* globals Chart,fbstrings,commonstrings,notie,fbSkipStrings,addSidAnalyticsMenu,fbNonSkipStrings,getURL,hex_md5,popUpOnIconByID: false */
+/* globals Chart,fbstrings,commonstrings,notie,fbSkipStrings,addSidAnalyticsMenu,fbNonSkipStrings,getURL,hex_md5,popUpOnIconByID,addCommentSection,sendAjaxOverHttp,ZMODAL: false */
+/* exported processAnalyticsHTML,configureListners */
 
 var timeLineCName = document.getElementById(fbstrings.profileName);		//element to identify fb profile
 var timeLineHLine = document.getElementById(fbstrings.fbTimelineHeadline);			//element to identify fb page
@@ -69,15 +70,15 @@ function updateProfPic(manual){
 			document.getElementById(fbstrings.sidSign).src = imgURL;
 		}
 		$("#"+fbstrings.sidSign).fadeIn(2000);
-	}
+	};
 	
 	$.ajax(commonstrings.sidServer+"/rate/facebook/getOverallProfileRating",{
 		method: 'POST',
 		data: {targetid: profID},
-		success: function(data, textStatus, xhr){
+		success: function(data){
 			postExecute(data);
 		},
-		error: function(xhr,textStatus,error){
+		error: function(){
 			sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getOverallProfileRating",{targetid: profID},postExecute);
 		}
 	});
@@ -109,7 +110,7 @@ function addIconToFriendProf(profID, friendStr){
 	var postExecute = function(data){
 		var imgURL = getURL("prof",data.ratingLevel);
 		document.getElementById(friendStr).src = imgURL;
-	}
+	};
 	try{
 		$.ajax(commonstrings.sidServer+"/rate/facebook/getOverallProfileRating",{
 			method: 'POST',
@@ -117,7 +118,7 @@ function addIconToFriendProf(profID, friendStr){
 			success: function(data){
 				postExecute(data);
 			},
-			error: function(xhr,textStatus,error){
+			error: function(){
 				sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getOverallProfileRating",{targetid: profID},postExecute);
 			}
 		});
@@ -215,7 +216,7 @@ function processAnalyticsHTML(html){
 			document.getElementsByClassName("slick-next")[0].appendChild(rArrow);
 			document.getElementsByClassName("slick-prev")[0].appendChild(lArrow);
 		}
-	}
+	};
 	
 	$.ajax(commonstrings.sidServer+"/rate/facebook/getMyOrganizations",{
 		method: 'POST',
@@ -223,7 +224,7 @@ function processAnalyticsHTML(html){
 		success: function(data){
 			postExecute(data);
 		},
-		error: function(xhr,textStatus,error){
+		error: function(){
 			sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getMyOrganizations",{myid: targetId},postExecute);
 		}
 	});
@@ -285,7 +286,7 @@ function processCommentPopup(targetId,myId,btnOptional){
 			}
 			document.getElementById("sidComment").innerText = comment;
 		}
-	}
+	};
 	$.ajax(commonstrings.sidServer+"/rate/facebook/getComments",{
 		method:'POST',
 		data: {
@@ -295,7 +296,7 @@ function processCommentPopup(targetId,myId,btnOptional){
 		success: function(data){
 			postExecute(data);
 		},
-		error: function(xhr,textStatus,error){
+		error: function(){
 			sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getComments",{
 					targetid : targetId,
 					myid: myId
@@ -324,7 +325,7 @@ function processCommentPopup(targetId,myId,btnOptional){
 			}
 		],
 		autoload: false
-	}
+	};
 	var btn = document.getElementById("view-comment-btn");
 	if(btnOptional){
 		btn = document.getElementById(btnOptional);
@@ -341,7 +342,7 @@ function processCommentPopup(targetId,myId,btnOptional){
 	btn.addEventListener('click', function(){
 		var postExecute = function(data){
 			var content="";
-			for(i=0;i<data.comments.length;i++){
+			for(var i=0;i<data.comments.length;i++){
 				content = content+"Comment "+i+": "+data.comments[i].comment+"<br>";
 				if(data.comments[i].mysid === myId){
 					options.buttons[1].label = "Update Comment";
@@ -353,7 +354,7 @@ function processCommentPopup(targetId,myId,btnOptional){
 			options.content = content;
 			var modal = new ZMODAL(options);
 			modal.open();
-		}
+		};
 		$.ajax(commonstrings.sidServer+"/rate/facebook/getComments",{
 			method:'POST',
 			data: {
@@ -363,7 +364,7 @@ function processCommentPopup(targetId,myId,btnOptional){
 			success: function(data){
 				postExecute(data);
 			},
-			error: function(xhr,textStatus,error){
+			error: function(){
 				sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getComments",{
 						targetid : targetId,
 						myid: myId
@@ -389,7 +390,7 @@ function commitDropdownChart(profId,node){
 		chartConfigs.base = "_9ry _p";
 		
 		addChartListener(chartData,chartConfigs,node);
-	}
+	};
 	$.ajax(commonstrings.sidServer+"/rate/facebook/getAllRatingsCount",{
 		method: 'POST',
 		data: {targetid : profId},
@@ -458,7 +459,7 @@ function scoreClaims(arrIndex, claim, classOffset){
 		else{
 			console.log("info .. .. .. Icons already added");
 		}
-	}
+	};
 	
 	try{
 		$.ajax(commonstrings.sidServer+"/rate/facebook/getRating",{
@@ -611,7 +612,7 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 					document.getElementById(popupData.iconId).src=imgURL;
 					drawPieChart(chartData,chartConfigs,popupData.claim);
 					addChartListener(chartData,chartConfigs,popupData.claim);
-				}
+				};
 				
 				$.ajax(commonstrings.sidServer+"/rate/facebook/getRating",{
 					method: 'POST',
@@ -637,7 +638,7 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 				var dropdown = document.getElementsByClassName("sid_dropdown")[0];
 				commitDropdownChart(targetId,dropdown);
 			}
-		}
+		};
 		
 		$.ajax(commonstrings.sidServer+"/rate/facebook/addRating",{
 			method: 'POST',
@@ -819,32 +820,33 @@ function drawPieChart(chartData,chartConfigs,parent){
 
 	try{
 		var ctx = parent.getElementsByClassName(chartConfigs.type+'_chart')[0].getContext("2d");
+		if(total>0){
+			try{
+				var myPie;
+				myPie = new Chart(ctx).Pie(pieData,{
+					animation: chartConfigs.animation,
+					animationEasing: "easeInOutQuart",
+					segmentStrokeColor : "#ffffff"
+					//add more chart configs here as needed
+				});
+			}catch(err){
+				console.log("sid error: "+err);
+			}
+		}else{
+			try{
+				var imgUrl = getURL("image","notRatedInfo");
+				//var imgUrl = commonstrings.sidServer+"/organizations/uni_sl_uom.png";
+				var base_image = new Image();
+				base_image.src = imgUrl;
+				ctx.drawImage(base_image,0,0,300,150);
+			}catch(err){
+				console.log("sid error: "+err);
+			}
+		}
 	}catch(err){
 		console.log("sid error: "+err);
 	}
-	if(total>0){
-		try{
-			var myPie;
-			myPie = new Chart(ctx).Pie(pieData,{
-				animation: chartConfigs.animation,
-				animationEasing: "easeInOutQuart",
-				segmentStrokeColor : "#ffffff"
-				//add more chart configs here as needed
-			});
-		}catch(err){
-			console.log("sid error: "+err);
-		}
-	}else{
-		try{
-			var imgUrl = getURL("image","notRatedInfo");
-			//var imgUrl = commonstrings.sidServer+"/organizations/uni_sl_uom.png";
-			var base_image = new Image();
-			base_image.src = imgUrl;
-			ctx.drawImage(base_image,0,0,300,150);
-		}catch(err){
-			console.log("sid error: "+err);
-		}
-	}
+		
 }
 
 function getQueryVariable(variable,string) {
