@@ -509,39 +509,20 @@ function processRatepopup(node,myRating){
 	var refuted = node.getElementsByClassName(commonstrings.popRefutedIcon);
 	var popupBase = node.getElementsByClassName(commonstrings.popupbase);
 	
-	var R = "R";
-	var C = "C";
-	var T = "T";
-	switch(myRating){
-		case -1:
-			R = R + "_my";
-			node.getElementsByClassName("refA")[0].textContent = "I Rejected";
-			node.getElementsByClassName("verA")[0].textContent = "I Approve";
-			node.getElementsByClassName("neuA")[0].textContent = "No Idea";
-			break;
-		case 0:
-			C = C + "_my";
-			node.getElementsByClassName("refA")[0].textContent = "I Reject";
-			node.getElementsByClassName("verA")[0].textContent = "I Approve";
-			node.getElementsByClassName("neuA")[0].textContent = "No Idea";
-			break;
-		case 1:
-			T = T + "_my";
-			node.getElementsByClassName("refA")[0].textContent = "I Reject";
-			node.getElementsByClassName("verA")[0].textContent = "I Approved";
-			node.getElementsByClassName("neuA")[0].textContent = "No Idea";
-			break;
-		case -10:
-			//console.error("claim not rated by me");
-			break;
-		default:
-			//console.error("Unexpected my rating value" + myRating);
-			break;
-	}
+	var score = {"-1": "R", 1: "T" , 0: "C"};
+	var texts = {"-1": "I Reject", 1: "I Approv" , 0: "No Idea"};
+	var updates = {"-1": "I Rejected", 1: "I Approved" , 0: "No Idea"};
 	
-	var verImgUrl = getURL("claim",T);
-	var neuImgUrl = getURL("claim",C);
-	var refImgUrl = getURL("claim",R);
+	score[myRating] = score[myRating] + "_my";
+	texts[myRating] = updates[myRating];
+	
+	node.getElementsByClassName("refA")[0].textContent = texts["-1"];
+	node.getElementsByClassName("verA")[0].textContent = texts[1];
+	node.getElementsByClassName("neuA")[0].textContent = texts[0];
+	
+	var verImgUrl = getURL("claim",score[1]);
+	var neuImgUrl = getURL("claim",score[0]);
+	var refImgUrl = getURL("claim",score["-1"]);
 	var baseImgUrl = getURL("image","popupBase");
 	
 	verified[0].src = verImgUrl;
