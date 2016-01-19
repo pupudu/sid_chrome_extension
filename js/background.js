@@ -28,7 +28,9 @@ chrome.runtime.onMessage.addListener(function (message,sender,sendResponse){
 				return true;
 			},
 			error: function(xhr,textStatus,error){
-				//console.log("fail called");
+				if(message.data.errorFunc){
+					message.data.errorFunc();
+				}
 			}
 		});
 	}else if(message === "login check"){
