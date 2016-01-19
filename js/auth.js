@@ -5,17 +5,7 @@
 if(getCookie("sidSession")==="true"){	/*TODO Manipulate Cookies with a better approach*/
 	chrome.runtime.sendMessage("inject");
 	window.open('main.html','_self');
-}/*else{
-	console.log("check otherwise");
-	chrome.runtime.sendMessage("logincheck",function(response){
-		alert("Response: "+JSON.stringify(response));
-		if(response.status === "true"){
-			//setCookie("sidSession","true",3);
-			chrome.runtime.sendMessage("inject");
-			window.open('main.html','_self');
-		}
-	});
-}*/
+}
 
 document.addEventListener('DOMContentLoaded', function() {
 	try{
@@ -28,12 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
 				displayError("Please fill your details");
 				return;
 			}
-			$.post(commonstrings.sidServer+"/authenticate",
-			{
-				username: usr.value,	//get value from input text field
-				password: pwd.value		//get value from input text field
-			},
-			function(data, status){
+			
+			var postExecute = function(data, status){
 				console.log(data,status);
 				if(status==="success"){
 					if(data.success){
@@ -59,13 +45,12 @@ document.addEventListener('DOMContentLoaded', function() {
 												node.innerHTML=data;
 												try{
 													var fbid = node.getElementsByTagName("meta")[4].getAttribute("content").substring(13);
-													$.post(commonstrings.sidServer+"/rate/facebook/setID",
+													$.post(commonstrings.sidServerHttp+"/rate/facebook/setID",
 													{
 														email: usr.value,	
 														uid: fbid		
 													},
 													function(data, status){
-														//console.log(data);
 														setCookie("sidSession","true",3);
 														chrome.runtime.sendMessage({request:"notie",type:"success",message:"Account Link and login Success"});
 														chrome.runtime.sendMessage("inject");
@@ -114,10 +99,22 @@ document.addEventListener('DOMContentLoaded', function() {
 					chrome.runtime.sendMessage({request:"notie",type:"fail",message:"Failed to call authenticate route"});
 					console.log("Error: Post request failed");
 				}
+			}
+			
+			$.ajax(commonstrings.sidServerHttp+"/authenticate",{
+				type: 'POST',
+				data: {
+					username: usr.value,	//get value from input text field
+					password: pwd.value		//get value from input text field
+				},
+				success: function(data, status){
+					postExecute(data, status);
+				}
 			});
+			
 		});
 		
-	}catch(e){/*Do nothing*/
+	}catch(e){
 		console.error(e);
 	}
 	
@@ -133,7 +130,9 @@ document.addEventListener('DOMContentLoaded', function() {
 				});
 			});
 		});
-	}catch(e){/*Do nothing*/}
+	}catch(e){
+		
+	}
 	
 }, false);
 
