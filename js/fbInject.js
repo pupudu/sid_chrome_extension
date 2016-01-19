@@ -412,7 +412,8 @@ function scoreClaims(arrIndex, claim, classOffset){
 	var rateIcon = document.createElement("DIV");
 	var iconId = 'claimR'+classOffset+arrIndex;
 	var iconClass = 'claim';
-	
+	var popupData={};
+
 	if(classOffset === "" || classOffset === "Overview"){
 		if(clearIconsIfSkip(claim)){
 			return;
@@ -437,17 +438,21 @@ function scoreClaims(arrIndex, claim, classOffset){
 	
 	var claimId = hex_md5(claim.getAttribute("data-html").toLowerCase());
 	
+	popupData.claim = claim;
+	popupData.iconId = iconId;
+	popupData.iconClass = iconClass;
+	popupData.classOffset = classOffset;
+	popupData.yes = 1;
+	popupData.no = 1;
+	popupData.notSure = 1;
+	popupData.myRating = -10;
+	
+			
 	var postExecute = function (data){
 		var imgURL = getURL(iconClass,data.claimScore);
 		var icon = document.getElementById(iconId);
 		if(icon!==null){
 			icon.src = imgURL;
-			
-			var popupData={};
-			popupData.claim = claim;
-			popupData.iconId = iconId;
-			popupData.iconClass = iconClass;
-			popupData.classOffset = classOffset;
 			popupData.yes = data.yes;
 			popupData.no = data.no;
 			popupData.notSure = data.notSure;
@@ -482,22 +487,10 @@ function scoreClaims(arrIndex, claim, classOffset){
 			}
 		});
 	}catch(e){
-		
 		var imgURL = getURL(iconClass,"N");
 		var icon = document.getElementById(iconId);
 		if(icon!==null){
 			icon.src = imgURL;
-			
-			var popupData={};
-			popupData.claim = claim;
-			popupData.iconId = iconId;
-			popupData.iconClass = iconClass;
-			popupData.classOffset = classOffset;
-			popupData.yes = 1;
-			popupData.no = 1;
-			popupData.notSure = 1;
-			popupData.myRating = -10;
-			
 			popUpOnIconByID(popupData);
 		}
 	}
@@ -510,7 +503,7 @@ function processRatepopup(node,myRating){
 	var popupBase = node.getElementsByClassName(commonstrings.popupbase);
 	
 	var score = {"-1": "R", 1: "T" , 0: "C"};
-	var texts = {"-1": "I Reject", 1: "I Approv" , 0: "No Idea"};
+	var texts = {"-1": "I Reject", 1: "I Approve" , 0: "No Idea"};
 	var updates = {"-1": "I Rejected", 1: "I Approved" , 0: "No Idea"};
 	
 	score[myRating] = score[myRating] + "_my";
