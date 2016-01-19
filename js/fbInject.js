@@ -1,5 +1,5 @@
 /* globals Chart,fbstrings,commonstrings,notie,fbSkipStrings,addSidAnalyticsMenu,fbNonSkipStrings,getURL,hex_md5,popUpOnIconByID,addCommentSection,sendAjaxOverHttp,ZMODAL: false */
-/* exported processAnalyticsHTML,configureListners */
+/* exported processAnalyticsHTML,configureListners,processCommentsHTML */
 
 var timeLineCName = document.getElementById(fbstrings.profileName);		//element to identify fb profile
 var timeLineHLine = document.getElementById(fbstrings.fbTimelineHeadline);			//element to identify fb page
@@ -397,7 +397,7 @@ function commitDropdownChart(profId,node){
 		success: function(data){
 			postExecute(data);
 		},
-		error: function(xhr,textStatus,error){
+		error: function(){
 			sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getAllRatingsCount",{targetid : profId},postExecute);
 		}
 	});
@@ -412,7 +412,6 @@ function scoreClaims(arrIndex, claim, classOffset){
 	var rateIcon = document.createElement("DIV");
 	var iconId = 'claimR'+classOffset+arrIndex;
 	var iconClass = 'claim';
-	var claimScore = 'T';
 	
 	if(classOffset === "" || classOffset === "Overview"){
 		if(clearIconsIfSkip(claim)){
@@ -472,7 +471,7 @@ function scoreClaims(arrIndex, claim, classOffset){
 			success: function(data){
 				postExecute(data);
 			},
-			error: function(xhr,textStatus,error){
+			error: function(){
 				sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getRating",{
 						targetid : targetId,
 						claimid : claimId,
@@ -624,7 +623,7 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 					success: function(data){
 						postExecute(data);
 					},
-					error: function(xhr,textStatus,error){
+					error: function(){
 						sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getRating",{
 								targetid : targetId,
 								myid: myId,
@@ -652,7 +651,7 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 			success: function(data){
 				postExecute(data);
 			},
-			error: function(xhr,textStatus,error){
+			error: function(){
 				sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/addRating",{
 						myid: myId,
 						targetid: targetId,
