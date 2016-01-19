@@ -76,16 +76,7 @@ function updateProfPic(manual){
 		$("#"+fbstrings.sidSign).fadeIn(2000);
 	};
 	
-	$.ajax(commonstrings.sidServer+"/rate/facebook/getOverallProfileRating",{
-		method: 'POST',
-		data: {targetid: profID},
-		success: function(data){
-			postExecute(data);
-		},
-		error: function(){
-			sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getOverallProfileRating",{targetid: profID},postExecute);
-		}
-	});
+	sendAjax("POST","/rate/facebook/getOverallProfileRating",{targetid: profID},postExecute);
 }
 
 /**updating friends profile pics*/
@@ -116,16 +107,7 @@ function addIconToFriendProf(profID, friendStr){
 		document.getElementById(friendStr).src = imgURL;
 	};
 	try{
-		$.ajax(commonstrings.sidServer+"/rate/facebook/getOverallProfileRating",{
-			method: 'POST',
-			data: {targetid: profID},
-			success: function(data){
-				postExecute(data);
-			},
-			error: function(){
-				sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getOverallProfileRating",{targetid: profID},postExecute);
-			}
-		});
+		sendAjax("POST","/rate/facebook/getOverallProfileRating",{targetid: profID},postExecute);
 	}catch(e){
 		var imgURL = getURL("prof","N");
 		document.getElementById(friendStr).src = imgURL;
@@ -222,25 +204,16 @@ function processAnalyticsHTML(html){
 		}
 	};
 	
-	$.ajax(commonstrings.sidServer+"/rate/facebook/getMyOrganizations",{
-		method: 'POST',
-		data: {myid: targetId},
-		success: function(data){
-			postExecute(data);
-		},
-		error: function(){
-			sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getMyOrganizations",{myid: targetId},postExecute);
-		}
-	});
+	sendAjax("POST","/rate/facebook/getMyOrganizations",{myid: targetId},postExecute);
 	commitDropdownChart(targetId,node);
 	
 	try{
-		/*$.post(commonstrings.sidServer+"/facebook/rate/getLinkedinURL",{
+	    $.post(commonstrings.sidServer+"/facebook/rate/getLinkedinURL",{
 			uid : targetId
 		},
 		function(data){
 			document.getElementById("li_nav").href=data.url;
-		});*/
+		});
 	}catch(e){
 		document.getElementById("li_nav").addEventListener('click',function(){
 			notie.alert(3, 'Linked In profile not connected', 3);
@@ -294,24 +267,7 @@ function processCommentPopup(targetId,myId,btnOptional){
 			document.getElementById("sidComment").innerText = comment;
 		}
 	};
-	$.ajax(commonstrings.sidServer+"/rate/facebook/getComments",{
-		method:'POST',
-		data: {
-			targetid : targetId,
-			myid: myId
-		},
-		success: function(data){
-			postExecute(data);
-		},
-		error: function(){
-			sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getComments",{
-					targetid : targetId,
-					myid: myId
-				},
-				postExecute
-			);
-		}
-	});
+	sendAjax("POST","/rate/facebook/getComments",{targetid : targetId,myid: myId},postExecute);
 	
 	var options = {
 		title: "sid Comments",
@@ -362,24 +318,7 @@ function processCommentPopup(targetId,myId,btnOptional){
 			var modal = new ZMODAL(options);
 			modal.open();
 		};
-		$.ajax(commonstrings.sidServer+"/rate/facebook/getComments",{
-			method:'POST',
-			data: {
-				targetid : targetId,
-				myid: myId
-			},
-			success: function(data){
-				postExecute(data);
-			},
-			error: function(){
-				sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getComments",{
-						targetid : targetId,
-						myid: myId
-					},
-					postExecute
-				);
-			}
-		});
+		sendAjax("POST","/rate/facebook/getComments",{targetid : targetId,myid: myId},postExecute);
 	});
 }
 
@@ -398,16 +337,7 @@ function commitDropdownChart(profId,node){
 		
 		addChartListener(chartData,chartConfigs,node);
 	};
-	$.ajax(commonstrings.sidServer+"/rate/facebook/getAllRatingsCount",{
-		method: 'POST',
-		data: {targetid : profId},
-		success: function(data){
-			postExecute(data);
-		},
-		error: function(){
-			sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getAllRatingsCount",{targetid : profId},postExecute);
-		}
-	});
+	sendAjax("POST","/rate/facebook/getAllRatingsCount",{targetid : profId},postExecute);
 }
 
 
@@ -476,26 +406,7 @@ function performScoring(iconId,iconClass,claimId,claim,classOffset){
 	};
 	
 	try{
-		$.ajax(commonstrings.sidServer+"/rate/facebook/getRating",{
-			method: 'POST',
-			data: {
-				targetid : targetId,
-				claimid : claimId,
-				myid : myId
-			},
-			success: function(data){
-				postExecute(data);
-			},
-			error: function(){
-				sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getRating",{
-						targetid : targetId,
-						claimid : claimId,
-						myid : myId
-					},
-					postExecute
-				);
-			}
-		});
+		sendAjax("POST","/rate/facebook/getRating",{targetid : targetId, claimid : claimId,	myid : myId	},postExecute);
 	}catch(e){
 		var imgURL = getURL(iconClass,"N");
 		var icon = document.getElementById(iconId);
@@ -597,56 +508,13 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 					addChartListener(chartData,chartConfigs,popupData.claim);
 				};
 				
-				$.ajax(commonstrings.sidServer+"/rate/facebook/getRating",{
-					method: 'POST',
-					data: {
-						targetid : targetId,
-						myid: myId,
-						claimid : claimId
-					},
-					success: function(data){
-						postExecute(data);
-					},
-					error: function(){
-						sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getRating",{
-								targetid : targetId,
-								myid: myId,
-								claimid : claimId
-							},
-							postExecute
-						);
-					}
-				});
+				sendAjax("POST","/rate/facebook/getRating",{targetid : targetId, claimid : claimId,	myid : myId	},postExecute);
 				
 				var dropdown = document.getElementsByClassName("sid_dropdown")[0];
 				commitDropdownChart(targetId,dropdown);
 			}
 		};
-		
-		$.ajax(commonstrings.sidServer+"/rate/facebook/addRating",{
-			method: 'POST',
-			data: {
-				myid: myId,
-				targetid: targetId,
-				claimid: claimId,
-				claim: claimData,
-				rating: rate
-			},
-			success: function(data){
-				postExecute(data);
-			},
-			error: function(){
-				sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/addRating",{
-						myid: myId,
-						targetid: targetId,
-						claimid: claimId,
-						claim: claimData,
-						rating: rate
-					},
-					postExecute
-				);
-			}
-		});
+		sendAjax("POST","/rate/facebook/addRating",{targetid : targetId, claimid : claimId,	myid : myId, claim: claimData, rating: rate	},postExecute);
 	});
 }
 
@@ -843,4 +711,17 @@ function getQueryVariable(variable,string) {
         }
     }
     return null;
+}
+
+function sendAjax(type,url,data,postExecute){
+	$.ajax(commonstrings.sidServer+url,{
+		method: type,
+		data: data,
+		success: function(data){
+			postExecute(data);
+		},
+		error: function(){
+			sendAjaxOverHttp('POST',commonstrings.sidServerHttp+url,{myid: targetId},postExecute);
+		}
+	});
 }
