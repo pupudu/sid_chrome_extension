@@ -410,7 +410,6 @@ function scoreClaims(arrIndex, claim, classOffset){
 	var rateIcon = document.createElement("DIV");
 	var iconId = 'claimR'+classOffset+arrIndex;
 	var iconClass = 'claim';
-	var popupData={};
 
 	if(classOffset === "" || classOffset === "Overview"){
 		if(clearIconsIfSkip(claim)){
@@ -436,6 +435,15 @@ function scoreClaims(arrIndex, claim, classOffset){
 	
 	var claimId = hex_md5(claim.getAttribute("data-html").toLowerCase());
 	
+	performScoring(iconId,iconClass,claimId,claim,classOffset);		
+	
+}
+
+function performScoring(iconId,iconClass,claimId,claim,classOffset){
+	var targetId = extractId(1);
+	var myId = extractId(0);
+	var popupData={};
+	
 	popupData.claim = claim;
 	popupData.iconId = iconId;
 	popupData.iconClass = iconClass;
@@ -444,14 +452,6 @@ function scoreClaims(arrIndex, claim, classOffset){
 	popupData.no = 1;
 	popupData.notSure = 1;
 	popupData.myRating = -10;
-	
-	performScoring(popupData,iconId,iconClass,claimId);		
-	
-}
-
-function performScoring(popupData,iconId,iconClass,claimId){
-	var targetId = extractId(1);
-	var myId = extractId(0);
 	
 	var postExecute = function (data){
 		var imgURL = getURL(iconClass,data.claimScore);
