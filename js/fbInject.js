@@ -439,6 +439,14 @@ function scoreClaims(arrIndex, claim, classOffset){
 	}
 	
 	var claimId = hex_md5(claim.getAttribute("data-html").toLowerCase());
+	
+	performScoring(iconId,iconClass,claimId,claim,classOffset);		
+	
+}
+
+function performScoring(iconId,iconClass,claimId,claim,classOffset){
+	var targetId = extractId(1);
+	var myId = extractId(0);
 	var popupData={};
 	
 	popupData.claim = claim;
@@ -449,14 +457,6 @@ function scoreClaims(arrIndex, claim, classOffset){
 	popupData.no = 1;
 	popupData.notSure = 1;
 	popupData.myRating = -10;
-	
-	performScoring(iconId,iconClass,claimId,popupData);		
-	
-}
-
-function performScoring(iconId,iconClass,claimId,popupData){
-	var targetId = extractId(1);
-	var myId = extractId(0);
 	
 	var postExecute = function (data){
 		var imgURL = getURL(iconClass,data.claimScore);

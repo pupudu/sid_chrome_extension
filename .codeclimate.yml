@@ -53,3 +53,4 @@ exclude_paths:
 - "js/slick.js"
 - "js/z-modal.js"
 - "js/notie.js"
+- "js/liInject.js"
