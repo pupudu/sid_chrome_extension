@@ -11,11 +11,11 @@ function addSidAnalyticsMenu(){
 	},1000);
 }
 
-function addCommentSection(){
+function addCommentSection(type){
 	setTimeout(function(){
 		if(document.getElementById("viewAllComments") === null){
 			$.get(chrome.extension.getURL("html/comment.html"), function(data) {
-				processCommentsHTML(data);
+				processCommentsHTML(data,type);
 			});
 		}
 	},1000);

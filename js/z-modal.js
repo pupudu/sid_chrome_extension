@@ -137,13 +137,13 @@
 						for(i=0;i<data.comments.length;i++){
 							theContent = theContent+"Comment "+i+": "+data.comments[i].comment+"<br>";
 						}
-						processCommentPopup(targetId,myId);
+						processCommentPopup(targetId,myId,undefined,theBtn.type);
 						var currentContent = document.getElementById("commentContent");
 						currentContent.innerHTML = theContent;
 						document.getElementById("addCommentBtn").innerText = "Update Comment";
 						notie.alert(1, 'Comment added successfully!', 3);
 					}
-					$.ajax(commonstrings.sidServer+"/rate/facebook/getComments",{
+					$.ajax(commonstrings.sidServer+"/rate/facebook/"+theBtn.type,{
 						method:'POST',
 						data: {
 							targetid : targetId,
@@ -153,7 +153,7 @@
 							postExecute(data);
 						},
 						error: function(xhr,textStatus,error){
-							sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getComments",{
+							sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/"+theBtn.type,{
 									targetid : targetId,
 									myid: myId
 								},

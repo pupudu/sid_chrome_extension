@@ -22,7 +22,7 @@ function identify(){
 		
 		updateProfPic(false);
 		addSidAnalyticsMenu();
-		addCommentSection();
+		addCommentSection("getComments");
 		
 		if(selectedTab.indexOf("About") === 0) {
 			var subSectionHolder = document.getElementsByClassName(fbstrings.subSection)[0];
@@ -220,7 +220,7 @@ function processAnalyticsHTML(html){
 		});
 	}
 	try{
-		processCommentPopup(targetId,myId);
+		processCommentPopup(targetId,myId,undefined,"getComments");
 	}catch(e){
 		console.error(e);
 	}
@@ -228,7 +228,7 @@ function processAnalyticsHTML(html){
 
 
 
-function processCommentsHTML(html){
+function processCommentsHTML(html,type){
 	
 	var targetId = extractId(1);
 	var myId = extractId(0);
@@ -248,10 +248,10 @@ function processCommentsHTML(html){
 		document.getElementById("viewAllComments").remove();
 	});
 	
-	processCommentPopup(targetId,myId,"selectedComment");
+	processCommentPopup(targetId,myId,"selectedComment",type);
 }
 
-function processCommentPopup(targetId,myId,btnOptional){
+function processCommentPopup(targetId,myId,btnOptional,type){
 	console.log("vieweing comments");
 	var postExecute = function(data){
 		if(document.getElementById("sidComment")){
@@ -267,7 +267,7 @@ function processCommentPopup(targetId,myId,btnOptional){
 			document.getElementById("sidComment").innerText = comment;
 		}
 	};
-	sendAjax("POST","/rate/facebook/getComments",{targetid : targetId,myid: myId},postExecute);
+	sendAjax("POST","/rate/facebook/"+type,{targetid : targetId,myid: myId},postExecute);
 	
 	var options = {
 		title: "sid Comments",
@@ -284,7 +284,8 @@ function processCommentPopup(targetId,myId,btnOptional){
 				label: "Add Comment",
 				id:"addCommentBtn",
 				func:"addComment",
-				half: true
+				half: true,
+				type: type
 			}
 		],
 		autoload: false
@@ -318,7 +319,7 @@ function processCommentPopup(targetId,myId,btnOptional){
 			var modal = new ZMODAL(options);
 			modal.open();
 		};
-		sendAjax("POST","/rate/facebook/getComments",{targetid : targetId,myid: myId},postExecute);
+		sendAjax("POST","/rate/facebook/"+type,{targetid : targetId,myid: myId},postExecute);
 	});
 }
 
@@ -450,6 +451,7 @@ function configureListners(node,popupData){
 	addEventToSendData(node,commonstrings.btnVerifiedIcon,popupData,1);
 	addEventToSendData(node,commonstrings.btnRefutedIcon,popupData,-1);
 	addEventToSendData(node,commonstrings.btnNeutralIcon,popupData,0);
+	addEventToShowComments(popupData);
 	
 	var chartData = {};
 	chartData.yesCount = popupData.yes;
@@ -462,6 +464,13 @@ function configureListners(node,popupData){
 	chartConfigs.base = "popupbase";
 	
 	addChartListener(chartData,chartConfigs,popupData.claim);
+}
+
+function addEventToShowComments(popupData){
+	var reviewBtn = popupData.claim.getElementsByClassName("reviewElement")[0];
+	reviewBtn.addEventListener("click",function(){
+		
+	});
 }
 
 function addEventToSendData(node,menuItemName,popupData,rate){
