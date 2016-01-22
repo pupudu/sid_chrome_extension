@@ -509,8 +509,15 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 				},1000);
 				
 				var postExecute = function(data){
-					console.log(data);
+					//console.log(data);
 					processRatepopup(node,data.myrating);
+					
+					var reviewLink = popupData.claim.getElementsByClassName("reviewLink")[0];
+					reviewLink.innerText = "Tell us why You think so...";
+					reviewLink.style.color = "#f77";
+					var reviewBtn = popupData.claim.getElementsByClassName("reviewElement")[0];
+					reviewBtn.className += " tellUs"; 
+					
 					var chartData = {};
 					chartData.yesCount = data.yes;
 					chartData.noCount = data.no;
