@@ -73,8 +73,8 @@ div.popupChart{
     position: absolute;
     top: 0px;
     left: 110px;
-    height: 108px;
-    width: 108px;
+    height: 107px;
+    width: 107px;
     background-color: white;
 }
 
@@ -84,6 +84,17 @@ li.listElement{
 	font-family:Arial;
 	font-size:15px;
 	font-weight:bold;
+}
+
+li.reviewElement{
+	text-align: center;
+	color:#666666;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	background-color: #f8f8f8;
+    border: 1px solid #eee;
+    margin-top: -1px;
 }
 
 

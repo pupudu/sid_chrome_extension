@@ -721,7 +721,7 @@ function sendAjax(type,url,data,postExecute){
 			postExecute(data);
 		},
 		error: function(){
-			sendAjaxOverHttp('POST',commonstrings.sidServerHttp+url,{myid: targetId},postExecute);
+			sendAjaxOverHttp('POST',commonstrings.sidServerHttp+url,data,postExecute);
 		}
 	});
 }

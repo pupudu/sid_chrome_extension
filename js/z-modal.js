@@ -153,7 +153,7 @@
 							postExecute(data);
 						},
 						error: function(xhr,textStatus,error){
-							ajaxOverHttpFunc('POST',commonstrings.sidServerHttp+"/rate/facebook/getComments",{
+							sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/getComments",{
 									targetid : targetId,
 									myid: myId
 								},
@@ -174,7 +174,7 @@
 						postExecute(data);
 					},
 					error: function(xhr,textStatus,error){
-						ajaxOverHttpFunc('POST',commonstrings.sidServerHttp+"/rate/facebook/addComment",{
+						sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/addComment",{
 								targetid : targetId,
 								myid: myId,
 								commentid: commentId,
