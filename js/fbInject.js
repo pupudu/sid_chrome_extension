@@ -257,6 +257,7 @@ function processCommentPopup(targetId,myId,btnOptional,type,claimId){
 	var postExecute = function(data){
 		if(document.getElementById("sidComment")){
 			emptyComment = "No profile comments available. Be the first to comment on this profile";
+			options.title = "Profile Reviews";
 			var comment;
 			if(data.comments[data.comments.length -1]){
 				comment = data.comments[data.comments.length -1].comment;
@@ -319,6 +320,7 @@ function processCommentPopup(targetId,myId,btnOptional,type,claimId){
 			if(content === ""){
 				if(type === "getClaimComments"){
 					emptyComment = "No claim comments available. Be the first to comment on this claim";
+					options.title = "Claim Comments";
 				}
 				content = emptyComment;
 			}
