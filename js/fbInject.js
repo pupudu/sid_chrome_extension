@@ -267,7 +267,7 @@ function processCommentPopup(targetId,myId,btnOptional,type,claimId){
 			document.getElementById("sidComment").innerText = comment;
 		}
 	};
-	sendAjax("POST","/rate/facebook/"+type,{targetid : targetId,myid: myId, claimid: claimId},postExecute);
+	sendAjax("POST","/rate/facebook/getComments",{targetid : targetId,myid: myId},postExecute);
 	
 	var options = {
 		title: "sid Comments",
