@@ -267,7 +267,7 @@ function processCommentPopup(targetId,myId,btnOptional,type,claimId){
 			document.getElementById("sidComment").innerText = comment;
 		}
 	};
-	sendAjax("POST","/rate/facebook/"+type,{targetid : targetId,myid: myId},postExecute);
+	sendAjax("POST","/rate/facebook/"+type,{targetid : targetId,myid: myId, claimid: claimId},postExecute);
 	
 	var options = {
 		title: "sid Comments",
@@ -307,6 +307,7 @@ function processCommentPopup(targetId,myId,btnOptional,type,claimId){
 	btn.addEventListener('click', function(){
 		var postExecute = function(data){
 			var content="";
+			console.log(data);
 			for(var i=0;i<data.comments.length;i++){
 				content = content+"Comment "+i+": "+data.comments[i].comment+"<br>";
 				if(data.comments[i].mysid === myId){
@@ -320,7 +321,7 @@ function processCommentPopup(targetId,myId,btnOptional,type,claimId){
 			var modal = new ZMODAL(options);
 			modal.open();
 		};
-		sendAjax("POST","/rate/facebook/"+type,{targetid : targetId,myid: myId},postExecute);
+		sendAjax("POST","/rate/facebook/"+type,{targetid : targetId,myid: myId, claimid: claimId},postExecute);
 	});
 }
 
@@ -473,9 +474,7 @@ function addEventToShowComments(popupData){
 	var myId = extractId(0);
 	var claimId = hex_md5(popupData.claim.getAttribute("data-html").toLowerCase());
 	reviewBtn.id = "claimComment" + claimId;
-	reviewBtn.addEventListener("click",function(){
-		processCommentPopup(targetId,myId,reviewBtn.id,"getComments",claimId);
-	});
+	processCommentPopup(targetId,myId,reviewBtn.id,"getClaimComments",claimId);
 	reviewBtn.click();
 }
 

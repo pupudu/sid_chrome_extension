@@ -136,7 +136,7 @@
 						for(i=0;i<data.comments.length;i++){
 							theContent = theContent+"Comment "+i+": "+data.comments[i].comment+"<br>";
 						}
-						processCommentPopup(targetId,myId,undefined,theBtn.type);
+						processCommentPopup(targetId,myId,undefined,theBtn.type,theBtn.claimid);
 						var currentContent = document.getElementById("commentContent");
 						currentContent.innerHTML = theContent;
 						btn.innerText = "Update Comment";
@@ -146,7 +146,8 @@
 						method:'POST',
 						data: {
 							targetid : targetId,
-							myid: myId
+							myid: myId,
+							claimid: theBtn.claimid
 						},
 						success: function(data){
 							postExecute(data);
@@ -154,7 +155,8 @@
 						error: function(xhr,textStatus,error){
 							sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/"+theBtn.type,{
 									targetid : targetId,
-									myid: myId
+									myid: myId,
+									claimid: theBtn.claimid
 								},
 								postExecute
 							);
