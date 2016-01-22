@@ -253,13 +253,15 @@ function processCommentsHTML(html,type){
 
 function processCommentPopup(targetId,myId,btnOptional,type,claimId){
 	console.log("vieweing comments");
+	var emptyComment = "No profile comments available. Be the first to comment on this profile";
 	var postExecute = function(data){
 		if(document.getElementById("sidComment")){
+			emptyComment = "No profile comments available. Be the first to comment on this profile";
 			var comment;
 			if(data.comments[data.comments.length -1]){
 				comment = data.comments[data.comments.length -1].comment;
 			}else{
-				comment = "No comments available yet. Click here and add yours...";
+				comment = emptyComment;
 			}
 			if(comment.length > 72){
 				comment = comment.substring(0,70) + " (...)";
@@ -271,7 +273,7 @@ function processCommentPopup(targetId,myId,btnOptional,type,claimId){
 	
 	var options = {
 		title: "sid Comments",
-		content: "No comments available yet. Click here and add yours...",
+		content: emptyComment,
 		input:true,
 		buttons: [
 			{
@@ -315,7 +317,10 @@ function processCommentPopup(targetId,myId,btnOptional,type,claimId){
 				}
 			}
 			if(content === ""){
-				content="No comments available yet. Be the first to comment on this profile";
+				if(type === "getClaimComments"){
+					emptyComment = "No claim comments available. Be the first to comment on this claim";
+				}
+				content = emptyComment;
 			}
 			options.content = content;
 			var modal = new ZMODAL(options);

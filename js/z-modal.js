@@ -196,7 +196,7 @@
 	var input = document.createElement("input");
 	input.id = "commentIn";
 	input.className = "comment";
-	input.placeholder = " Type your Profile view in this box. You can add only one review about a person";
+	input.placeholder = " Type your review here. You can add profile reviews one per person and claim reviews one per claim";
     // populate the box
     box.appendChild(header);
     box.appendChild(content);
