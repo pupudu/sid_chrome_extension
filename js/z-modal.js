@@ -110,7 +110,6 @@
         var btn = document.createElement("div");
         btn.className = "z-modal-btn";
         btn.innerHTML = theBtn.label;
-		btn.id = theBtn.id;
         if(theBtn.half === true){
           btn.className += " z-modal-btn-half";
         }
@@ -140,7 +139,7 @@
 						processCommentPopup(targetId,myId,undefined,theBtn.type);
 						var currentContent = document.getElementById("commentContent");
 						currentContent.innerHTML = theContent;
-						document.getElementById("addCommentBtn").innerText = "Update Comment";
+						btn.innerText = "Update Comment";
 						notie.alert(1, 'Comment added successfully!', 3);
 					}
 					$.ajax(commonstrings.sidServer+"/rate/facebook/"+theBtn.type,{
@@ -168,7 +167,8 @@
 						targetid : targetId,
 						myid: myId,
 						commentid: commentId,
-						comment: comment
+						comment: comment,
+						claimid: theBtn.claimid
 					},
 					success: function(data){
 						postExecute(data);
@@ -178,7 +178,8 @@
 								targetid : targetId,
 								myid: myId,
 								commentid: commentId,
-								comment: comment
+								comment: comment,
+								claimid: theBtn.claimid
 							},
 							postExecute
 						);

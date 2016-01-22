@@ -251,7 +251,7 @@ function processCommentsHTML(html,type){
 	processCommentPopup(targetId,myId,"selectedComment",type);
 }
 
-function processCommentPopup(targetId,myId,btnOptional,type){
+function processCommentPopup(targetId,myId,btnOptional,type,claimId){
 	console.log("vieweing comments");
 	var postExecute = function(data){
 		if(document.getElementById("sidComment")){
@@ -285,7 +285,8 @@ function processCommentPopup(targetId,myId,btnOptional,type){
 				id:"addCommentBtn",
 				func:"addComment",
 				half: true,
-				type: type
+				type: type,
+				claimid: claimId
 			}
 		],
 		autoload: false
@@ -468,9 +469,14 @@ function configureListners(node,popupData){
 
 function addEventToShowComments(popupData){
 	var reviewBtn = popupData.claim.getElementsByClassName("reviewElement")[0];
+	var targetId = extractId(1);
+	var myId = extractId(0);
+	var claimId = hex_md5(popupData.claim.getAttribute("data-html").toLowerCase());
+	reviewBtn.id = "claimComment" + claimId;
 	reviewBtn.addEventListener("click",function(){
-		
+		processCommentPopup(targetId,myId,reviewBtn.id,"getComments",claimId);
 	});
+	reviewBtn.click();
 }
 
 function addEventToSendData(node,menuItemName,popupData,rate){
