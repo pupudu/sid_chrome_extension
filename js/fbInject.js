@@ -251,8 +251,12 @@ function processCommentsHTML(html,type){
 	processCommentPopup(targetId,myId,"selectedComment",type);
 }
 
-function processCommentPopup(targetId,myId,btnOptional,type,claimId){
+function processCommentPopup(targetId,myId,btnOptional,type,popupData){
 	console.log("vieweing comments");
+	var claimId;
+	if(popupData){
+		claimId = hex_md5(popupData.claim.getAttribute("data-html").toLowerCase());
+	}	
 	var emptyComment = "No profile comments available. Be the first to comment on this profile";
 	var postExecute = function(data){
 		if(document.getElementById("sidComment")){
@@ -289,7 +293,7 @@ function processCommentPopup(targetId,myId,btnOptional,type,claimId){
 				func:"addComment",
 				half: true,
 				type: type,
-				claimid: claimId
+				popupData: popupData
 			}
 		],
 		autoload: false
@@ -320,7 +324,7 @@ function processCommentPopup(targetId,myId,btnOptional,type,claimId){
 			if(content === ""){
 				if(type === "getClaimComments"){
 					emptyComment = "No claim comments available. Be the first to comment on this claim";
-					options.title = "Claim Comments";
+					options.title = "Claim: " + popupData.claim.getAttribute("data-html");
 				}
 				content = emptyComment;
 			}
@@ -481,7 +485,7 @@ function addEventToShowComments(popupData){
 	var myId = extractId(0);
 	var claimId = hex_md5(popupData.claim.getAttribute("data-html").toLowerCase());
 	reviewBtn.id = "claimComment" + claimId;
-	processCommentPopup(targetId,myId,reviewBtn.id,"getClaimComments",claimId);
+	processCommentPopup(targetId,myId,reviewBtn.id,"getClaimComments",popupData);
 	reviewBtn.click();
 }
 

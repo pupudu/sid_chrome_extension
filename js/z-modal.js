@@ -136,7 +136,7 @@
 						for(i=0;i<data.comments.length;i++){
 							theContent = theContent+"Comment "+i+": "+data.comments[i].comment+"<br>";
 						}
-						processCommentPopup(targetId,myId,undefined,theBtn.type,theBtn.claimid);
+						processCommentPopup(targetId,myId,undefined,theBtn.type,theBtn.popupData);
 						var currentContent = document.getElementById("commentContent");
 						currentContent.innerHTML = theContent;
 						btn.innerText = "Update Comment";
