@@ -528,24 +528,30 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 					*/
 					
 					var inputHolder = popupData.claim.getElementsByClassName("hiddenInput")[0];
-					inputHolder.className = "";
+					if(!inputHolder){
+						inputHolder = popupData.claim.getElementsByClassName("shownInput")[0];
+					}else{
+						inputHolder.className = "shownInput";
+					}
 					var input = popupData.claim.getElementsByClassName("comment")[0];
-					$(input).keyup(function (e) {
-						if (e.keyCode == 13) {
-							var comment = input.value;
-							var commentId = hex_md5(comment);
-							sendAjax("POST","/rate/facebook/addComment",{
-								targetid:targetId,
-								myid:myId,
-								commentid:commentId,
-								comment:comment,
-								claimid:claimId
-							},function(){
-								notie.alert(1, 'Comment added successfully!', 3);
-								inputHolder.className = "hiddenInput";
-							});
-						}
-					});
+					if(input){
+						$(input).keyup(function (e) {
+							if (e.keyCode == 13) {
+								var comment = input.value;
+								var commentId = hex_md5(comment);
+								sendAjax("POST","/rate/facebook/addComment",{
+									targetid:targetId,
+									myid:myId,
+									commentid:commentId,
+									comment:comment,
+									claimid:claimId
+								},function(){
+									notie.alert(1, 'Comment added successfully!', 3);
+									inputHolder.className = "hiddenInput";
+								});
+							}
+						});
+					}
 					
 					var chartData = {};
 					chartData.yesCount = data.yes;
