@@ -327,17 +327,27 @@ img.slickArrowL{
 }
 
 input.comment{
-	left: 5%;
-    width: 90%;
+    width: 86%;
     position: relative;
     word-wrap: break-word;
     word-break: break-word;
     height: 30px;
-	margin-bottom: 4px;
-	padding-left: 5px;
+	padding-left: 4%;
+	padding-right: 4%;
+	margin-bottom: 2%;
+	margin-right: 2%;
+    margin-left: 2%;
+    margin-top: 2%;
+	
 }
 
 li.tellUs{
 	background-color: #666;
     color: #f77;
+}
+
+li.hiddenInput{
+	visibility: hidden;
+    height: 0px;
+    margin-top: -2px;
 }

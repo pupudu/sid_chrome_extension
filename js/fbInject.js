@@ -293,6 +293,7 @@ function processCommentPopup(targetId,myId,btnOptional,type,popupData){
 				func:"addComment",
 				half: true,
 				type: type,
+				claimid: claimId,
 				popupData: popupData
 			}
 		],
@@ -321,11 +322,11 @@ function processCommentPopup(targetId,myId,btnOptional,type,popupData){
 					options.buttons[1].label = "Update Comment";
 				}
 			}
+			if(type === "getClaimComments"){
+				emptyComment = "No claim comments available. Be the first to comment on this claim";
+				options.title = "Claim: " + popupData.claim.getAttribute("data-html");
+			}
 			if(content === ""){
-				if(type === "getClaimComments"){
-					emptyComment = "No claim comments available. Be the first to comment on this claim";
-					options.title = "Claim: " + popupData.claim.getAttribute("data-html");
-				}
 				content = emptyComment;
 			}
 			options.content = content;
@@ -486,7 +487,7 @@ function addEventToShowComments(popupData){
 	var claimId = hex_md5(popupData.claim.getAttribute("data-html").toLowerCase());
 	reviewBtn.id = "claimComment" + claimId;
 	processCommentPopup(targetId,myId,reviewBtn.id,"getClaimComments",popupData);
-	reviewBtn.click();
+	//reviewBtn.click();
 }
 
 function addEventToSendData(node,menuItemName,popupData,rate){
@@ -518,11 +519,33 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 					//console.log(data);
 					processRatepopup(node,data.myrating);
 					
+					/*
 					var reviewLink = popupData.claim.getElementsByClassName("reviewLink")[0];
 					reviewLink.innerText = "Tell us why You think so...";
 					reviewLink.style.color = "#f77";
 					var reviewBtn = popupData.claim.getElementsByClassName("reviewElement")[0];
 					reviewBtn.className += " tellUs"; 
+					*/
+					
+					var inputHolder = popupData.claim.getElementsByClassName("hiddenInput")[0];
+					inputHolder.className = "";
+					var input = popupData.claim.getElementsByClassName("comment")[0];
+					$(input).keyup(function (e) {
+						if (e.keyCode == 13) {
+							var comment = input.value;
+							var commentId = hex_md5(comment);
+							sendAjax("POST","/rate/facebook/addComment",{
+								targetid:targetId,
+								myid:myId,
+								commentid:commentId,
+								comment:comment,
+								claimid:claimId
+							},function(){
+								notie.alert(1, 'Comment added successfully!', 3);
+								inputHolder.className = "hiddenInput";
+							});
+						}
+					});
 					
 					var chartData = {};
 					chartData.yesCount = data.yes;
