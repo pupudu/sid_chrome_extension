@@ -162,7 +162,93 @@ function processCommentsHTML(html,type){
 	profile.insertBefore(node,background);
 	node.outerHTML = html;
 	
-	//processCommentPopup(targetId,myId,"selectedComment",type);
+	processCommentPopup(targetId,myId,"selectedComment",type);
+}
+
+function processCommentPopup(targetId,myId,btnOptional,type,popupData){
+	console.log("vieweing comments");
+	var claimId;
+	if(popupData){
+		claimId = hex_md5(popupData.claim.getAttribute("data-html").toLowerCase());
+	}	
+	var emptyComment = "No profile comments available. Be the first to comment on this profile";
+	var postExecute = function(data){
+		if(document.getElementById("sidComment")){
+			emptyComment = "No profile comments available. Be the first to comment on this profile";
+			options.title = "Profile Reviews";
+			var comment;
+			if(data.comments[data.comments.length -1]){
+				comment = data.comments[data.comments.length -1].comment;
+			}else{
+				comment = emptyComment;
+			}
+			if(comment.length > 72){
+				comment = comment.substring(0,70) + " (...)";
+			}
+			document.getElementById("sidComment").innerText = comment;
+		}
+	};
+	sendAjax("POST","/rate/facebook/getComments",{targetid : targetId,myid: myId},postExecute);
+	
+	var options = {
+		title: "sid Comments",
+		content: emptyComment,
+		input:true,
+		buttons: [
+			{
+				label: "Close",
+				id:"closeModal",
+				func:"close",
+				half: true
+			},
+			{
+				label: "Add Comment",
+				id:"addCommentBtn",
+				func:"addComment",
+				half: true,
+				type: type,
+				claimid: claimId,
+				popupData: popupData
+			}
+		],
+		autoload: false
+	};
+	var btn = document.getElementById("view-comment-btn");
+	if(btnOptional){
+		btn = document.getElementById(btnOptional);
+	}
+	
+	var new_element = btn.cloneNode(true);
+	btn.parentNode.replaceChild(new_element, btn);
+	
+	btn = document.getElementById("view-comment-btn");
+	if(btnOptional){
+		btn = document.getElementById(btnOptional);
+	}
+	
+	btn.addEventListener('click', function(){
+		var postExecute = function(data){
+			var content="";
+			console.log(data);
+			for(var i=0;i<data.comments.length;i++){
+				content = content+"Comment "+i+": "+data.comments[i].comment+"<br>";
+				if(data.comments[i].mysid === myId){
+					options.buttons[1].label = "Update Comment";
+				}
+			}
+			if(type === "getClaimComments"){
+				emptyComment = "No claim comments available. Be the first to comment on this claim";
+				options.title = "Claim: " + popupData.claim.getAttribute("data-html");
+			}
+			if(content === ""){
+				content = emptyComment;
+			}
+			options.content = content;
+			var modal = new ZMODAL(options);
+			modal.open();
+		};
+		sendAjax("POST","/rate/facebook/"+type,{targetid : targetId,myid: myId, claimid: claimId},postExecute);
+	});
 }
 
 function commitDropdownChart(profId,node){
@@ -592,4 +678,18 @@ function hashId(str){
     }
 	//console.log(hash +" "+ str);
     return hash;
+}
+
+
+function sendAjax(type,url,data,postExecute){
+	$.ajax(commonstrings.sidServer+url,{
+		method: type,
+		data: data,
+		success: function(data){
+			postExecute(data);
+		},
+		error: function(){
+			sendAjaxOverHttp('POST',commonstrings.sidServerHttp+url,data,postExecute);
+		}
+	});
 }
