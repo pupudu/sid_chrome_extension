@@ -292,6 +292,8 @@ function processCommentPopup(targetId,myId,btnOptional,type,popupData){
 				half: true,
 				type: type,
 				claimid: claimId,
+				myId: myId,
+				targetId: targetId,
 				popupData: popupData
 			}
 		],

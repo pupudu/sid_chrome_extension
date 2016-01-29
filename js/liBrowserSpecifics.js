@@ -65,12 +65,21 @@ function getMyId(){
 	chrome.storage.sync.get("email",function(items){
 		var email = items.email;
 		//console.log(email);
-		$.post(commonstrings.sidServer+"/rate/linkedin/getUrl",{email:email},function(data){
-			var url = data.url;
-			var id = getQueryVariable("id",url);
+		$.post(commonstrings.sidServer+"/rate/linkedin/getId",{email:email},function(data){
+			var id = data.uid;
+			//var id = getQueryVariable("id",url);
 			myId = id;
+			//console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~li id: "+id);
 		});
+		
 	});
+	//myId = LI.TREASURY_CONF.sessionId;
+	//setTimeout(function(){myId = LI.TREASURY_CONF.sessionId;},5000);
+	var script = document.createElement('script');
+	var text = "var myId = LI.TREASURY_CONF.sessionId;\
+				document.getElementById('sidComment').innerText = myId;";
+	script.appendChild(document.createTextNode(text));
+	document.body.appendChild(script);
 }
 
 startScript();

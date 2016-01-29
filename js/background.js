@@ -237,7 +237,8 @@ function inject(tab){
 			//Do Nothing
 		});
 		chrome.tabs.executeScript(tab.id,{
-			file:'js/liInject.js'	//Run this script if navigated to a linkedin origined page
+			file:'js/liInject.js',	//Run this script if navigated to a linkedin origined page
+			runAt: "document_end"
 		},function(){
 			//Do Nothing
 		});

@@ -26,7 +26,7 @@ function check(){
 }
 
 function manipulate(){
-	console.log(myId);
+	console.log("______________________id: "+myId);
 	updateProfPic();
 	addSidAnalyticsMenu();
 	manipulateProfile();
@@ -149,8 +149,8 @@ function processAnalyticsHTML(data){
 
 function processCommentsHTML(html,type){
 	
-	var targetId;
-	var myId;
+	var targetId = vieweeId;
+	var myId = myId;
 	
 	var profile = document.getElementById("profile");
 	var background = document.getElementById("background");
@@ -166,6 +166,7 @@ function processCommentsHTML(html,type){
 }
 
 function processCommentPopup(targetId,myId,btnOptional,type,popupData){
+	alert(myId+" "+targetId);
 	console.log("vieweing comments");
 	var claimId;
 	if(popupData){
@@ -208,6 +209,8 @@ function processCommentPopup(targetId,myId,btnOptional,type,popupData){
 				half: true,
 				type: type,
 				claimid: claimId,
+				myId: myId,
+				targetId: targetId,
 				popupData: popupData
 			}
 		],
@@ -229,7 +232,7 @@ function processCommentPopup(targetId,myId,btnOptional,type,popupData){
 	btn.addEventListener('click', function(){
 		var postExecute = function(data){
 			var content="";
-			console.log(data);
+			//console.log(data);
 			for(var i=0;i<data.comments.length;i++){
 				content = content+"Comment "+i+": "+data.comments[i].comment+"<br>";
 				if(data.comments[i].mysid === myId){
@@ -273,7 +276,7 @@ function commitDropdownChart(profId,node){
 
 
 function addChartListener(chartData,chartConfigs,parent){
-	console.log(parent);
+	//console.log(parent);
 	var sidDropdown = parent.getElementsByClassName(chartConfigs.base)[0];
 	//console.log(chartConfigs.base+".............."+sidDropdown);
 	sidDropdown.addEventListener('mouseover', function() {
@@ -638,7 +641,7 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 					myid: myId,
 					claimid : claimId
 				},function(data){
-					console.log(data);
+					//console.log(data);
 					processRatepopup(node,data.myrating);
 					var chartData = {};
 					chartData.yesCount = data.yes;

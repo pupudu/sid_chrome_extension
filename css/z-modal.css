@@ -106,3 +106,17 @@
 	display:inline-block;
 }
 
+
+input.comment{
+    width: 86%;
+    position: relative;
+    word-wrap: break-word;
+    word-break: break-word;
+    height: 30px;
+	padding-left: 4%;
+	padding-right: 4%;
+	margin-bottom: 2%;
+	margin-right: 2%;
+    margin-left: 2%;
+    margin-top: 2%;	
+}

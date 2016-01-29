@@ -126,8 +126,8 @@
 					notie.alert(3, 'Write Something to add as a review', 3);
 					return;
 				}
-				var targetId = extractId(1);
-				var myId = extractId(0);
+				var targetId = theBtn.targetId;
+				var myId = theBtn.myId;
 				var commentId = hex_md5(comment);
 				
 				var postExecute = function(res){
@@ -142,6 +142,7 @@
 						btn.innerText = "Update Comment";
 						notie.alert(1, 'Comment added successfully!', 3);
 					}
+					//alert(myId+" "+targetId);
 					$.ajax(commonstrings.sidServer+"/rate/facebook/"+theBtn.type,{
 						method:'POST',
 						data: {
