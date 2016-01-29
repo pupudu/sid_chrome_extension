@@ -30,6 +30,7 @@ function manipulate(){
 	updateProfPic();
 	addSidAnalyticsMenu();
 	manipulateProfile();
+	addCommentSection("getComments");
 }
 
 /** Returs the id of the profile being viewed*/
@@ -144,6 +145,24 @@ function processAnalyticsHTML(data){
 			notie.alert(3, 'Facebook profile not connected', 3);
 		});
 	}
+}
+
+function processCommentsHTML(html,type){
+	
+	var targetId;
+	var myId;
+	
+	var profile = document.getElementById("profile");
+	var background = document.getElementById("background");
+	if(!background){
+		return;
+	}
+	var node = document.createElement("div");
+	
+	profile.insertBefore(node,background);
+	node.outerHTML = html;
+	
+	//processCommentPopup(targetId,myId,"selectedComment",type);
 }
 
 function commitDropdownChart(profId,node){

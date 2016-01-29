@@ -226,8 +226,6 @@ function processAnalyticsHTML(html){
 	}
 }
 
-
-
 function processCommentsHTML(html,type){
 	
 	var targetId = extractId(1);

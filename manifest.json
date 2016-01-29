@@ -26,7 +26,7 @@
 	"resources/images/notRatedInfo.png", "resources/images/notMember.png",
 	"resources/images/left.png","resources/images/right.png",
 	"resources/images/analytics_header.png","resources/images/legend.png","resources/images/comment.png",
-	"html/sidAnalytics.html", "html/sidAnalytics_li.html", "html/ratePopup.html", "html/comment.html"
+	"html/sidAnalytics.html", "html/sidAnalytics_li.html", "html/ratePopup.html", "html/comment.html", "html/comment_li.html"
   ],
   "content_scripts":[
 	  {
