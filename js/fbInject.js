@@ -169,9 +169,9 @@ function processAnalyticsHTML(html){
 				var orgNode = document.createElement("img");
 				orgNode.style.left = 25*(4-suppCount) + "px";
 				orgNode.className = "carousElementMan";
-				orgNode.src = commonstrings.sidServer+"/organizations/"+org+".png";
+				orgNode.src = commonstrings.sidServerHttp+"/organizations/"+org+".png";
 				orgNode.addEventListener('click',function(){
-					window.open(commonstrings.sidServer+"/organizations/"+org);
+					window.open(commonstrings.sidServerHttp+"/organizations/"+org);
 				});
 				document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
 			});
@@ -179,10 +179,10 @@ function processAnalyticsHTML(html){
 			organizations.forEach(function(org){
 				var orgNode = document.createElement("img");
 				orgNode.className = "carousElement";
-				orgNode.src = commonstrings.sidServer+"/organizations/"+org+".png";
+				orgNode.src = commonstrings.sidServerHttp+"/organizations/"+org+".png";
 				document.getElementsByClassName("orgSlick")[0].className += " orgSlickAct";
 				orgNode.addEventListener('click',function(){
-					window.open(commonstrings.sidServer+"/organizations/"+org);
+					window.open(commonstrings.sidServerHttp+"/organizations/"+org);
 				});
 				document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
 			});
