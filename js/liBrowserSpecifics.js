@@ -1,5 +1,3 @@
-startScript();
-
 /*need separate implementation for firefox and chrome*/
 function getURL(type,item){
 	//return chrome.extension.getURL(url);
@@ -41,6 +39,28 @@ function popUpOnIconByID(popupData){
 	});
 }
 
+function addCommentSection(type){
+	setTimeout(function(){
+		if(document.getElementById("viewAllComments") === null){
+			$.get(chrome.extension.getURL("html/comment_li.html"), function(data) {
+				processCommentsHTML(data,type);
+			});
+		}
+	},1000);
+}
+
+/*Try Http call from bd script if https request failed*/
+function sendAjaxOverHttp(type,url,data,postExecute){
+	chrome.runtime.sendMessage({
+		request: "ajax",
+		type: type,
+		url: url,
+		data: data
+	},function(res){
+		postExecute(res.data);
+	});
+}
+
 function getMyId(){
 	chrome.storage.sync.get("email",function(items){
 		var email = items.email;
@@ -52,3 +72,5 @@ function getMyId(){
 		});
 	});
 }
+
+startScript();

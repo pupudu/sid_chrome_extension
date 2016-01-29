@@ -1,3 +1,12 @@
+/*need separate implementation for firefox and chrome*/
+function getURL(type,item){
+	//return chrome.extension.getURL(url);
+	if(type === "image"){
+		return chrome.extension.getURL("resources/images/"+item+".png");
+	}else{
+		return chrome.extension.getURL("resources/icons/"+type+item+".png");
+	}
+}
 
 /*need separate implementation for firefox and chrome*/
 function addSidAnalyticsMenu(){
@@ -11,15 +20,6 @@ function addSidAnalyticsMenu(){
 	},1000);
 }
 
-function addCommentSection(type){
-	setTimeout(function(){
-		if(document.getElementById("viewAllComments") === null){
-			$.get(chrome.extension.getURL("html/comment.html"), function(data) {
-				processCommentsHTML(data,type);
-			});
-		}
-	},1000);
-}
 
 /*needs a separate implementations for firefox and chrome*/
 function popUpOnIconByID(popupData){ 
@@ -41,14 +41,14 @@ function popUpOnIconByID(popupData){
 	});
 }
 
-/*need separate implementation for firefox and chrome*/
-function getURL(type,item){
-	//return chrome.extension.getURL(url);
-	if(type === "image"){
-		return chrome.extension.getURL("resources/images/"+item+".png");
-	}else{
-		return chrome.extension.getURL("resources/icons/"+type+item+".png");
-	}
+function addCommentSection(type){
+	setTimeout(function(){
+		if(document.getElementById("viewAllComments") === null){
+			$.get(chrome.extension.getURL("html/comment.html"), function(data) {
+				processCommentsHTML(data,type);
+			});
+		}
+	},1000);
 }
 
 /*Try Http call from bd script if https request failed*/
