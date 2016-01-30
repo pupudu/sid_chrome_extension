@@ -62,7 +62,7 @@ function sendAjaxOverHttp(type,url,data,postExecute){
 }
 
 function getMyId(){
-	chrome.storage.sync.get("email",function(items){
+	/*chrome.storage.sync.get("email",function(items){
 		var email = items.email;
 		//console.log(email);
 		$.post(commonstrings.sidServer+"/rate/linkedin/getId",{email:email},function(data){
@@ -74,12 +74,19 @@ function getMyId(){
 		
 	});
 	//myId = LI.TREASURY_CONF.sessionId;
-	//setTimeout(function(){myId = LI.TREASURY_CONF.sessionId;},5000);
+	//setTimeout(function(){myId = LI.TREASURY_CONF.sessionId;},5000);*/
+	var sid = document.createElement('div');
+	sid.className = "identity";
+	sid.id = "sid";
+	document.body.appendChild(sid);
+	
 	var script = document.createElement('script');
 	var text = "var myId = LI.TREASURY_CONF.sessionId;\
-				document.getElementById('sidComment').innerText = myId;";
+				document.getElementById('sid').setAttribute('data-id',myId)";
 	script.appendChild(document.createTextNode(text));
 	document.body.appendChild(script);
+	
+	myId = document.getElementById('sid').getAttribute('data-id');
 }
 
 startScript();

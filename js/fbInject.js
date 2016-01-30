@@ -291,6 +291,7 @@ function processCommentPopup(targetId,myId,btnOptional,type,popupData){
 				func:"addComment",
 				half: true,
 				type: type,
+				network: "facebook",
 				claimid: claimId,
 				myId: myId,
 				targetId: targetId,
@@ -774,7 +775,7 @@ function getQueryVariable(variable,string) {
     return null;
 }
 
-function sendAjax(type,url,data,postExecute){
+function sendAjax(type,url,data,postExecute,onError){
 	$.ajax(commonstrings.sidServer+url,{
 		method: type,
 		data: data,
@@ -782,7 +783,11 @@ function sendAjax(type,url,data,postExecute){
 			postExecute(data);
 		},
 		error: function(){
-			sendAjaxOverHttp('POST',commonstrings.sidServerHttp+url,data,postExecute);
+			if(onError){
+				onError();
+			}else{
+				sendAjaxOverHttp('POST',commonstrings.sidServerHttp+url,data,postExecute);
+			}
 		}
 	});
 }

@@ -143,7 +143,7 @@
 						notie.alert(1, 'Comment added successfully!', 3);
 					}
 					//alert(myId+" "+targetId);
-					$.ajax(commonstrings.sidServer+"/rate/facebook/"+theBtn.type,{
+					/*$.ajax(commonstrings.sidServer+"/rate/facebook/"+theBtn.type,{
 						method:'POST',
 						data: {
 							targetid : targetId,
@@ -162,9 +162,10 @@
 								postExecute
 							);
 						}
-					});
+					});*/
+					sendAjax('POST',"/rate/"+theBtn.network+"/"+theBtn.type,{targetid : targetId, myid: myId,	claimid: theBtn.claimid},postExecute);
 				}
-				$.ajax(commonstrings.sidServer+"/rate/facebook/addComment",{
+				/*$.ajax(commonstrings.sidServer+"/rate/facebook/addComment",{
 					method:'POST',
 					data: {
 						targetid : targetId,
@@ -187,7 +188,14 @@
 							postExecute
 						);
 					}
-				});
+				});*/
+				sendAjax('POST',"/rate/"+theBtn.network+"/addComment",{
+					targetid : targetId,
+					myid: myId,
+					commentid: commentId,
+					comment: comment,
+					claimid: theBtn.claimid
+				},postExecute);
 			});
 		}
         footer.appendChild(btn);

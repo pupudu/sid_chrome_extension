@@ -26,7 +26,6 @@ function check(){
 }
 
 function manipulate(){
-	console.log("______________________id: "+myId);
 	updateProfPic();
 	addSidAnalyticsMenu();
 	manipulateProfile();
@@ -150,7 +149,6 @@ function processAnalyticsHTML(data){
 function processCommentsHTML(html,type){
 	
 	var targetId = vieweeId;
-	var myId = myId;
 	
 	var profile = document.getElementById("profile");
 	var background = document.getElementById("background");
@@ -161,12 +159,10 @@ function processCommentsHTML(html,type){
 	
 	profile.insertBefore(node,background);
 	node.outerHTML = html;
-	
 	processCommentPopup(targetId,myId,"selectedComment",type);
 }
 
 function processCommentPopup(targetId,myId,btnOptional,type,popupData){
-	alert(myId+" "+targetId);
 	console.log("vieweing comments");
 	var claimId;
 	if(popupData){
@@ -189,7 +185,7 @@ function processCommentPopup(targetId,myId,btnOptional,type,popupData){
 			document.getElementById("sidComment").innerText = comment;
 		}
 	};
-	sendAjax("POST","/rate/facebook/getComments",{targetid : targetId,myid: myId},postExecute);
+	sendAjax("POST","/rate/linkedin/getComments",{targetid : targetId,myid: myId},postExecute);
 	
 	var options = {
 		title: "sid Comments",
@@ -250,7 +246,7 @@ function processCommentPopup(targetId,myId,btnOptional,type,popupData){
 			var modal = new ZMODAL(options);
 			modal.open();
 		};
-		sendAjax("POST","/rate/facebook/"+type,{targetid : targetId,myid: myId, claimid: claimId},postExecute);
+		sendAjax("POST","/rate/linkedin/"+type,{targetid : targetId,myid: myId, claimid: claimId},postExecute);
 	});
 }
 
@@ -684,7 +680,7 @@ function hashId(str){
 }
 
 
-function sendAjax(type,url,data,postExecute){
+function sendAjax(type,url,data,postExecute,onError){
 	$.ajax(commonstrings.sidServer+url,{
 		method: type,
 		data: data,
@@ -692,7 +688,11 @@ function sendAjax(type,url,data,postExecute){
 			postExecute(data);
 		},
 		error: function(){
-			sendAjaxOverHttp('POST',commonstrings.sidServerHttp+url,data,postExecute);
+			if(onError){
+				onError();
+			}else{
+				sendAjaxOverHttp('POST',commonstrings.sidServerHttp+url,data,postExecute);
+			}
 		}
 	});
 }
