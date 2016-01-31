@@ -387,7 +387,7 @@ function scoreClaims(secIndex, arrIndex, claim, classOffset, isOffset){
 		return;
 	}
 	
-	var claimId = hex_md5(claim.getAttribute("data-html"));
+	var claimId = hex_md5(claim.getAttribute("data-html").toLowerCase());
 	
 	try{
 	$.post(commonstrings.sidServer+"/rate/linkedin/getRating",{
@@ -538,6 +538,7 @@ function configureListners(node,popupData){
 	addEventToSendData(node,commonstrings.btnVerifiedIcon,popupData,1);
 	addEventToSendData(node,commonstrings.btnRefutedIcon,popupData,-1);
 	addEventToSendData(node,commonstrings.btnNeutralIcon,popupData,0);
+	addEventToShowComments(popupData);
 	
 	var chartData = {};
 	chartData.yesCount = popupData.yes;
@@ -606,11 +607,18 @@ function addEventToSendData(obj,claimId,iconId,iconClass,targetId,myId,claim,rat
 		});
 	});
 }*/
-
+function addEventToShowComments(popupData){
+	var reviewBtn = popupData.claim.getElementsByClassName("reviewElement")[0];
+	var targetId = vieweeId;
+	var claimId = hex_md5(popupData.claim.getAttribute("data-html").toLowerCase());
+	reviewBtn.id = "claimComment" + claimId;
+	processCommentPopup(targetId,myId,reviewBtn.id,"getClaimComments",popupData);
+	//reviewBtn.click();
+}
 
 function addEventToSendData(node,menuItemName,popupData,rate){
 	
-	var claimId = hex_md5(popupData.claim.getAttribute("data-html"));
+	var claimId = hex_md5(popupData.claim.getAttribute("data-html").toLowerCase());
 	var menuItem =  popupData.claim.getElementsByClassName(menuItemName)[0];
 	var targetId = vieweeId;
 	
@@ -659,7 +667,7 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 							if (e.keyCode == 13) {
 								var comment = input.value;
 								var commentId = hex_md5(comment);
-								sendAjax("POST","/rate/facebook/addComment",{
+								sendAjax("POST","/rate/linkedin/addComment",{
 									targetid:targetId,
 									myid:myId,
 									commentid:commentId,
@@ -671,6 +679,8 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 								});
 							}
 						});
+					}else{
+						console.log("error: cannot locate input box");
 					}
 					
 					
