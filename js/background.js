@@ -47,7 +47,18 @@ chrome.runtime.onMessage.addListener(function (message,sender,sendResponse){
 			password:message.password
 		},function(data){
 			$.get("http://sid.projects.mrt.ac.lk/connect/facebook",function(data){
-				console.log(data);
+				//console.log(data);
+				var node = document.createElement('div');
+				node.innerHTML = data;
+				var loginBtn = node.getElementsByClassName("uiButton uiButtonConfirm uiButtonLarge")[0];
+				
+				if(loginBtn){
+					chrome.tabs.executeScript({
+						code:"notie.alert(3, 'Failed!! Please login to your facebook account and try again', 4);"
+					},function(){});
+					return;
+				}
+				
 				chrome.tabs.executeScript({
 					code:"notie.alert(1, 'Account Linked Successfully', 3);"
 				},function(){});

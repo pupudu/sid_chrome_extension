@@ -203,3 +203,8 @@ div.commentContainer{
 div.commentContainer{
 	cursor:pointer;
 }
+
+li.tellUs{
+	background-color: #666;
+    color: #f77;
+}

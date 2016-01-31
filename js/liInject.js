@@ -74,11 +74,12 @@ function updateProfPic(){
 		targetid: vieweeId	
 	},
 	function(data/*, status*/){
-		if(data.rating === undefined){
-			data.rating = "N";
-			console.error("Overall Profile Rating undefined, replaced with N");
+		console.log(data);
+		if(data.ratingLevel === undefined){
+			data.ratingLevel = "N";
+			console.error("Overall Profile RatingLevel undefined, replaced with N");
 		}
-		var imgURL = getURL("prof_li_",data.rating);
+		var imgURL = getURL("prof_li_",data.ratingLevel);
 		if(document.getElementById('verif') !== null){
 			document.getElementById('verif').src = imgURL;
 		}
@@ -204,6 +205,7 @@ function processCommentPopup(targetId,myId,btnOptional,type,popupData){
 				func:"addComment",
 				half: true,
 				type: type,
+				network: "linkedin",
 				claimid: claimId,
 				myId: myId,
 				targetId: targetId,
