@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
 							email: usr.value
 						});
 						
-						if(data.linked===true){
+						if(data.isFacebookLinked===true){
 							if(data.fbid===undefined || data.fbid === ""){
 								if(data.fbappid!==undefined){
 									chrome.runtime.sendMessage({request:"notie",type:"try",message:"Linking Facebook Account to Sid Account"});
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
 							chrome.runtime.sendMessage({
 								request:"notie",
 								type:"confirm",
-								message:"Account not linked. Would you like to link the loggedin fb account with sid?",
+								message:"Facebook Account not linked. Would you like to link the loggedin account with sid?",
 								email:usr.value,
 								password:pwd.value
 							});

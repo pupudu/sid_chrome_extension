@@ -3,14 +3,15 @@ var vieweeId;
 var myId;
 
 function startScript(){
-	vieweeId = getVieweeId();
+	getVieweeId();
 	getMyId();
-	if(document.getElementsByClassName("preview-profile button-primary").length===0){
-		check();
-	}
+	/*if(document.getElementsByClassName("preview-profile button-primary").length===0){
+		//check();
+	}*/
 }
-
+/*
 function check(){
+	console.log(myId);
 	checkCounter++;
 	if(checkCounter > 20){
 		console.log("Error getting linked ID. Make sure that you have connected your linkedin profile using the sid Website and try again.(This message will be shown 3 times)");
@@ -23,7 +24,7 @@ function check(){
 			manipulate();
 		}
 	},500);
-}
+}*/
 
 function manipulate(){
 	updateProfPic();
@@ -34,7 +35,8 @@ function manipulate(){
 
 /** Returs the id of the profile being viewed*/
 function getVieweeId(){
-	return document.getElementsByClassName("profile-overview-content")[0].firstChild.id.replace("member-","");
+	//return document.getElementsByClassName("profile-overview-content")[0].firstChild.id.replace("member-","");
+	vieweeId = document.getElementsByClassName("view-public-profile")[0].innerText;
 }
 
 
@@ -52,11 +54,13 @@ function getQueryVariable(variable,string) {
 }
 
 /** Appends sid-rating state over fb profile picture*/
-function updateProfPic(){
-	if(document.getElementById("verif")!==null){
-		if(document.getElementById("verif").src.length>10){
-			console.log(".. .. Profile pic already updated");
-			return;
+function updateProfPic(ismanual){
+	if(!ismanual){
+		if(document.getElementById("verif")!==null){
+			if(document.getElementById("verif").src.length>10){
+				console.log(".. .. Profile pic already updated");
+				return;
+			}
 		}
 	}
 	var profPic = document.getElementsByClassName(listrings.profPic)[0];
@@ -641,6 +645,35 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 				},function(data){
 					//console.log(data);
 					processRatepopup(node,data.myrating);
+					
+					
+					var inputHolder = popupData.claim.getElementsByClassName("hiddenInput")[0];
+					if(!inputHolder){
+						inputHolder = popupData.claim.getElementsByClassName("shownInput")[0];
+					}else{
+						inputHolder.className = "shownInput";
+					}
+					var input = popupData.claim.getElementsByClassName("comment")[0];
+					if(input){
+						$(input).keyup(function (e) {
+							if (e.keyCode == 13) {
+								var comment = input.value;
+								var commentId = hex_md5(comment);
+								sendAjax("POST","/rate/facebook/addComment",{
+									targetid:targetId,
+									myid:myId,
+									commentid:commentId,
+									comment:comment,
+									claimid:claimId
+								},function(){
+									notie.alert(1, 'Comment added successfully!', 3);
+									inputHolder.className = "hiddenInput";
+								});
+							}
+						});
+					}
+					
+					
 					var chartData = {};
 					chartData.yesCount = data.yes;
 					chartData.noCount = data.no;

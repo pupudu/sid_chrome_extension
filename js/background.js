@@ -72,7 +72,7 @@ chrome.runtime.onMessage.addListener(function (message,sender,sendResponse){
 			chrome.tabs.executeScript({
 				file:"js/notie.js"
 			},function(){
-				var code = "notie.confirm('"+message.message+"', 'Take me there', 'No', function() {\
+				var code = "notie.confirm('"+message.message+"', 'Yes', 'No', function() {\
 								chrome.runtime.sendMessage({request:'connectFb',email:'"+message.email+"',password:'"+message.password+"'});\
 							});";
 				chrome.tabs.executeScript({
