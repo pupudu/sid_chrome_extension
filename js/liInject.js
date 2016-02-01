@@ -137,16 +137,18 @@ function processAnalyticsHTML(data){
 	document.getElementById("analytics_legend").src = legendURL;
 	
 	commitDropdownChart(vieweeId,document);
-	console.log(vieweeId);
+	
 	sendAjax("POST","/rate/linkedin/getFacebookUrl",{
 		uid: vieweeId
 	},function(data){
-		console.log(data);
-		document.getElementById("li_nav").href=data.facebookUrl;
-	},function(){
-		document.getElementById("li_nav").addEventListener('click',function(){
-			notie.alert(3, 'Facebook profile not connected', 3);
-		});
+		if(data.success === true){
+			document.getElementById("li_nav").target = "_blank";
+			document.getElementById("li_nav").href=data.facebookUrl;
+		}else{
+			document.getElementById("li_nav").addEventListener('click',function(){
+				notie.alert(3, 'Facebook profile not connected!', 3);
+			});
+		}
 	});
 	
 	try{

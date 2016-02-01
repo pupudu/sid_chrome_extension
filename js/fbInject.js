@@ -210,12 +210,15 @@ function processAnalyticsHTML(html){
 	sendAjax("POST","/rate/facebook/getLinkedInUrl",{
 		uid: targetId
 	},function(data){
-		document.getElementById("li_nav").href=data.linkedinUrl;
-	},function(){
-		document.getElementById("li_nav").addEventListener('click',function(){
-			notie.alert(3, 'Linked In profile not connected', 3);
-		});
+		if(data.success === true){
+			document.getElementById("li_nav").href=data.linkedinUrl;
+		}else{
+			document.getElementById("li_nav").addEventListener('click',function(){
+				notie.alert(3, 'Facebook profile not connected!', 3);
+			});
+		}
 	});
+	
 	try{
 		processCommentPopup(targetId,myId,undefined,"getComments");
 	}catch(e){
