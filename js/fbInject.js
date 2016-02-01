@@ -370,7 +370,12 @@ function scoreClaims(arrIndex, claim, classOffset){
 	
 	/*Avoid adding icons again if already added*/
 	if(claim.getAttribute("data-html")===null){
-		var html = claim.innerHTML.replace(/web./g,"www.");
+		var html;
+		if(classOffset === "Events"){
+			html = claim.getElementsByClassName("_c24 _50f4")[0].innerHTML.replace(/web./g,"www.");
+		}else{
+			html = claim.innerHTML.replace(/web./g,"www.");
+		}
 		html = html.replace("Also ","");
 		html = html.substr(0,1).toUpperCase() + html.substr(1);
 		claim.setAttribute("data-html",html);
@@ -517,17 +522,8 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 				},1000);
 				
 				var postExecute = function(data){
-					//console.log(data);
+					
 					processRatepopup(node,data.myrating);
-					
-					/*
-					var reviewLink = popupData.claim.getElementsByClassName("reviewLink")[0];
-					reviewLink.innerText = "Tell us why You think so...";
-					reviewLink.style.color = "#f77";
-					var reviewBtn = popupData.claim.getElementsByClassName("reviewElement")[0];
-					reviewBtn.className += " tellUs"; 
-					*/
-					
 					var inputHolder = popupData.claim.getElementsByClassName("hiddenInput")[0];
 					if(!inputHolder){
 						inputHolder = popupData.claim.getElementsByClassName("shownInput")[0];

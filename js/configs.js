@@ -7,7 +7,7 @@ var fbstrings = {
 	photoContainer:'photoContainer',
 	friendProfiles:'_s0 _rv img',
 	workClaim:'_50f5 _50f7',
-	lifeEventClaim:'_c24 _50f4',
+	lifeEventClaim:'_8u _42ef',
 	timelineClaimContainer:'_1zw6 _md0 _5vb9',
 	timelineClaim:'_50f3',
 	fbMenubar:'_6_7 clearfix',
