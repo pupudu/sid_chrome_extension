@@ -69,6 +69,7 @@
     // modal element creation
     this.modal = document.createElement("div");
     this.modal.className = "z-modal " + this.options.className;
+	this.modal.style.zIndex = 9999;
     __initListener(this.modal, "click", function (){
       _this.close.call(_this);
     }, true)

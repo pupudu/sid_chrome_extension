@@ -208,3 +208,7 @@ li.tellUs{
 	background-color: #666;
     color: #f77;
 }
+
+a.myButton{
+	cursor:pointer;
+}
