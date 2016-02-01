@@ -66,11 +66,11 @@ function updateProfPic(ismanual){
 	}
 	var profPic = document.getElementsByClassName(listrings.profPic)[0];
 	var icon = document.createElement("DIV");
-	var accType="profIcon";
+	/*var accType="profIcon";
 
 	if(document.getElementsByClassName("premiumicon").length>0){
 		accType="premium";
-	}
+	}*/
 	icon.innerHTML = "<img id ='verif'>";
 	profPic.appendChild(icon);
 	
@@ -79,7 +79,6 @@ function updateProfPic(ismanual){
 	var css = window.getComputedStyle(profPicImg);
 	var parentCss = window.getComputedStyle(profPicImg.parentNode);
 	
-	console.log(parentCss);
 	sidIcon.style.position = "absolute";
 	sidIcon.style.left = (parentCss.width.toString().substring(0,3) - css.width.toString().substring(0,3))/2+"px";
 	sidIcon.style.top = (parentCss.width.toString().substring(0,3) - css.height.toString().substring(0,3))/2+"px";
@@ -207,7 +206,7 @@ function processAnalyticsHTML(data){
 		}
 	};
 	
-	sendAjax("POST","/rate/facebook/getMyOrganizations",{myid: "1199326144"},postExecute);
+	sendAjax("POST","/rate/facebook/getMyOrganizations",{myid: vieweeId},postExecute);
 	
 	
 	commitDropdownChart(vieweeId,document);
@@ -742,7 +741,9 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 	var claimId = hex_md5(popupData.claim.getAttribute("data-html").toLowerCase());
 	var menuItem =  popupData.claim.getElementsByClassName(menuItemName)[0];
 	var targetId = vieweeId;
-	
+	var fullName = document.getElementsByClassName("full-name")[0].innerText;
+	var profImage = document.getElementsByClassName("profile-picture")[0].getElementsByTagName("img")[0].src;
+		
 	menuItem.addEventListener("click",function(){
 
 		notie.alert(4, 'Adding rating to siD system', 2);
@@ -752,7 +753,9 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 			targetid: targetId,
 			claimid: claimId,
 			claim: claimData,
-			rating: rate
+			rating: rate,
+			name: fullName,
+			img: profImage
 		},
 		function(data){
 			
