@@ -210,7 +210,6 @@ function processAnalyticsHTML(html){
 	sendAjax("POST","/rate/facebook/getLinkedInUrl",{
 		uid: targetId
 	},function(data){
-		console.log(data);
 		document.getElementById("li_nav").href=data.linkedinUrl;
 	},function(){
 		document.getElementById("li_nav").addEventListener('click',function(){

@@ -37,6 +37,7 @@ function manipulate(){
 function getVieweeId(){
 	//return document.getElementsByClassName("profile-overview-content")[0].firstChild.id.replace("member-","");
 	vieweeId = document.getElementsByClassName("view-public-profile")[0].innerText;
+	vieweeId = vieweeId.replace("https://lk.linkedin.","https://www.linkedin.");
 }
 
 
@@ -136,19 +137,17 @@ function processAnalyticsHTML(data){
 	document.getElementById("analytics_legend").src = legendURL;
 	
 	commitDropdownChart(vieweeId,document);
-	
-	/*try{
-		$.post(commonstrings.sidServer+"/rate/linkedin/getFbURL",{
-			uid : vieweeId
-		},
-		function(data){
-			document.getElementById("li_nav").href=data.url;
-		});
-	}catch(e){
+	console.log(vieweeId);
+	sendAjax("POST","/rate/linkedin/getFacebookUrl",{
+		uid: vieweeId
+	},function(data){
+		console.log(data);
+		document.getElementById("li_nav").href=data.facebookUrl;
+	},function(){
 		document.getElementById("li_nav").addEventListener('click',function(){
 			notie.alert(3, 'Facebook profile not connected', 3);
 		});
-	}*/
+	});
 	
 	try{
 		processCommentPopup(vieweeId,myId,undefined,"getComments");
