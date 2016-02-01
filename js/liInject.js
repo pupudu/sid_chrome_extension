@@ -130,8 +130,8 @@ function processAnalyticsHTML(data){
 	document.getElementsByClassName(listrings.mainNavBar)[0].appendChild(node);
 	node.outerHTML = data;
 	
-	var headerURL = getURL("image","analytics_header");
-	var legendURL = getURL("image","legend");
+	var headerURL = getURL("image","analytics_header_li");
+	var legendURL = getURL("image","legend_li");
 	
 	document.getElementById("analytics_header").src = headerURL;
 	document.getElementById("analytics_legend").src = legendURL;
@@ -186,14 +186,14 @@ function processAnalyticsHTML(data){
 			var lArrow = document.createElement("img");
 			rArrow.className = "slickArrowR";
 			lArrow.className = "slickArrowL";
-			rArrow.src = getURL("image","right");
-			lArrow.src = getURL("image","left");
+			//rArrow.src = getURL("image","right");
+			//lArrow.src = getURL("image","left");
 			document.getElementsByClassName("slick-next")[0].appendChild(rArrow);
 			document.getElementsByClassName("slick-prev")[0].appendChild(lArrow);
 		}
 	};
 	
-	sendAjax("POST","/rate/facebook/getMyOrganizations",{myid: vieweeId},postExecute);
+	sendAjax("POST","/rate/facebook/getMyOrganizations",{myid: "1199326144"},postExecute);
 	
 	
 	commitDropdownChart(vieweeId,document);
