@@ -4,6 +4,9 @@ img.premium{
 	left:30px;
 	width:180px;
 	height:180px;
+	position:absolute;
+	z-index:1;
+	display:none;
 }
 
 canvas.drop_chart{

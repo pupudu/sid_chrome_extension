@@ -66,13 +66,27 @@ function updateProfPic(ismanual){
 	}
 	var profPic = document.getElementsByClassName(listrings.profPic)[0];
 	var icon = document.createElement("DIV");
-	var accType="free";
+	var accType="profIcon";
 
 	if(document.getElementsByClassName("premiumicon").length>0){
 		accType="premium";
 	}
-	icon.innerHTML = "<img id ='verif' class = 'profIcon "+accType+"'>";
+	icon.innerHTML = "<img id ='verif'>";
 	profPic.appendChild(icon);
+	
+	var sidIcon = document.getElementById('verif');
+	var profPicImg = document.getElementsByClassName("profile-picture")[0].children[0];
+	var css = window.getComputedStyle(profPicImg);
+	var parentCss = window.getComputedStyle(profPicImg.parentNode);
+	
+	console.log(parentCss);
+	sidIcon.style.position = "absolute";
+	sidIcon.style.left = (parentCss.width.toString().substring(0,3) - css.width.toString().substring(0,3))/2+"px";
+	sidIcon.style.top = (parentCss.width.toString().substring(0,3) - css.height.toString().substring(0,3))/2+"px";
+	sidIcon.style.width = css.width;
+	sidIcon.style.height = css.height;
+	
+	
 	
 	$.post(commonstrings.sidServer+"/rate/linkedin/getOverallProfileRating",
 	{
