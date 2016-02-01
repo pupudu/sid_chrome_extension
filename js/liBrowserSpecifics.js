@@ -36,6 +36,7 @@ function popUpOnIconByID(popupData){
 		
 		processRatepopup(node,popupData.myRating);
 		configureListners(node,popupData);
+		popupComment(node,popupData);
 	});
 }
 

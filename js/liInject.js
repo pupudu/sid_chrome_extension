@@ -362,6 +362,8 @@ function scoreClaims(secIndex, arrIndex, claim, classOffset, isOffset){
 	//console.log(".. .. scoring claims on time line" + claim.innerHTML);
 	if(claim == undefined){return;}
 	arrIndex = 100*secIndex + arrIndex;
+	
+	//var input = claim.getElementsByClassName("comment")[0];
 
 	var rateIcon = document.createElement("DIV");
 	var iconId = 'claimR'+classOffset+arrIndex;
@@ -414,6 +416,7 @@ function scoreClaims(secIndex, arrIndex, claim, classOffset, isOffset){
 			popupData.myRating = data.myrating;
 			
 			popUpOnIconByID(popupData);
+			//popupComment(input,claimId);
 		}
 		else{
 			console.log("info .. .. .. Icons already added");
@@ -437,7 +440,43 @@ function scoreClaims(secIndex, arrIndex, claim, classOffset, isOffset){
 			popupData.myRating = -10;
 			
 			popUpOnIconByID(popupData);
+			//popupComment(popupData);
 		}
+	}
+}
+
+function popupComment(node,popupData){
+	var inputHolder = node.getElementsByClassName("hiddenInput")[0];
+	if(!inputHolder){
+		inputHolder = node.getElementsByClassName("shownInput")[0];
+	}else{
+		inputHolder.className = "shownInput";
+	}
+	var input = node.getElementsByClassName("comment")[0];
+	var claimId = hex_md5(popupData.claim.getAttribute("data-html").toLowerCase());
+	
+	if(input){
+		console.log('adding key event');
+		$(input).keyup(function (e) {
+			if (e.keyCode == 13) {
+				var comment = input.value;
+				var commentId = hex_md5(comment);
+				sendAjax("POST","/rate/linkedin/addComment",{
+					targetid:vieweeId,
+					myid:myId,
+					commentid:commentId,
+					comment:comment,
+					claimid:claimId
+				},function(){
+					notie.alert(1, 'Comment added successfully!', 3);
+					inputHolder.className = "hiddenInput";
+				});
+			}
+		});
+	}else{
+		console.log("error: cannot locate input box");
+		console.log(popupData);
+		console.log(node);
 	}
 }
 /*
@@ -653,36 +692,6 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 				},function(data){
 					//console.log(data);
 					processRatepopup(node,data.myrating);
-					
-					
-					var inputHolder = popupData.claim.getElementsByClassName("hiddenInput")[0];
-					if(!inputHolder){
-						inputHolder = popupData.claim.getElementsByClassName("shownInput")[0];
-					}else{
-						inputHolder.className = "shownInput";
-					}
-					var input = popupData.claim.getElementsByClassName("comment")[0];
-					if(input){
-						$(input).keyup(function (e) {
-							if (e.keyCode == 13) {
-								var comment = input.value;
-								var commentId = hex_md5(comment);
-								sendAjax("POST","/rate/linkedin/addComment",{
-									targetid:targetId,
-									myid:myId,
-									commentid:commentId,
-									comment:comment,
-									claimid:claimId
-								},function(){
-									notie.alert(1, 'Comment added successfully!', 3);
-									inputHolder.className = "hiddenInput";
-								});
-							}
-						});
-					}else{
-						console.log("error: cannot locate input box");
-					}
-					
 					
 					var chartData = {};
 					chartData.yesCount = data.yes;
