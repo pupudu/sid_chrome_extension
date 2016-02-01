@@ -6,7 +6,7 @@ This script runs as a backround script. To stop, change the manifest.json
 //count = 0;
 
 chrome.runtime.onMessage.addListener(function (message,sender,sendResponse){
-	console.log(sender);
+	console.log(sender); 
 	if(message === "wake up"){
 		console.log("Background page woke up from content script");
 		return true;
