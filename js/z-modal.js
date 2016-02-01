@@ -136,59 +136,15 @@
 						for(i=0;i<data.comments.length;i++){
 							theContent = theContent+"Comment "+i+": "+data.comments[i].comment+"<br>";
 						}
+						console.log("checkpoint 1");
 						processCommentPopup(targetId,myId,undefined,theBtn.type,theBtn.popupData);
 						var currentContent = document.getElementById("commentContent");
 						currentContent.innerHTML = theContent;
 						btn.innerText = "Update Comment";
 						notie.alert(1, 'Comment added successfully!', 3);
 					}
-					//alert(myId+" "+targetId);
-					/*$.ajax(commonstrings.sidServer+"/rate/facebook/"+theBtn.type,{
-						method:'POST',
-						data: {
-							targetid : targetId,
-							myid: myId,
-							claimid: theBtn.claimid
-						},
-						success: function(data){
-							postExecute(data);
-						},
-						error: function(xhr,textStatus,error){
-							sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/"+theBtn.type,{
-									targetid : targetId,
-									myid: myId,
-									claimid: theBtn.claimid
-								},
-								postExecute
-							);
-						}
-					});*/
 					sendAjax('POST',"/rate/"+theBtn.network+"/"+theBtn.type,{targetid : targetId, myid: myId,	claimid: theBtn.claimid},postExecute);
 				}
-				/*$.ajax(commonstrings.sidServer+"/rate/facebook/addComment",{
-					method:'POST',
-					data: {
-						targetid : targetId,
-						myid: myId,
-						commentid: commentId,
-						comment: comment,
-						claimid: theBtn.claimid
-					},
-					success: function(data){
-						postExecute(data);
-					},
-					error: function(xhr,textStatus,error){
-						sendAjaxOverHttp('POST',commonstrings.sidServerHttp+"/rate/facebook/addComment",{
-								targetid : targetId,
-								myid: myId,
-								commentid: commentId,
-								comment: comment,
-								claimid: theBtn.claimid
-							},
-							postExecute
-						);
-					}
-				});*/
 				sendAjax('POST',"/rate/"+theBtn.network+"/addComment",{
 					targetid : targetId,
 					myid: myId,

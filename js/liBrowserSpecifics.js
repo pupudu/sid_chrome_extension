@@ -66,7 +66,7 @@ function getMyId(){
 	chrome.storage.sync.get("email",function(items){
 		var email = items.email;
 		$.post(commonstrings.sidServer+"/rate/linkedin/getUrl",{email:email},function(data){
-			console.log(data);
+			//console.log(data);
 			var id = data.url;
 			myId = id;
 			manipulate();

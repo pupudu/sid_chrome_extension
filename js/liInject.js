@@ -137,7 +137,7 @@ function processAnalyticsHTML(data){
 	
 	commitDropdownChart(vieweeId,document);
 	
-	try{
+	/*try{
 		$.post(commonstrings.sidServer+"/rate/linkedin/getFbURL",{
 			uid : vieweeId
 		},
@@ -148,7 +148,14 @@ function processAnalyticsHTML(data){
 		document.getElementById("li_nav").addEventListener('click',function(){
 			notie.alert(3, 'Facebook profile not connected', 3);
 		});
+	}*/
+	
+	try{
+		processCommentPopup(vieweeId,myId,undefined,"getComments");
+	}catch(e){
+		console.error(e);
 	}
+	
 }
 
 function processCommentsHTML(html,type){
@@ -168,7 +175,7 @@ function processCommentsHTML(html,type){
 }
 
 function processCommentPopup(targetId,myId,btnOptional,type,popupData){
-	console.log("vieweing comments");
+	//console.log("vieweing comments");
 	var claimId;
 	if(popupData){
 		claimId = hex_md5(popupData.claim.getAttribute("data-html").toLowerCase());
@@ -184,8 +191,8 @@ function processCommentPopup(targetId,myId,btnOptional,type,popupData){
 			}else{
 				comment = emptyComment;
 			}
-			if(comment.length > 72){
-				comment = comment.substring(0,70) + " (...)";
+			if(comment.length > 200){
+				comment = comment.substring(0,196) + " (...)";
 			}
 			document.getElementById("sidComment").innerText = comment;
 		}
@@ -456,7 +463,7 @@ function popupComment(node,popupData){
 	var claimId = hex_md5(popupData.claim.getAttribute("data-html").toLowerCase());
 	
 	if(input){
-		console.log('adding key event');
+		//console.log('adding key event');
 		$(input).keyup(function (e) {
 			if (e.keyCode == 13) {
 				var comment = input.value;
