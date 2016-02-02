@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			});
 		});*/
 	}catch(e){
-		alert("dodan")
+		//alert("Unexpected error:"+ e);
 	/*Do Nothing*/}
 }, false);
 

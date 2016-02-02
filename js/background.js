@@ -60,9 +60,9 @@ chrome.runtime.onMessage.addListener(function (message,sender,sendResponse){
 				}
 				
 				chrome.tabs.executeScript({
-					code:"notie.alert(1, 'Account Linked Successfully', 3);"
+					code:"notie.alert(1, 'Account Linked Successfully. Please login again', 3);"
 				},function(){});
-				setCookie("sidSession","true",3);
+				//setCookie("sidSession","true",3);
 			});
 		});
 	}else if(message.request === "notie"){
