@@ -250,7 +250,7 @@ function processCommentsHTML(html,type){
 }
 
 function processCommentPopup(targetId,myId,btnOptional,type,popupData){
-	console.log("vieweing comments");
+	//console.log("vieweing comments");
 	var claimId;
 	if(popupData){
 		claimId = hex_md5(popupData.claim.getAttribute("data-html").toLowerCase());
@@ -269,7 +269,7 @@ function processCommentPopup(targetId,myId,btnOptional,type,popupData){
 			if(comment.length > 72){
 				comment = comment.substring(0,70) + " (...)";
 			}
-			document.getElementById("sidComment").innerText = comment;
+			document.getElementById("sidComment").textContent = comment;
 		}
 	};
 	sendAjax("POST","/rate/facebook/getComments",{targetid : targetId,myid: myId},postExecute);
@@ -316,7 +316,7 @@ function processCommentPopup(targetId,myId,btnOptional,type,popupData){
 	btn.addEventListener('click', function(){
 		var postExecute = function(data){
 			var content="";
-			console.log(data);
+			//console.log(data);
 			for(var i=0;i<data.comments.length;i++){
 				content = content+"Comment "+i+": "+data.comments[i].comment+"<br>";
 				if(data.comments[i].mysid === myId){
@@ -378,6 +378,7 @@ function scoreClaims(arrIndex, claim, classOffset){
 		}
 		html = html.replace("Also ","");
 		html = html.substr(0,1).toUpperCase() + html.substr(1);
+		console.log("claim: "+html);
 		claim.setAttribute("data-html",html);
 	}
 	if(claim.getElementsByClassName(commonstrings.rateIconContainer).length === 0){
@@ -592,11 +593,11 @@ function clearIconIfSkipUsingString(item){
 	}
 	for(var j=0;j<skipStringAr.length;j++){
 		if(text.indexOf(skipStringAr[j])>=0){
-			console.log(".. .. .. .. Will clear "+ item+ " due to "+ skipStringAr[j]);
+			//console.log(".. .. .. .. Will clear "+ item+ " due to "+ JSON.stringify(skipStringAr[j]));
 			var skipClear = false;
 			for(var k=0;k<nonSkipStringAr.length;k++){
 				if(text.indexOf(nonSkipStringAr[k])>=0){
-					console.log(".. .. .. .. will not clear" + item+ " due to "+ nonSkipStringAr[k]);
+					//console.log(".. .. .. .. will not clear" + item+ " due to "+ JSON.stringify(nonSkipStringAr[k]));
 					skipClear = true;
 					break;
 				}
@@ -685,7 +686,7 @@ function hashIds(str){
 
 function addChartListener(chartData,chartConfigs,parent){
 	var sidDropdown = parent.getElementsByClassName(chartConfigs.base)[0];
-	console.log(chartConfigs.base+".............."+sidDropdown);
+	//console.log(chartConfigs.base+".............."+sidDropdown);
 	drawPieChart(chartData,chartConfigs,parent);
 	sidDropdown.addEventListener('mouseover', function() {
 		if(document.getElementsByClassName("ego_section").length>0){
@@ -696,7 +697,7 @@ function addChartListener(chartData,chartConfigs,parent){
 }
 
 function drawPieChart(chartData,chartConfigs,parent){
-	console.log("drawing chart" + chartData.yesCount);
+	//console.log("drawing chart" + chartData.yesCount);
 	var verified =chartData.yesCount;
 	var rejected =chartData.noCount;
 	var uncertain=chartData.notSureCount;
