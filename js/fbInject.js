@@ -372,9 +372,9 @@ function scoreClaims(arrIndex, claim, classOffset){
 	if(claim.getAttribute("data-html")===null){
 		var html;
 		if(classOffset === "Events"){
-			html = claim.getElementsByClassName("_c24 _50f4")[0].innerHTML.replace(/web./g,"www.");
+			html = claim.getElementsByClassName("_c24 _50f4")[0].textContent.replace(/web./g,"www.");
 		}else{
-			html = claim.innerHTML.replace(/web./g,"www.");
+			html = claim.textContent.replace(/web./g,"www.");
 		}
 		html = html.replace("Also ","");
 		html = html.substr(0,1).toUpperCase() + html.substr(1);
