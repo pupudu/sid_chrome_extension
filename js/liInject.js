@@ -4,7 +4,7 @@ var myId;
 
 function startScript(){
 	getVieweeId();
-	getMyId();
+	
 	/*if(document.getElementsByClassName("preview-profile button-primary").length===0){
 		//check();
 	}*/
@@ -36,8 +36,12 @@ function manipulate(){
 /** Returs the id of the profile being viewed*/
 function getVieweeId(){
 	//return document.getElementsByClassName("profile-overview-content")[0].firstChild.id.replace("member-","");
-	vieweeId = document.getElementsByClassName("view-public-profile")[0].innerText;
-	vieweeId = vieweeId.replace("https://lk.linkedin.","https://www.linkedin.");
+	var vieweeIdElement = document.getElementsByClassName("view-public-profile")[0]
+	if(vieweeIdElement){
+		vieweeId = vieweeIdElement.textContent;
+		vieweeId = vieweeId.replace("https://lk.linkedin.","https://www.linkedin.");
+		getMyId();
+	}
 }
 
 
@@ -173,7 +177,7 @@ function processAnalyticsHTML(data){
 				orgNode.className = "carousElementMan";
 				orgNode.src = commonstrings.sidServerHttp+"/organizations/"+org+".png";
 				orgNode.addEventListener('click',function(){
-					window.open(commonstrings.sidServerHttp+"/organizations/"+org);
+					window.open(commonstrings.sidServerHttp+"/organizationProfile?orgid="+org);
 				});
 				document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
 			});
@@ -184,7 +188,7 @@ function processAnalyticsHTML(data){
 				orgNode.src = commonstrings.sidServerHttp+"/organizations/"+org+".png";
 				document.getElementsByClassName("orgSlick")[0].className += " orgSlickAct";
 				orgNode.addEventListener('click',function(){
-					window.open(commonstrings.sidServerHttp+"/organizations/"+org);
+					window.open(commonstrings.sidServerHttp+"/organizationProfile?orgid="+org);
 				});
 				document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
 			});
@@ -206,7 +210,7 @@ function processAnalyticsHTML(data){
 		}
 	};
 	
-	sendAjax("POST","/rate/facebook/getMyOrganizations",{myid: vieweeId},postExecute);
+	sendAjax("POST","/rate/linkedin/getMyOrganizations",{myid: vieweeId},postExecute);
 	
 	
 	commitDropdownChart(vieweeId,document);
@@ -268,7 +272,7 @@ function processCommentPopup(targetId,myId,btnOptional,type,popupData){
 			if(comment.length > 200){
 				comment = comment.substring(0,196) + " (...)";
 			}
-			document.getElementById("sidComment").innerText = comment;
+			document.getElementById("sidComment").textContent = comment;
 		}
 	};
 	sendAjax("POST","/rate/linkedin/getComments",{targetid : targetId,myid: myId},postExecute);
@@ -741,7 +745,7 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 	var claimId = hex_md5(popupData.claim.getAttribute("data-html").toLowerCase());
 	var menuItem =  popupData.claim.getElementsByClassName(menuItemName)[0];
 	var targetId = vieweeId;
-	var fullName = document.getElementsByClassName("full-name")[0].innerText;
+	var fullName = document.getElementsByClassName("full-name")[0].textContent;
 	var profImage = document.getElementsByClassName("profile-picture")[0].getElementsByTagName("img")[0].src;
 		
 	menuItem.addEventListener("click",function(){

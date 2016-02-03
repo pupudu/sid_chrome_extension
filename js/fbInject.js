@@ -171,7 +171,7 @@ function processAnalyticsHTML(html){
 				orgNode.className = "carousElementMan";
 				orgNode.src = commonstrings.sidServerHttp+"/organizations/"+org+".png";
 				orgNode.addEventListener('click',function(){
-					window.open(commonstrings.sidServerHttp+"/organizations/"+org);
+					window.open(commonstrings.sidServerHttp+"/organizationProfile?orgid="+org);
 				});
 				document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
 			});
@@ -182,7 +182,7 @@ function processAnalyticsHTML(html){
 				orgNode.src = commonstrings.sidServerHttp+"/organizations/"+org+".png";
 				document.getElementsByClassName("orgSlick")[0].className += " orgSlickAct";
 				orgNode.addEventListener('click',function(){
-					window.open(commonstrings.sidServerHttp+"/organizations/"+org);
+					window.open(commonstrings.sidServerHttp+"/organizationProfile?orgid="+org);
 				});
 				document.getElementsByClassName("orgSlick")[0].appendChild(orgNode);
 			});
