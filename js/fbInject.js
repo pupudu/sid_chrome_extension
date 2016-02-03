@@ -371,15 +371,19 @@ function scoreClaims(arrIndex, claim, classOffset){
 	/*Avoid adding icons again if already added*/
 	if(claim.getAttribute("data-html")===null){
 		var html;
+		var data;
 		if(classOffset === "Events"){
+			data = claim.getElementsByClassName("_c24 _50f4")[0].innerHTML.replace(/web./g,"www.");
 			html = claim.getElementsByClassName("_c24 _50f4")[0].textContent.replace(/web./g,"www.");
 		}else{
+			data = claim.innerHTML.replace(/web./g,"www.");
 			html = claim.textContent.replace(/web./g,"www.");
 		}
 		html = html.replace("Also ","");
 		html = html.substr(0,1).toUpperCase() + html.substr(1);
-		console.log("claim: "+html);
+		//console.log("claim: "+html);
 		claim.setAttribute("data-html",html);
+		claim.setAttribute("data-data",data);
 	}
 	if(claim.getElementsByClassName(commonstrings.rateIconContainer).length === 0){
 		rateIcon.className = "rateIconContainer "+ classOffset;
@@ -391,6 +395,7 @@ function scoreClaims(arrIndex, claim, classOffset){
 	}
 	
 	var claimId = hex_md5(claim.getAttribute("data-html").toLowerCase());
+	console.log(claim.getAttribute("data-html").textContent);
 	
 	performScoring(iconId,iconClass,claimId,claim,classOffset);		
 	
@@ -507,7 +512,7 @@ function addEventToSendData(node,menuItemName,popupData,rate){
 	menuItem.addEventListener("click",function(){
 
 		notie.alert(4, 'Adding rating to siD system', 2);
-		var claimData = popupData.claim.getAttribute("data-html");
+		var claimData = popupData.claim.getAttribute("data-data");
 		
 		var postExecute = function(data){
 			if(data.success !== true){
