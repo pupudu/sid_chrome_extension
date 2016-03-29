@@ -38,7 +38,7 @@ function identify(){
 				}
 				else if(subsection.indexOf("Overview") ===0 ){
 					//manipulateOverview();
-					manipulateAbout(fbstrings.lifeEventClaim,"Overview");
+					manipulateAbout(fbstrings.overviewClaim,"Overview");
 				}
 			}else{
 				console.log("Unable to access About subsection");
@@ -120,6 +120,7 @@ function manipulateAbout(claimType,style){
 	
 	for(var i=0;i<claimCount;i++){
 		var claim = claimAr[i];
+		console.log(claim);
 		scoreClaims(i,claim,style); 
 	}
 }
