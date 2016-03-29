@@ -628,7 +628,18 @@ function clearEmptyIcons(item){
 /**Returns user id of viewer(0) or profile owner(1) as a string*/
 function extractId(userType){
 	if(userType === 0){
-		return document.getElementsByClassName(fbstrings.myPicHeader)[0].id.substring(19);
+		try{
+			if(document.getElementsByClassName(fbstrings.myPicHeader).length !==0){
+				myId = document.getElementsByClassName(fbstrings.myPicHeader)[0].id.substring(19);
+			}else if (document.getElementsByClassName(fbstrings.myPicHeaderAlt1).length !==0){
+				myId = document.getElementsByClassName(fbstrings.myPicHeaderAlt1)[0].id.substring(19);
+			}else{
+				var parentPic = document.getElementsByClassName(fbSkipStrings.myPicHeaderParent)[0].children[0];
+				myId = parentPic.id.substring(19);
+			}
+		}catch(e){
+			console.log("Error getting Id: "+e);
+		}
 	}else{
 		var str;
 		var profID;

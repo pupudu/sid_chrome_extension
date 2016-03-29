@@ -17,7 +17,9 @@ var fbstrings = {
 	sidDropdown:'sidDropdown',
 	analyticsChart:'myChart',
 	chartHolder:'canvas-holder',
-	myPicHeader:'_s0 _2dpc img'
+	myPicHeader:'_s0 _2dpc img',
+	myPicHeaderAlt1:'_s0 _1k69 img',
+	myPicHeaderParent:'_2dpe _1ayn'
 }
 
 var fbSkipStrings = ["Your friend since","Followed by","friends","Friends on","family members","Feeling","Played","Today is his","Today is her", "If you know"];
