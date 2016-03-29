@@ -629,6 +629,7 @@ function clearEmptyIcons(item){
 function extractId(userType){
 	if(userType === 0){
 		try{
+			var myId;
 			if(document.getElementsByClassName(fbstrings.myPicHeader).length !==0){
 				myId = document.getElementsByClassName(fbstrings.myPicHeader)[0].id.substring(19);
 			}else if (document.getElementsByClassName(fbstrings.myPicHeaderAlt1).length !==0){
@@ -637,6 +638,7 @@ function extractId(userType){
 				var parentPic = document.getElementsByClassName(fbSkipStrings.myPicHeaderParent)[0].children[0];
 				myId = parentPic.id.substring(19);
 			}
+			return myId;
 		}catch(e){
 			console.log("Error getting Id: "+e);
 		}
